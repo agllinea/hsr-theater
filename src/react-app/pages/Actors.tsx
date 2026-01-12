@@ -35,9 +35,7 @@ const Actors: React.FC = () => {
 
     };
     const ref = useRef<any>(undefined);
-    const filteredActors = selectedTags.length === 0
-        ? actors
-        : actors.filter(actor => actor.tags.some(tag => selectedTags.includes(tag)));
+    const filteredActors = selectedTags.length === 0 ? actors : actors.filter(actor => actor.tags.some(tag => selectedTags.includes(tag)));
 
     return (
         <AutoScroll as='div' className="actors-page">
@@ -122,7 +120,7 @@ const Actors: React.FC = () => {
                     }}
                 >
                     <AnimatePresence>
-                        {filteredActors.map((actor) => (
+                        {filteredActors.map((actor,i) => i<=30&&(
                             <ActorCard
                                 key={actor.name}
                                 actor={actor}

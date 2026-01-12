@@ -1,10 +1,13 @@
-import React, { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
+import React, { useEffect, useRef } from "react";
+
+import animated_shorts from "../assets/animated_shorts";
 import Actors from "./Actors";
 import AnimatedShorts from "./AnimatedShorts";
+import { AutoScroll } from "./auto_scroll";
 import Scripts from "./Scripts";
+
 import "./main.css";
-import animated_shorts from "../assets/animated_shorts";
 
 interface Script {
   id: number;
@@ -64,7 +67,7 @@ const Cover: React.FC = () => {
   }, [isInView]);
 
   return (
-    <section ref={ref} className="cover">
+    <AutoScroll className="cover">
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -73,7 +76,7 @@ const Cover: React.FC = () => {
       >
         SR Theater
       </motion.h1>
-    </section>
+    </AutoScroll>
   );
 };
 
