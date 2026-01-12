@@ -1,12 +1,7 @@
-import viteLogo from "/vite.svg";
 // src/App.tsx
 
 import { useEffect, useState } from "react";
 
-import cloudflareLogo from "./assets/Cloudflare_Logo.svg";
-import honoLogo from "./assets/hono.svg";
-import reactLogo from "./assets/react.svg";
-import Loading from "./pages/Loading";
 
 import "./App.css";
 import { useTheme } from "./stores/useTheme";
@@ -14,8 +9,6 @@ import clsx from "clsx";
 import Main from "./pages/main";
 
 function App() {
-    const [count, setCount] = useState(0);
-    const [name, setName] = useState("unknown");
     const [progress, setProgress] = useState(0);
     useEffect(() => {
         const interval = setInterval(() => {
@@ -26,7 +19,7 @@ function App() {
         }, 1000);
         return () => clearInterval(interval);
     }, []);
-    const { theme, dark, setDarkPreference } = useTheme();
+    const { theme, dark } = useTheme();
 
     return (
         <body className={clsx(theme, dark ? "dark" : "light")}>

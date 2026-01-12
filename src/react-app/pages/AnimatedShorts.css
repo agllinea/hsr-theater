@@ -1,0 +1,80 @@
+.animated-shorts-page {
+  min-height: 100vh;
+  position: relative;
+}
+
+.animated-shorts-title-bar {
+  position: sticky;
+  top: 0;
+  background-color: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem 2rem;
+  border-bottom: 2px solid #333;
+  z-index: 100;
+}
+
+.animated-shorts-page-title {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #feca57, #ff9ff3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.animated-shorts-page-content {
+  padding: 3rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.animated-shorts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.animated-shorts-item {
+  background-color: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-size: cover;
+  background-position: center;
+}
+
+.animated-shorts-item:hover {
+  transform: scale(1.02);
+}
+
+.animated-shorts-placeholder {
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.animated-shorts-play-icon {
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.animated-shorts-info {
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.animated-shorts-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.animated-shorts-duration {
+  margin: 0;
+  color: #888;
+  font-size: 0.9rem;
+}

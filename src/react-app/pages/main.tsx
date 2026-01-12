@@ -1,546 +1,491 @@
-import React, { useState, useEffect, useRef } from 'react';
-// Desktop wheel event with throttlingimport React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import Actors from "./Actors";
+import AnimatedShorts from "./AnimatedShorts";
+import Scripts from "./Scripts";
+import "./main.css";
 
-// Props interface for child page components
-interface PageProps {
-  isActive: boolean;
-  scrollProgress: number;
+// Types
+interface Actor {
+  name: string;
+  tags: string[];
+  va: string;
 }
 
-// Example child page components with different animations
-const HomePage: React.FC<PageProps> = ({ isActive, scrollProgress }) => {
+interface Video {
+  title: string;
+  genre: string;
+  url: string;
+  needed: boolean;
+}
+
+interface Script {
+  id: number;
+  title: string;
+  author: string;
+  description: string;
+}
+
+// Sample Data
+const actors: Actor[] = [
+  { name: "卡芙卡", tags: ["星核猎手"], va: "徐慧" },
+  { name: "流萤", tags: ["星核猎手"], va: "宋媛媛" },
+  { name: "刃", tags: ["星核猎手"], va: "刘以嘉" },
+  { name: "银狼", tags: ["星核猎手"], va: "Hanser" },
+  { name: "丹恒", tags: ["星穹列车"], va: "李春胤" },
+  { name: "姬子", tags: ["星穹列车"], va: "林簌" },
+  { name: "帕姆", tags: ["星穹列车"], va: "蒋丽" },
+  { name: "穹", tags: ["星穹列车"], va: "秦且歌" },
+  { name: "三月七", tags: ["星穹列车"], va: "诺亚" },
+  { name: "瓦尔特", tags: ["星穹列车"], va: "彭博" },
+  { name: "阿兰", tags: ["空间站「黑塔」"], va: "陶典" },
+  { name: "艾丝妲", tags: ["空间站「黑塔」"], va: "龟娘" },
+  {
+    name: "黑塔（人偶）",
+    tags: ["天才俱乐部", "空间站「黑塔」"],
+    va: "侯小菲",
+  },
+  { name: "纳努克", tags: ["星神"], va: "" },
+  { name: "黑塔", tags: ["天才俱乐部", "空间站「黑塔」"], va: "侯小菲" },
+  { name: "阮 · 梅", tags: ["天才俱乐部"], va: "张文钰" },
+  { name: "黑天鹅", tags: ["流光忆庭"], va: "杨梦露" },
+  { name: "布洛妮娅", tags: ["贝洛伯格"], va: "谢莹" },
+  { name: "虎克", tags: ["贝洛伯格"], va: "王晓彤" },
+  { name: "杰帕德", tags: ["贝洛伯格"], va: "马洋" },
+  { name: "可可利亚", tags: ["贝洛伯格"], va: "" },
+  { name: "克拉拉", tags: ["贝洛伯格"], va: "紫苏九月" },
+  { name: "玲可", tags: ["贝洛伯格"], va: "米糊" },
+  { name: "卢卡", tags: ["贝洛伯格"], va: "萧翟" },
+  { name: "娜塔莎", tags: ["贝洛伯格"], va: "秦紫翼" },
+  { name: "佩拉", tags: ["贝洛伯格"], va: "宴宁" },
+  { name: "桑博", tags: ["假面愚者", "贝洛伯格"], va: "刘圣博" },
+  { name: "史瓦罗", tags: ["贝洛伯格"], va: "王宇航" },
+  { name: "希儿", tags: ["贝洛伯格"], va: "唐雅菁" },
+  { name: "希露瓦", tags: ["贝洛伯格"], va: "穆雪婷" },
+  { name: "花火", tags: ["假面愚者"], va: "赵爽" },
+  { name: "白露", tags: ["仙舟「罗浮」"], va: "时欣蕾" },
+  { name: "符玄", tags: ["仙舟「罗浮」"], va: "花玲" },
+  { name: "桂乃芬", tags: ["仙舟「罗浮」"], va: "小敢" },
+  { name: "寒鸦", tags: ["仙舟「罗浮」"], va: "张雨曦" },
+  { name: "藿藿", tags: ["仙舟「罗浮」"], va: "葛子瑞" },
+  { name: "景元", tags: ["仙舟「罗浮」"], va: "孙晔" },
+  { name: "镜流", tags: ["仙舟「罗浮」"], va: "杜冥鸦" },
+  { name: "灵砂", tags: ["仙舟「罗浮」"], va: "饶梓君" },
+  { name: "青雀", tags: ["仙舟「罗浮」"], va: "刘十四" },
+  { name: "素裳", tags: ["仙舟「罗浮」"], va: "陈婷婷" },
+  { name: "停云", tags: ["仙舟「罗浮」"], va: "蒋丽" },
+  { name: "停云（幻胧）", tags: ["仙舟「罗浮」", "绝灭大君"], va: "蒋丽" },
+  { name: "雪衣", tags: ["仙舟「罗浮」"], va: "溯浔" },
+  { name: "彦卿", tags: ["仙舟「罗浮」"], va: "喵酱" },
+  { name: "驭空", tags: ["仙舟「罗浮」"], va: "钟可" },
+  { name: "翡翠", tags: ["星际和平公司"], va: "张若瑜" },
+  { name: "砂金", tags: ["星际和平公司"], va: "杨超然" },
+  { name: "托帕", tags: ["星际和平公司"], va: "陆敏悦" },
+  { name: "幻胧", tags: ["绝灭大君"], va: "" },
+  { name: "飞霄", tags: ["仙舟「曜青」"], va: "叶知秋" },
+  { name: "椒丘", tags: ["仙舟「曜青」"], va: "陈张太康" },
+  { name: "貊泽", tags: ["仙舟「曜青」"], va: "黄进泽" },
+  { name: "云璃", tags: ["仙舟「朱明」"], va: "刘雯" },
+  { name: "加拉赫", tags: ["匹诺康尼"], va: "马语非" },
+  { name: "米沙", tags: ["匹诺康尼", "星穹列车"], va: "柳知萧" },
+  { name: "星期日", tags: ["匹诺康尼", "星穹列车"], va: "徐翔" },
+  { name: "知更鸟", tags: ["匹诺康尼"], va: "钱琛" },
+  { name: "银枝", tags: ["纯美骑士团"], va: "梁达伟" },
+  { name: "真理医生", tags: ["博识学会"], va: "桑毓泽" },
+  { name: "黄泉", tags: ["自灭者"], va: "菊花花" },
+  { name: "波提欧", tags: ["巡海游侠"], va: "彭博" },
+  { name: "乱破", tags: ["巡海游侠"], va: "金娜" },
+  { name: "大丽花", tags: ["焚化工"], va: "阮从青" },
+  { name: "尾巴", tags: ["岁阳"], va: "刘北辰" },
+  { name: "阿格莱雅", tags: ["翁法罗斯"], va: "楚越" },
+  { name: "白厄", tags: ["翁法罗斯"], va: "秦且歌" },
+  { name: "风堇", tags: ["翁法罗斯"], va: "静宸" },
+  { name: "海瑟音", tags: ["翁法罗斯"], va: "浮梦若薇" },
+  { name: "刻律德菈", tags: ["翁法罗斯"], va: "时欣蕾" },
+  { name: "那刻夏", tags: ["翁法罗斯"], va: "钱文青" },
+  { name: "赛飞儿", tags: ["翁法罗斯"], va: "王雅欣" },
+  { name: "缇宝/缇安/缇宁/…", tags: ["翁法罗斯"], va: "蔡书瑾" },
+  { name: "万敌", tags: ["翁法罗斯"], va: "赵成晨" },
+  { name: "昔涟", tags: ["翁法罗斯"], va: "宴宁" },
+  { name: "遐蝶", tags: ["翁法罗斯"], va: "阮从青" },
+  { name: "长夜月", tags: ["翁法罗斯"], va: "诺亚" },
+  { name: "罗刹", tags: [""], va: "赵路" },
+];
+
+const videos: Video[] = [
+  {
+    title: "有关星空的寓言集•其一",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1EM4y1h7Vm/",
+    needed: true,
+  },
+  {
+    title: "仙舟通鉴•帝弓七天将",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV19o4y1x7tX/",
+    needed: true,
+  },
+  {
+    title: "飞光",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV16g4y157Zc/",
+    needed: true,
+  },
+  {
+    title: "耶佩拉叛乱：第47场",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1Nu411H7C6/",
+    needed: true,
+  },
+  {
+    title: "仙舟通鉴•五龙远徙",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1nu4y1D7Ex/",
+    needed: true,
+  },
+  {
+    title: "玄黄",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV1Th4y1S7KF/",
+    needed: true,
+  },
+  {
+    title: "云骑武经•说剑",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV12N4y1o7ET/",
+    needed: false,
+  },
+  {
+    title: "星际和平导览：甄选、规划和机遇",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1ny4y1P7SN/",
+    needed: true,
+  },
+  {
+    title: "绥园伏鬼记",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1Xw411K7Mg/",
+    needed: false,
+  },
+  {
+    title: "阮声落华裳，梅出似点妆",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1pb4y1V7Qw/",
+    needed: false,
+  },
+  {
+    title: "永火一夜：第33场",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1UK411e7tY/",
+    needed: true,
+  },
+  {
+    title: "滴答！一起来梦游吧！",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV1iC4y1C7KV/",
+    needed: false,
+  },
+  {
+    title: "旧梦重温",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1FZ421z7PE/",
+    needed: false,
+  },
+  {
+    title: "《花火》：幕后纪录",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1cC411W7pH/",
+    needed: false,
+  },
+  {
+    title: "永劫轮舞",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV1aC411h7e6/",
+    needed: true,
+  },
+  {
+    title: "虚谭•浮世三千一刀缭断",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV16m411R78H/",
+    needed: false,
+  },
+  {
+    title: "假若有一双翅膀",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1wz421U7LZ/",
+    needed: false,
+  },
+  {
+    title: "此刻，在同一片星空下",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV16s421u7NP/",
+    needed: true,
+  },
+  {
+    title: "格拉默的余烬",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV1us421u7sp/",
+    needed: true,
+  },
+  {
+    title: "塔塔洛夫向你致意",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1fx4y147PH/",
+    needed: false,
+  },
+  {
+    title: "石心誓环•天平两端",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1xE4m1R78a/",
+    needed: false,
+  },
+  {
+    title: "天干剑燥，小心火炉",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1xi421a7mg/",
+    needed: false,
+  },
+  {
+    title: "飞镝追星",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1TT421z7e3/",
+    needed: false,
+  },
+  {
+    title: "清闲自在身",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV1WvpTekEPQ/",
+    needed: false,
+  },
+  {
+    title: "银河忍法帖•乱武驱魔破邪斩月之卷",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV13pyPYSEar/",
+    needed: false,
+  },
+  {
+    title: "太阳落下之后",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1ZBzhYREVs/",
+    needed: false,
+  },
+  {
+    title: "不似一片浮云",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV12xkMYjEio/",
+    needed: false,
+  },
+  {
+    title: "群星静默如谜",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1dCr3YqEtT/",
+    needed: false,
+  },
+  {
+    title: "大 黑 塔 的 魔 法 厨 房",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV1cErqYDEGC/",
+    needed: false,
+  },
+  {
+    title: "翁法罗斯英雄纪",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1GeUUYREXy/",
+    needed: true,
+  },
+  {
+    title: "论泰坦与地上万邦",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1uf6tYBEWN/",
+    needed: true,
+  },
+  {
+    title: "诸神尽喑之歌",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1KbcNepEzt/",
+    needed: true,
+  },
+  {
+    title: "命运的第一个黎明",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1sZAnevEsh/",
+    needed: true,
+  },
+  {
+    title: "那安息的长夜",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV16io9YTEqH/",
+    needed: true,
+  },
+  {
+    title: "生命从夜中醒来",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV18hZ1YaEuM/",
+    needed: true,
+  },
+  {
+    title: "有关星空的寓言集•其二",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1HsKbznEZg/",
+    needed: true,
+  },
+  {
+    title: "听！狂欢在那神佑的山巅",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV1twgSzhEo8/",
+    needed: true,
+  },
+  {
+    title: "开拓者",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV19RhAzcEdU/",
+    needed: false,
+  },
+  {
+    title: "亲爱的三月七",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1uopiz8E9B/",
+    needed: false,
+  },
+  {
+    title: "跋涉",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV1BpJrz7EUL/",
+    needed: true,
+  },
+  {
+    title: "翁法罗斯英雄纪",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1R5JyzJE9Y/",
+    needed: true,
+  },
+  {
+    title: "故事之外：第8场",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1xzs1zDEFi/",
+    needed: true,
+  },
+  {
+    title: "再见，昔涟",
+    genre: "千星纪游",
+    url: "https://www.bilibili.com/video/BV1yXyaBGEVR/",
+    needed: false,
+  },
+  {
+    title: "你好，世界",
+    genre: "动画短片",
+    url: "https://www.bilibili.com/video/BV14G1kB5Evp/",
+    needed: true,
+  },
+];
+
+const scripts: Script[] = [
+  {
+    id: 1,
+    title: "Eternal Sunset",
+    author: "Jane Doe",
+    description:
+      "A poignant drama about finding hope in the darkest moments of life.",
+  },
+  {
+    id: 2,
+    title: "Digital Dreams",
+    author: "John Smith",
+    description:
+      "A sci-fi thriller exploring the intersection of technology and consciousness.",
+  },
+  {
+    id: 3,
+    title: "Forgotten Melodies",
+    author: "Sarah Johnson",
+    description: "A musical journey through memory, loss, and rediscovery.",
+  },
+  {
+    id: 4,
+    title: "The Silent Observer",
+    author: "Michael Chen",
+    description:
+      "A psychological mystery that blurs the line between reality and perception.",
+  },
+  {
+    id: 5,
+    title: "Crimson Horizon",
+    author: "Emily Rose",
+    description:
+      "An epic adventure set in a world on the brink of transformation.",
+  },
+];
+
+const allTags = Array.from(new Set(actors.flatMap((actor) => actor.tags)));
+
+// Cover Component
+const Cover: React.FC = () => {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { amount: 0.1 });
+
+  useEffect(() => {
+    console.log("Cover", isInView);
+    if (isInView && ref.current) {
+      ref.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [isInView]);
+
   return (
-    <div style={styles.pageContent}>
-      <motion.div
-        initial={{ opacity: 0, x: -100 }}
-        animate={{ 
-          opacity: scrollProgress > 0.3 ? 1 : 0,
-          x: scrollProgress > 0.3 ? 0 : -100,
-        }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+    <section ref={ref} className="cover">
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="cover-title"
       >
-        <h1 style={styles.pageTitle}>Welcome Home</h1>
-        <p style={styles.pageSubtitle}>Slide in from left</p>
-      </motion.div>
-    </div>
+        SR Theater
+      </motion.h1>
+    </section>
   );
 };
 
-const AboutPage: React.FC<PageProps> = ({ isActive, scrollProgress }) => {
-  return (
-    <div style={styles.pageContent}>
-      <motion.div
-        initial={{ opacity: 0, x: 100 }}
-        animate={{ 
-          opacity: scrollProgress > 0.3 ? 1 : 0,
-          x: scrollProgress > 0.3 ? 0 : 100,
-        }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <h1 style={styles.pageTitle}>About Us</h1>
-        <p style={styles.pageSubtitle}>Slide in from right</p>
-      </motion.div>
-    </div>
-  );
-};
-
-const ServicesPage: React.FC<PageProps> = ({ isActive, scrollProgress }) => {
-  return (
-    <div style={styles.pageContent}>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ 
-          opacity: scrollProgress > 0.3 ? 1 : 0,
-          scale: scrollProgress > 0.3 ? 1 : 0.8,
-        }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <h1 style={styles.pageTitle}>Our Services</h1>
-        <p style={styles.pageSubtitle}>Zoom in effect</p>
-      </motion.div>
-    </div>
-  );
-};
-
-const PortfolioPage: React.FC<PageProps> = ({ isActive, scrollProgress }) => {
-  return (
-    <div style={styles.pageContent}>
-      <motion.div
-        initial={{ opacity: 0, y: 100 }}
-        animate={{ 
-          opacity: scrollProgress > 0.3 ? 1 : 0,
-          y: scrollProgress > 0.3 ? 0 : 100,
-        }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <h1 style={styles.pageTitle}>Portfolio</h1>
-        <p style={styles.pageSubtitle}>Slide in from bottom</p>
-      </motion.div>
-    </div>
-  );
-};
-
-const ContactPage: React.FC<PageProps> = ({ isActive, scrollProgress }) => {
-  return (
-    <div style={styles.pageContent}>
-      <motion.div
-        initial={{ opacity: 0, rotate: -10 }}
-        animate={{ 
-          opacity: scrollProgress > 0.3 ? 1 : 0,
-          rotate: scrollProgress > 0.3 ? 0 : -10,
-        }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <h1 style={styles.pageTitle}>Contact</h1>
-        <p style={styles.pageSubtitle}>Rotate & fade in</p>
-      </motion.div>
-    </div>
-  );
-};
-
-// Main component
+// Main Component
 const Main: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(0);
-  const [displayPage, setDisplayPage] = useState(0);
-  const [pageProgress, setPageProgress] = useState<{ [key: number]: number }>({});
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isScrollingRef = useRef(false);
-  const isTouchingRef = useRef(false);
-  const touchStartRef = useRef(0);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
-  const pages = [
-    { id: 0, title: 'Home', bgColor: '#3b82f6', component: HomePage },
-    { id: 1, title: 'About', bgColor: '#a855f7', component: AboutPage },
-    { id: 2, title: 'Services', bgColor: '#22c55e', component: ServicesPage },
-    { id: 3, title: 'Portfolio', bgColor: '#f97316', component: PortfolioPage },
-    { id: 4, title: 'Contact', bgColor: '#ef4444', component: ContactPage },
-  ];
+  // const ref = useRef<HTMLDivElement>(null);
+  // const isInView = useInView(ref, { amount: 0.1 });
 
-  const scrollToPage = (pageIndex: number) => {
-    if (pageIndex >= 0 && pageIndex < pages.length) {
-      setCurrentPage(pageIndex);
-      setDisplayPage(pageIndex);
-      const pageElement = document.getElementById(`page-${pageIndex}`);
-      if (pageElement) {
-        pageElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-  };
-
-  // Intersection Observer for scroll detection with debounced page activation
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: [0.5, 0.75, 1.0],
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const pageId = parseInt(entry.target.getAttribute('data-page') || '0');
-        
-        // Update progress for animations
-        const progress = entry.intersectionRatio;
-        setPageProgress((prev) => ({ ...prev, [pageId]: progress }));
-        
-        // When page is mostly visible (>75%) and user is not touching
-        if (entry.isIntersecting && entry.intersectionRatio > 0.75 && !isTouchingRef.current) {
-          setCurrentPage(pageId);
-          setDisplayPage(pageId);
-        }
-      });
-    }, options);
-
-    const pageElements = document.querySelectorAll('.page-section');
-    pageElements.forEach((page) => observer.observe(page));
-
-    return () => {
-      pageElements.forEach((page) => observer.unobserve(page));
-    };
-  }, []);
-
-  // Detect scroll end
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-      
-      scrollTimeoutRef.current = setTimeout(() => {
-        // Scroll has ended, check which page is most visible
-        const pageElements = document.querySelectorAll('.page-section');
-        let maxRatio = 0;
-        let mostVisiblePage = 0;
-        
-        pageElements.forEach((el, index) => {
-          const ratio = pageProgress[index] || 0;
-          if (ratio > maxRatio) {
-            maxRatio = ratio;
-            mostVisiblePage = index;
-          }
-        });
-        
-        if (maxRatio > 0.5) {
-          setCurrentPage(mostVisiblePage);
-          setDisplayPage(mostVisiblePage);
-        }
-      }, 150);
-    };
-    
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener('scroll', handleScroll, { passive: true });
-    }
-    
-    return () => {
-      if (container) {
-        container.removeEventListener('scroll', handleScroll);
-      }
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, [pageProgress]);
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (isScrollingRef.current) return;
-      
-      isScrollingRef.current = true;
-      
-      if (e.deltaY > 0 && currentPage < pages.length - 1) {
-        scrollToPage(currentPage + 1);
-      } else if (e.deltaY < 0 && currentPage > 0) {
-        scrollToPage(currentPage - 1);
-      }
-      
-      setTimeout(() => {
-        isScrollingRef.current = false;
-      }, 1000);
-    };
-
-    const container = containerRef.current;
-    if (container && window.innerWidth > 768) {
-      container.addEventListener('wheel', handleWheel, { passive: true });
-    }
-
-    return () => {
-      if (container) {
-        container.removeEventListener('wheel', handleWheel);
-      }
-    };
-  }, [currentPage]);
-
-  // Touch events for mobile
-  const handleTouchStart = (e: React.TouchEvent) => {
-    isTouchingRef.current = true;
-    touchStartRef.current = e.touches[0].clientY;
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const touchEnd = e.changedTouches[0].clientY;
-    const diff = touchStartRef.current - touchEnd;
-    const minSwipeDistance = 50;
-
-    // Release touch flag
-    isTouchingRef.current = false;
-
-    if (Math.abs(diff) > minSwipeDistance && !isScrollingRef.current) {
-      isScrollingRef.current = true;
-      
-      if (diff > 0 && currentPage < pages.length - 1) {
-        scrollToPage(currentPage + 1);
-      } else if (diff < 0 && currentPage > 0) {
-        scrollToPage(currentPage - 1);
-      }
-      
-      setTimeout(() => {
-        isScrollingRef.current = false;
-      }, 1000);
-    }
-  };
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown' && currentPage < pages.length - 1) {
-        e.preventDefault();
-        scrollToPage(currentPage + 1);
-      } else if (e.key === 'ArrowUp' && currentPage > 0) {
-        e.preventDefault();
-        scrollToPage(currentPage - 1);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentPage]);
+  // useEffect(() => {
+  //   console.log("Main", isInView)
+  //   if (isInView && ref.current) {
+  //     ref.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  //   }
+  // }, [isInView]);
 
   return (
-    <>
-      <style>{`
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        body {
-          overflow: hidden;
-        }
-
-        .main-container {
-          width: 100%;
-          height: 100vh;
-          overflow-y: scroll;
-          scroll-snap-type: y mandatory;
-          -webkit-overflow-scrolling: touch;
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-        }
-
-        .main-container::-webkit-scrollbar {
-          display: none;
-        }
-
-        .page-section {
-          width: 100%;
-          height: 100vh;
-          height: 100dvh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          scroll-snap-align: start;
-          scroll-snap-stop: always;
-          position: relative;
-        }
-
-        .toc {
-          position: fixed;
-          left: 2rem;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 1000;
-        }
-
-        .toc-mobile-label {
-          display: none;
-        }
-
-        .toc-timeline {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          position: relative;
-        }
-
-        .toc-timeline::before {
-          content: '';
-          position: absolute;
-          left: 0.375rem;
-          top: 0.5rem;
-          bottom: 0.5rem;
-          width: 2px;
-          background: rgba(156, 163, 175, 0.3);
-        }
-
-        .toc-item-wrapper {
-          position: relative;
-          display: flex;
-          align-items: center;
-        }
-
-        .toc-button {
-          background: none;
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          transition: all 0.3s ease;
-          position: relative;
-          z-index: 2;
-        }
-
-        .toc-button:active {
-          transform: scale(0.9);
-        }
-
-        .toc-dot {
-          width: 0.75rem;
-          height: 0.75rem;
-          border-radius: 50%;
-          transition: all 0.3s ease;
-          border: 2px solid transparent;
-        }
-
-        .toc-dot.inactive {
-          background-color: #9ca3af;
-        }
-
-        .toc-dot.active {
-          background-color: #2563eb;
-          transform: scale(1.5);
-          box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
-        }
-
-        .toc-tooltip {
-          position: absolute;
-          left: 2rem;
-          white-space: nowrap;
-          font-size: 0.875rem;
-          font-weight: 500;
-          color: #6b7280;
-          opacity: 0;
-          pointer-events: none;
-          transition: all 0.3s ease;
-          padding: 0.5rem 0.75rem;
-          background: white;
-          border-radius: 0.375rem;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .toc-tooltip.active {
-          color: #2563eb;
-          opacity: 1;
-        }
-
-        .toc-tooltip::before {
-          content: '';
-          position: absolute;
-          left: -4px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 0;
-          height: 0;
-          border-top: 4px solid transparent;
-          border-bottom: 4px solid transparent;
-          border-right: 4px solid white;
-        }
-
-        @media (hover: hover) {
-          .toc-item-wrapper:hover .toc-tooltip {
-            opacity: 1;
-          }
-          
-          .toc-item-wrapper:hover .toc-dot.inactive {
-            background-color: #60a5fa;
-            transform: scale(1.2);
-          }
-        }
-
-        @media (max-width: 768px) {
-          .toc {
-            left: 50%;
-            top: auto;
-            bottom: 2rem;
-            transform: translateX(-50%);
-          }
-
-          .toc-mobile-label {
-            display: block;
-            text-align: center;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #2563eb;
-            margin-bottom: 1rem;
-            padding: 0.5rem 1rem;
-            background: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-          }
-
-          .toc-timeline {
-            flex-direction: row;
-            gap: 1.5rem;
-          }
-
-          .toc-timeline::before {
-            left: 0.5rem;
-            right: 0.5rem;
-            top: 0.375rem;
-            bottom: auto;
-            width: auto;
-            height: 2px;
-          }
-
-          .toc-tooltip {
-            display: none;
-          }
-
-          .toc-dot {
-            width: 0.625rem;
-            height: 0.625rem;
-          }
-        }
-      `}</style>
-
-      <div 
-        ref={containerRef}
-        className="main-container"
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        {pages.map((page, index) => {
-          const PageComponent = page.component;
-          const isPageActive = currentPage === index;
-          return (
-            <motion.div
-              key={page.id}
-              id={`page-${index}`}
-              className="page-section"
-              data-page={index}
-              style={{ backgroundColor: page.bgColor }}
-              initial={{ opacity: 1 }}
-              animate={{ opacity: 1 }}
-            >
-              <PageComponent 
-                isActive={isPageActive}
-                scrollProgress={isPageActive ? 1 : 0}
-              />
-            </motion.div>
-          );
-        })}
-      </div>
-
-      <div className="toc">
-        <div className="toc-mobile-label">
-          {pages[displayPage]?.title}
-        </div>
-        <div className="toc-timeline">
-          {pages.map((page, index) => (
-            <div key={page.id} className="toc-item-wrapper">
-              <button
-                onClick={() => scrollToPage(index)}
-                className="toc-button"
-              >
-                <div className={`toc-dot ${currentPage === index ? 'active' : 'inactive'}`} />
-              </button>
-              <span className={`toc-tooltip ${currentPage === index ? 'active' : ''}`}>
-                {page.title}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </>
+    <section className="main">
+      <Actors actors={actors} allTags={allTags} />
+      <AnimatedShorts videos={videos} />
+      <Scripts scripts={scripts} />
+    </section>
   );
 };
 
-const styles: { [key: string]: React.CSSProperties } = {
-  pageContent: {
-    textAlign: 'center',
-    color: 'white',
-    padding: '20px',
-    maxWidth: '90%',
-  },
-  pageTitle: {
-    fontSize: 'clamp(2rem, 10vw, 4rem)',
-    fontWeight: 'bold',
-    marginBottom: '1rem',
-  },
-  pageSubtitle: {
-    fontSize: 'clamp(1rem, 5vw, 1.5rem)',
-  },
+// Footer Component
+const Footer: React.FC = () => {
+  return (
+    <footer className="footer">
+      <p className="footer-text">
+        &copy; 2026 SR Theater. All rights reserved. | Design by Creative
+        Studios
+      </p>
+    </footer>
+  );
 };
 
-export default Main;
+// Main App Component
+const App: React.FC = () => {
+  return (
+    <body className="app">
+      <Cover />
+      <Main />
+      <Footer />
+    </body>
+  );
+};
+
+export default App;
