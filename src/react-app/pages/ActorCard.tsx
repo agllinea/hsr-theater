@@ -2,10 +2,12 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 interface Actor {
+    id: string;
     va: string;
     name: string;
     tags: string[];
 }
+
 
 interface ActorCardProps {
     actor: Actor;
@@ -31,26 +33,39 @@ const ActorCard: React.FC<ActorCardProps> = ({ actor, isHovered, onMouseEnter, o
             className="actors-cube"
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
+            style={{
+                backgroundImage: `url("/character_icon/${actor.id}-character_icon.webp")`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+            }}
         >
-            <h3 className="actors-name">{actor.name}</h3>
+            {/* <h3 className="actors-name">{actor.name}</h3> */}
             <motion.div
                 className='actors-hover-card'
-                initial={{ opacity: 0, scale: 1, pointerEvents: 'none' }}
+                initial={{ opacity: 0, height: '100%', pointerEvents: 'none' }}
                 animate={
                     isHovered
-                        ? { opacity: 1, scale: 1.05, pointerEvents: 'auto' }
-                        : { opacity: 0, scale: 1, pointerEvents: 'none' }
+                        ? { opacity: 1, height: '150%', pointerEvents: 'auto' }
+                        : { opacity: 0, height: '100%', pointerEvents: 'none' }
                 }
                 transition={{ duration: 0.2 }}
+                style={{
+                    backgroundImage: `url("/character_icon/${actor.id}-character_icon.webp")`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                }}
             >
-                <h3 className="actors-name">{actor.name}</h3>
-                
-                <div className="actors-tags">
-                    {actor.tags.map(tag => (
-                        <span key={tag} className="actors-mini-tag">{tag}</span>
-                    ))}
-                </div>
-                <div >{actor.va}</div>
+                <span className='actors-hover-info'>
+                    <div className="actors-name">{actor.name}</div>
+
+                    <div>{actor.va}</div>
+                    <div className="actors-tags">
+                        {actor.tags.map(tag => (
+                            <span key={tag} className="actors-mini-tag">{tag}</span>
+                        ))}
+                    </div>
+                </span>
+
             </motion.div>
         </motion.div>
     );

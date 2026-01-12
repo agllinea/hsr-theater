@@ -3,19 +3,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './Actors.css';
 import { AutoScroll } from './auto_scroll';
 import ActorCard from './ActorCard';
+import data from '../assets/actors.json'
+
+const actors: Actor[] = data;
+const allTags = Array.from(new Set(actors.flatMap((actor) => actor.tags)));
 
 interface Actor {
+    id: string;
     va: string;
     name: string;
     tags: string[];
 }
 
-interface ActorsProps {
-    actors: Actor[];
-    allTags: string[];
-}
-
-const Actors: React.FC<ActorsProps> = ({ actors, allTags }) => {
+const Actors: React.FC = () => {
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [hoveredActorId, setHoveredActorId] = useState<string | null>(null);

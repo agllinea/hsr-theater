@@ -39,13 +39,13 @@ const AnimatedShorts: React.FC<AnimatedShortsProps> = ({ videos }) => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.4 }}
-                style={{
-                  backgroundImage: `url("/bili-cover?bvid=${bvid}")`,
+                
+              >
+                <div className="animated-shorts-placeholder" style={{
+                  backgroundImage: `url("/animated_short_cover/${bvid}.jpg")`,
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
-                }}
-              >
-                <div className="animated-shorts-placeholder">
+                }}>
                   <div className="animated-shorts-play-icon">▶</div>
                 </div>
                 <div className="animated-shorts-info">

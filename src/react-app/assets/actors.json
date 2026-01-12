@@ -1,0 +1,155 @@
+[
+  { "id": "kafka", "name": "卡芙卡", "tags": ["星核猎手"], "va": "徐慧" },
+  { "id": "firefly", "name": "流萤", "tags": ["星核猎手"], "va": "宋媛媛" },
+  { "id": "blade", "name": "刃", "tags": ["星核猎手"], "va": "刘以嘉" },
+  { "id": "silver-wolf", "name": "银狼", "tags": ["星核猎手"], "va": "Hanser" },
+  { "id": "dan-heng", "name": "丹恒", "tags": ["星穹列车"], "va": "李春胤" },
+  { "id": "himeko", "name": "姬子", "tags": ["星穹列车"], "va": "林簌" },
+  { "id": "", "name": "帕姆", "tags": ["星穹列车"], "va": "蒋丽" },
+  { "id": "trailblazer", "name": "穹", "tags": ["星穹列车"], "va": "秦且歌" },
+  { "id": "march-7th", "name": "三月七", "tags": ["星穹列车"], "va": "诺亚" },
+  { "id": "welt", "name": "瓦尔特", "tags": ["星穹列车"], "va": "彭博" },
+  { "id": "arlan", "name": "阿兰", "tags": ["空间站「黑塔」"], "va": "陶典" },
+  { "id": "asta", "name": "艾丝妲", "tags": ["空间站「黑塔」"], "va": "龟娘" },
+  {
+    "id": "herta",
+    "name": "黑塔（人偶）",
+    "tags": ["天才俱乐部", "空间站「黑塔」"],
+    "va": "侯小菲"
+  },
+  { "id": "", "name": "纳努克", "tags": ["星神"], "va": "" },
+  {
+    "id": "the-herta",
+    "name": "黑塔",
+    "tags": ["天才俱乐部", "空间站「黑塔」"],
+    "va": "侯小菲"
+  },
+  {
+    "id": "ruan-mei",
+    "name": "阮 · 梅",
+    "tags": ["天才俱乐部"],
+    "va": "张文钰"
+  },
+  {
+    "id": "black-swan",
+    "name": "黑天鹅",
+    "tags": ["流光忆庭"],
+    "va": "杨梦露"
+  },
+  { "id": "bronya", "name": "布洛妮娅", "tags": ["贝洛伯格"], "va": "谢莹" },
+  { "id": "hook", "name": "虎克", "tags": ["贝洛伯格"], "va": "王晓彤" },
+  { "id": "gepard", "name": "杰帕德", "tags": ["贝洛伯格"], "va": "马洋" },
+  { "id": "", "name": "可可利亚", "tags": ["贝洛伯格"], "va": "" },
+  { "id": "clara", "name": "克拉拉", "tags": ["贝洛伯格"], "va": "紫苏九月" },
+  { "id": "lynx", "name": "玲可", "tags": ["贝洛伯格"], "va": "米糊" },
+  { "id": "luka", "name": "卢卡", "tags": ["贝洛伯格"], "va": "萧翟" },
+  { "id": "natasha", "name": "娜塔莎", "tags": ["贝洛伯格"], "va": "秦紫翼" },
+  { "id": "pela", "name": "佩拉", "tags": ["贝洛伯格"], "va": "宴宁" },
+  {
+    "id": "sampo",
+    "name": "桑博",
+    "tags": ["假面愚者", "贝洛伯格"],
+    "va": "刘圣博"
+  },
+  { "id": "", "name": "史瓦罗", "tags": ["贝洛伯格"], "va": "王宇航" },
+  { "id": "seele", "name": "希儿", "tags": ["贝洛伯格"], "va": "唐雅菁" },
+  { "id": "serval", "name": "希露瓦", "tags": ["贝洛伯格"], "va": "穆雪婷" },
+  { "id": "sparkle", "name": "花火", "tags": ["假面愚者"], "va": "赵爽" },
+  { "id": "bailu", "name": "白露", "tags": ["仙舟「罗浮」"], "va": "时欣蕾" },
+  { "id": "fu-xuan", "name": "符玄", "tags": ["仙舟「罗浮」"], "va": "花玲" },
+  {
+    "id": "guinaifen",
+    "name": "桂乃芬",
+    "tags": ["仙舟「罗浮」"],
+    "va": "小敢"
+  },
+  { "id": "hanya", "name": "寒鸦", "tags": ["仙舟「罗浮」"], "va": "张雨曦" },
+  { "id": "huohuo", "name": "藿藿", "tags": ["仙舟「罗浮」"], "va": "葛子瑞" },
+  { "id": "jing-yuan", "name": "景元", "tags": ["仙舟「罗浮」"], "va": "孙晔" },
+  { "id": "jingliu", "name": "镜流", "tags": ["仙舟「罗浮」"], "va": "杜冥鸦" },
+  { "id": "lingsha", "name": "灵砂", "tags": ["仙舟「罗浮」"], "va": "饶梓君" },
+  { "id": "qingque", "name": "青雀", "tags": ["仙舟「罗浮」"], "va": "刘十四" },
+  { "id": "sushang", "name": "素裳", "tags": ["仙舟「罗浮」"], "va": "陈婷婷" },
+  { "id": "fugue", "name": "停云", "tags": ["仙舟「罗浮」"], "va": "蒋丽" },
+  {
+    "id": "tingyun",
+    "name": "停云（幻胧）",
+    "tags": ["仙舟「罗浮」", "绝灭大君"],
+    "va": "蒋丽"
+  },
+  { "id": "xueyi", "name": "雪衣", "tags": ["仙舟「罗浮」"], "va": "溯浔" },
+  { "id": "yanqing", "name": "彦卿", "tags": ["仙舟「罗浮」"], "va": "喵酱" },
+  { "id": "yukong", "name": "驭空", "tags": ["仙舟「罗浮」"], "va": "钟可" },
+  { "id": "jade", "name": "翡翠", "tags": ["星际和平公司"], "va": "张若瑜" },
+  {
+    "id": "aventurine",
+    "name": "砂金",
+    "tags": ["星际和平公司"],
+    "va": "杨超然"
+  },
+  {
+    "id": "topaz-numby",
+    "name": "托帕",
+    "tags": ["星际和平公司"],
+    "va": "陆敏悦"
+  },
+  { "id": "", "name": "幻胧", "tags": ["绝灭大君"], "va": "" },
+  { "id": "feixiao", "name": "飞霄", "tags": ["仙舟「曜青」"], "va": "叶知秋" },
+  {
+    "id": "jiaoqiu",
+    "name": "椒丘",
+    "tags": ["仙舟「曜青」"],
+    "va": "陈张太康"
+  },
+  { "id": "moze", "name": "貊泽", "tags": ["仙舟「曜青」"], "va": "黄进泽" },
+  { "id": "yunli", "name": "云璃", "tags": ["仙舟「朱明」"], "va": "刘雯" },
+  { "id": "gallagher", "name": "加拉赫", "tags": ["匹诺康尼"], "va": "马语非" },
+  {
+    "id": "misha",
+    "name": "米沙",
+    "tags": ["匹诺康尼", "星穹列车"],
+    "va": "柳知萧"
+  },
+  {
+    "id": "sunday",
+    "name": "星期日",
+    "tags": ["匹诺康尼", "星穹列车"],
+    "va": "徐翔"
+  },
+  { "id": "robin", "name": "知更鸟", "tags": ["匹诺康尼"], "va": "钱琛" },
+  { "id": "argenti", "name": "银枝", "tags": ["纯美骑士团"], "va": "梁达伟" },
+  {
+    "id": "dr-ratio",
+    "name": "真理医生",
+    "tags": ["博识学会"],
+    "va": "桑毓泽"
+  },
+  { "id": "acheron", "name": "黄泉", "tags": ["自灭者"], "va": "菊花花" },
+  { "id": "boothill", "name": "波提欧", "tags": ["巡海游侠"], "va": "彭博" },
+  { "id": "rappa", "name": "乱破", "tags": ["巡海游侠"], "va": "金娜" },
+  { "id": "the-dahlia", "name": "大丽花", "tags": ["焚化工"], "va": "阮从青" },
+  { "id": "", "name": "尾巴", "tags": ["岁阳"], "va": "刘北辰" },
+  { "id": "aglaea", "name": "阿格莱雅", "tags": ["翁法罗斯"], "va": "楚越" },
+  { "id": "phainon", "name": "白厄", "tags": ["翁法罗斯"], "va": "秦且歌" },
+  { "id": "hyacine", "name": "风堇", "tags": ["翁法罗斯"], "va": "静宸" },
+  {
+    "id": "hysilens",
+    "name": "海瑟音",
+    "tags": ["翁法罗斯"],
+    "va": "浮梦若薇"
+  },
+  { "id": "cerydra", "name": "刻律德菈", "tags": ["翁法罗斯"], "va": "时欣蕾" },
+  { "id": "anaxa", "name": "那刻夏", "tags": ["翁法罗斯"], "va": "钱文青" },
+  { "id": "cipher", "name": "赛飞儿", "tags": ["翁法罗斯"], "va": "王雅欣" },
+  {
+    "id": "tribbie",
+    "name": "缇宝/缇安/缇宁/…",
+    "tags": ["翁法罗斯"],
+    "va": "蔡书瑾"
+  },
+  { "id": "mydei", "name": "万敌", "tags": ["翁法罗斯"], "va": "赵成晨" },
+  { "id": "cyrene", "name": "昔涟", "tags": ["翁法罗斯"], "va": "宴宁" },
+  { "id": "castorice", "name": "遐蝶", "tags": ["翁法罗斯"], "va": "阮从青" },
+  { "id": "evernight", "name": "长夜月", "tags": ["翁法罗斯"], "va": "诺亚" },
+  { "id": "luocha", "name": "罗刹", "tags": [""], "va": "赵路" }
+]
