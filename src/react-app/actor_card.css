@@ -1,76 +1,80 @@
 .actor-card {
-  aspect-ratio: 3/5;
-  position: relative;
+    aspect-ratio: 3/5;
+    position: relative;
 }
 
 .actor-card-image {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  background-size: cover;
-  background-position: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-position: center;
 }
 
 .actor-card-flash {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
 }
+
 .actor-card-flash span {
-  margin: 10px 0;
-  font-size: 12px;
+    margin: 10px 0;
+    font-size: 12px;
 }
 
 .actor-card.ur {
-  background: linear-gradient(
-    123deg,
-    rgba(255, 126, 126, 0.35),
-    rgba(255, 255, 128, 0.35),
-    rgba(129, 255, 255, 0.35),
-    rgba(255, 119, 255, 0.35)
-  );
-  border-bottom: 3px solid rgba(255, 255, 255, 0.8);
+    background: linear-gradient(123deg,
+            rgba(255, 126, 126, .3),
+            rgba(255, 255, 128, .3),
+            rgba(129, 255, 255, .3),
+            rgba(255, 119, 255, .3));
+    border-bottom: 3px solid rgb(var(--card-ur)/.8);
 }
 
 .actor-card.ur .actor-card-flash {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 80%,
-    rgba(255, 255, 255, 0.5) 100%
-  );
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 80%,
+            rgb(var(--card-ur)/.5) 100%);
 }
 
 .actor-card.ssr {
-  background: rgba(255, 255, 255, 0.1);
-  border-bottom: 3px solid rgba(156, 120, 0, 1);
+    background: var(--card-bg-normal);
+    border-bottom: 3px solid rgb(var(--card-ssr));
 }
 
 .actor-card.ssr .actor-card-flash {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 80%,
-    rgba(156, 120, 0, 0.8) 100%
-  );
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 80%,
+            rgb(var(--card-ssr)/.8) 100%);
 }
 
 .actor-card.sr {
-  background: rgba(255, 255, 255, 0.1);
-  border-bottom: 3px solid rgb(151, 50, 190);
+    background: var(--card-bg-normal);
+    border-bottom: 3px solid rgb(var(--card-sr));
 }
 
 .actor-card.sr .actor-card-flash {
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 80%,
-    rgba(151, 50, 190, 0.8) 100%
-  );
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 80%,
+            rgb(var(--card-sr)/.8) 100%);
+}
+
+.actor-card.npc {
+    background: var(--card-bg-normal);
+    border-bottom: 3px solid rgb(var(--card-npc));
+}
+
+.actor-card.npc .actor-card-flash {
+    background: linear-gradient(to bottom,
+            rgba(0, 0, 0, 0) 80%,
+            rgb(var(--card-npc)/.8) 100%);
 }

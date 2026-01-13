@@ -3,7 +3,7 @@ export interface Actor {
   name: string;
   tags: string[];
   va: string;
-  rarity?: "sr" | "ssr" | "ur";
+  rarity?:"npc"| "sr" | "ssr" | "ur";
 }
 
 export interface Video {
