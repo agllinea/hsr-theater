@@ -55,7 +55,7 @@ const scripts: Script[] = [
 
 
 // Cover Component
-const Cover: React.FC = () => {
+export const Cover: React.FC = () => {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { amount: 0.1 });
 

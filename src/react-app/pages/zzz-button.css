@@ -1,0 +1,122 @@
+:root {
+    --c1: #dcbcfb;
+    --c2: #fbbcfb;
+}
+
+.zzz-button-group {
+    display: inline-flex;
+    border: 2px solid gray;
+    border-radius: 2rem;
+    gap: 3px;
+}
+
+.zzz-button {
+    position: relative;
+    flex-shrink: 0;
+    overflow: visible;
+    color: white;
+    padding: 0.5rem 2.25rem;
+    font-weight: bold;
+    transition: color 0.2s;
+    background: transparent;
+}
+
+.zzz-button.mobile {
+    padding: 0.5rem 0.625rem;
+}
+
+.zzz-button.active {
+    color: black;
+}
+
+.zzz-button:not(.active):hover {
+    color: #e5e7eb;
+}
+
+.zzz-button-bg-wrap {
+    position: absolute;
+    inset: 0;
+    display: flex;
+}
+
+.zzz-button .zzz-button-bg {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    display: flex;
+}
+
+.zzz-button .zzz-button-bg-inner {
+    position: absolute;
+    inset: 0;
+    border-radius: 0.5rem;
+    animation: bgPulse 6s ease-in-out infinite;
+    will-change: background-color;
+    transform: skewX(-20deg);
+}
+
+.zzz-button:first-child .zzz-button-bg {
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
+    overflow: hidden;
+    margin-right: -7px;
+    transform-origin: left;
+}
+
+.zzz-button:first-child .zzz-button-bg-inner {
+    transform: skewX(-20deg) translateX(-7px);
+}
+
+.zzz-button:last-child .zzz-button-bg {
+    border-top-right-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+    overflow: hidden;
+    margin-left: -7px;
+    transform-origin: right;
+}
+
+.zzz-button:last-child .zzz-button-bg-inner {
+    transform: skewX(-20deg) translateX(7px);
+}
+
+.zzz-button-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.zzz-button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-sm {
+    font-size: 0.875rem;
+}
+
+.icon-md {
+    font-size: 1rem;
+}
+
+.icon-lg {
+    font-size: 1.125rem;
+}
+
+@keyframes bgPulse {
+    0% {
+        background: var(--c1);
+    }
+
+    50% {
+        background: var(--c2);
+    }
+
+    100% {
+        background: var(--c1);
+    }
+}

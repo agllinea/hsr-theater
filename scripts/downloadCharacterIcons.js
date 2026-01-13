@@ -14,7 +14,7 @@ const actorsPath = path.resolve(
 
 const outputDir = path.resolve(
   __dirname,
-  "../public/character_icon"
+  "../public/characters"
 );
 
 // ensure output folder exists

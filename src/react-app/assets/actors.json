@@ -1,6 +1,6 @@
 [
   { "id": "kafka", "name": "卡芙卡", "tags": ["星核猎手"], "va": "徐慧" },
-  { "id": "firefly", "name": "流萤", "tags": ["星核猎手"], "va": "宋媛媛" },
+  { "id": "firefly", "name": "流萤", "tags": ["星核猎手"], "va": "宋媛媛","rarity":"ur" },
   { "id": "blade", "name": "刃", "tags": ["星核猎手"], "va": "刘以嘉" },
   { "id": "silver-wolf", "name": "银狼", "tags": ["星核猎手"], "va": "Hanser" },
   { "id": "dan-heng", "name": "丹恒", "tags": ["星穹列车"], "va": "李春胤" },

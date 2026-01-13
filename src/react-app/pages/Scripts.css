@@ -6,7 +6,7 @@
 .scripts-title-bar {
   position: sticky;
   top: 0;
-  background-color: rgba(10, 10, 10, 0.95);
+  /* background-color: rgba(10, 10, 10, 0.95); */
   backdrop-filter: blur(10px);
   padding: 1.5rem 2rem;
   border-bottom: 2px solid #333;
