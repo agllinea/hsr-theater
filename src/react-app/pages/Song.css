@@ -1,0 +1,36 @@
+.song-card {
+  cursor: pointer;
+  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.123);display: flex;
+  flex-direction: row;
+}
+
+.song-cover img {
+  width: 150px;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.song-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.song-title{
+    
+  height: 50px;
+}
+.song-lyrics{
+    height: 100px;
+transition: all .3s ease;
+}
+
+.song-card.expanded img{
+    width:0
+}
+
+.song-card.expanded .song-lyrics{
+    height: 0;
+}

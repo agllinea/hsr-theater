@@ -14,12 +14,13 @@ import { ButtonGroup, Button } from "./pages/zzz-button";
 import { DramaIcon, FilmIcon, ScrollTextIcon, MusicIcon } from "lucide-react";
 import AnimatedShorts from "./pages/AnimatedShorts";
 import Scripts from "./pages/Scripts";
+import Songs from "./pages/Songs";
 
 const menuItems = [
     { id: "Actors", label: "演员", icon: <DramaIcon />, content: <Actors /> },
     { id: "Clips", label: "动画", icon: <FilmIcon />, content: <AnimatedShorts /> },
     { id: "Scripts", label: "剧本", icon: <ScrollTextIcon />, content: <Scripts /> },
-    { id: "Music", label: "音乐", icon: <MusicIcon />, content: <></> },
+    { id: "Music", label: "音乐", icon: <MusicIcon />, content: <Songs /> },
 ];
 function App() {
     const [progress, setProgress] = useState(0);
