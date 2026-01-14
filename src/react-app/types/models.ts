@@ -1,15 +1,16 @@
 export interface Actor {
-  id:string;
+  id: string;
   name: string;
-  tags: string[];
-  va: string;
-  rarity?:"npc"| "sr" | "ssr" | "ur";
+  tags?: string[];
+  va?: string;
+  rarity: "Ω" | "EX" | "S" | "A" | "NPC";
+  favorite?: boolean;
 }
 
 export interface Video {
   title: string;
   genre: string;
   url: string;
-  needed: boolean;
+  display: boolean;
   cover?: string;
 }

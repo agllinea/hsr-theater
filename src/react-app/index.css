@@ -12,10 +12,11 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 
-    --card-npc: 86 145 202;
-    --card-sr: 134 86 202;
-    --card-ssr: 206 163 106;
-    --card-ur: 255 255 255;
+    --card-NPC: 86 145 202;
+    --card-EX: 206 106 106;
+    --card-A: 134 86 202;
+    --card-S: 206 163 106;
+    --card-Ω: 255 255 255;
     --card-bg-normal: rgba(255, 255, 255, 0.1);
 }
 

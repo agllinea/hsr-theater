@@ -1,38 +1,25 @@
-import { MaskHappyIcon } from "@phosphor-icons/react";
 import clsx from "clsx";
-import {
-    Brain,
-    DramaIcon,
-    FileText,
-    FilmIcon,
-    Music,
-    Music2,
-    MusicIcon,
-    ScrollTextIcon,
-    ToolCase,
-    VenetianMaskIcon,
-} from "lucide-react";
 // src/App.tsx
 
 import { useEffect, useState } from "react";
 
-import { actors, actors_by_fraction } from "./assets/actors_new";
-import data from "./assets/actors.json";
-import { fractions } from "./assets/fractions";
-import { AutoScroll } from "./pages/auto_scroll";
-import Main, { Cover } from "./pages/main";
-import { Button, ButtonGroup } from "./pages/zzz-button";
 import { useTheme } from "./stores/useTheme";
+import Main, { Cover } from "./pages/main";
+import Actors from "./pages/Actors";
 import { Actor } from "./types/models";
 
-import "./actor_card.css";
 import "./App.css";
+import { AutoScroll } from "./pages/auto_scroll";
+import { ButtonGroup, Button } from "./pages/zzz-button";
+import { DramaIcon, FilmIcon, ScrollTextIcon, MusicIcon } from "lucide-react";
+import AnimatedShorts from "./pages/AnimatedShorts";
+import Scripts from "./pages/Scripts";
 
 const menuItems = [
-    { id: "Actors", label: "演员", icon: <DramaIcon /> },
-    { id: "Clips", label: "动画", icon: <FilmIcon /> },
-    { id: "Scripts", label: "剧本", icon: <ScrollTextIcon /> },
-    { id: "Music", label: "音乐", icon: <MusicIcon /> },
+    { id: "Actors", label: "演员", icon: <DramaIcon />, content: <Actors /> },
+    { id: "Clips", label: "动画", icon: <FilmIcon />, content: <AnimatedShorts /> },
+    { id: "Scripts", label: "剧本", icon: <ScrollTextIcon />, content: <Scripts /> },
+    { id: "Music", label: "音乐", icon: <MusicIcon />, content: <></> },
 ];
 function App() {
     const [progress, setProgress] = useState(0);
@@ -47,14 +34,12 @@ function App() {
     }, []);
     const { theme, dark } = useTheme();
 
+
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
 
     useEffect(() => {
         const handleResize = (): void => {
             setIsMobile(window.innerWidth < 768);
-            if (window.innerWidth >= 768) {
-                // setSidebarOpen(false);
-            }
         };
 
         window.addEventListener("resize", handleResize);
@@ -62,6 +47,7 @@ function App() {
     }, []);
 
     const [activeId, setActiveId] = useState<string>(menuItems[0].id);
+
 
     return (
         <body className={clsx(theme, dark ? "dark" : "light")} style={{}}>
@@ -90,32 +76,7 @@ function App() {
                     </section>
                 </section>
                 <section id="content">
-                    <section className="section-container">
-                        {Object.entries(actors_by_fraction).map(([fraction, list]) => (
-                            <>
-                                <h2>{fractions[fraction]?.name}</h2>
-                                <div className="actors-grid">
-                                    {list.map(
-                                        (actor, i) =>
-                                            i <= 40 && (
-                                                <span className={clsx("actor-card", actor.rarity ?? "ssr")}>
-                                                    <div
-                                                        className="actor-card-image"
-                                                        key={i}
-                                                        style={{
-                                                            backgroundImage: `url("/character_card/${actor.id}.webp")`,
-                                                        }}
-                                                    ></div>
-                                                    <div className="actor-card-flash" key={i}>
-                                                        <span>{actor.name}</span>
-                                                    </div>
-                                                </span>
-                                            )
-                                    )}
-                                </div>
-                            </>
-                        ))}
-                    </section>
+                    {menuItems.find((item) => item.id === activeId)?.content}
                 </section>
             </AutoScroll>
         </body>

@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 // ---- CONFIG ----
-const SOURCE_FILE = "src/react-app/assets/animated_shorts.ts";
+const SOURCE_FILE = "src/react-app/assets/animated_shorts.json";
 const OUTPUT_DIR = "public/animated_short_cover";
 // ----------------
 
@@ -10,21 +10,22 @@ if (!fs.existsSync(OUTPUT_DIR)) {
   fs.mkdirSync(OUTPUT_DIR, { recursive: true });
 }
 
-const source = fs.readFileSync(SOURCE_FILE, "utf-8");
+// Read JSON data
+const data = JSON.parse(fs.readFileSync(SOURCE_FILE, "utf-8"));
 
-// 1. extract BV ids from urls
-const bvRegex = /https:\/\/www\.bilibili\.com\/video\/(BV[a-zA-Z0-9]+)/g;
-const bvs = [...source.matchAll(bvRegex)].map(m => m[1]);
+function getBvid(url) {
+  const match = url.match(/https:\/\/www\.bilibili\.com\/video\/(BV[a-zA-Z0-9]+)/);
+  return match ? match[1] : null;
+}
 
-console.log(`Found ${bvs.length} videos`);
-
-async function getCoverUrl(bvid) {
-  const res = await fetch(
-    `https://api.bilibili.com/x/web-interface/view?bvid=${bvid}`
-  );
+async function getCoverAndDesc(bvid) {
+  const res = await fetch(`https://api.bilibili.com/x/web-interface/view?bvid=${bvid}`);
   if (!res.ok) throw new Error(`API failed for ${bvid}`);
   const json = await res.json();
-  return json.data.pic;
+  return {
+    cover: json.data.pic,
+    desc: json.data.desc
+  };
 }
 
 async function downloadImage(url, filepath) {
@@ -42,21 +43,41 @@ async function downloadImage(url, filepath) {
 }
 
 (async () => {
-  for (const bvid of bvs) {
-    const outputPath = path.join(OUTPUT_DIR, `${bvid}.jpg`);
+  let updated = false;
 
-    if (fs.existsSync(outputPath)) {
-      console.log(`✓ ${bvid}.jpg already exists`);
-      continue;
-    }
+  for (const item of data) {
+    const bvid = getBvid(item.url);
+    if (!bvid) continue;
+
+    const outputPath = path.join(OUTPUT_DIR, `${bvid}.jpg`);
 
     try {
       console.log(`→ Processing ${bvid}`);
-      const coverUrl = await getCoverUrl(bvid);
-      await downloadImage(coverUrl, outputPath);
-      console.log(`✓ Saved ${bvid}.jpg`);
+
+      // Always fetch cover URL and description
+      const { cover, desc } = await getCoverAndDesc(bvid);
+
+      // Update description
+      if (item.desc !== desc) {
+        item.desc = desc;
+        updated = true;
+      }
+
+      // Download image only if it doesn't exist
+      if (!fs.existsSync(outputPath)) {
+        await downloadImage(cover, outputPath);
+        console.log(`✓ Saved ${bvid}.jpg`);
+      } else {
+        console.log(`✓ ${bvid}.jpg already exists`);
+      }
+
     } catch (err) {
-      console.error(`✗ Failed ${bvid}`, err.message);
+      console.error(`✗ Failed ${bvid}:`, err.message);
     }
+  }
+
+  if (updated) {
+    fs.writeFileSync(SOURCE_FILE, JSON.stringify(data, null, 2), "utf-8");
+    console.log("✅ Updated JSON with descriptions");
   }
 })();
