@@ -11,7 +11,7 @@
 /* Header stays at top */
 #header {
     flex-shrink: 0;
-
+ overscroll-behavior: contain; 
     background-color: #00000066;
 }
 

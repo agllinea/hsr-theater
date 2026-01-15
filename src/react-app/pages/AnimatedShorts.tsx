@@ -356,6 +356,7 @@ const VideoClipCard: React.FC<{ video: Video }> = ({ video }) => {
     <motion.div
       key={video.url}
       className="clip-item"
+      onClick={() => window.open(video.url)}
     >
       <div className="clip-cover" style={{
         backgroundImage: `url("/animated_short_cover/${bvid}.jpg")`,

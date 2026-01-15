@@ -44,9 +44,9 @@ const Scripts: React.FC = () => {
             whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
           >
             <div>
-              <div className="scripts-author"><span className='scripts-tag'>{script.status}</span><span>{script.id}</span></div>
+              <div className="scripts-no"><span className='scripts-tag'>{script.status}</span><span>{script.id}</span></div>
               <div className="scripts-title">{script.title}</div>
-              <div className="scripts-author">{script.chapter}</div>
+              <div className="scripts-chapter">{script.chapter}</div>
               <p className="scripts-description">{script.desc}</p>
             </div>
             <motion.div
