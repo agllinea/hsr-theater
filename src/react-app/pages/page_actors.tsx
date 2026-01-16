@@ -15,7 +15,7 @@ function ActorCard({ actor, index }: { actor: Actor; index: number }) {
             className={clsx("actor-card", actor.rarity ?? "S")}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px", amount: 0.3 }}
+            viewport={{ once: true}}
             transition={{
                 duration: 0.4,
                 ease: "easeOut",
@@ -44,7 +44,7 @@ export default function Actors() {
                         <motion.h2
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true, margin: "-50px", amount: 0.3 }}
+                            viewport={{ once: true }}
                             transition={{
                                 duration: 0.4,
                                 ease: "easeOut",
