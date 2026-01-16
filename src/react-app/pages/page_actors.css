@@ -10,6 +10,7 @@
   aspect-ratio: 3/5;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
   box-shadow: 0 0 6px 4px #ffffff00;
   transition: box-shadow 0.3s ease;
 }
@@ -134,4 +135,22 @@
 
 .actor-card.NPC:hover {
   box-shadow: 0 0 15px 6px rgb(var(--card-NPC) / 0.5);
+}
+
+.actor-card.button {
+  background: var(--card-bg-normal);
+  border-bottom: 3px solid var(--bg-normal);
+  transition: background 0.3s ease;
+}
+
+/* .actor-card.button .actor-card-flash {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 80%,
+    rgb(var(--card-button) / 0.8) 100%
+  );
+} */
+
+.actor-card.button:hover {
+  background: var(--bg-active);
 }

@@ -1,0 +1,15 @@
+.page-end {
+    text-align: center;
+    padding: 30vh 0 5vh;
+    color: #888;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-end img {
+    height: 100px;
+    filter: grayscale(100%);
+    opacity: .6;
+}

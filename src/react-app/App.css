@@ -1,67 +1,69 @@
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
-#root {
-}
+
+#root {}
+
 #main {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100dvh;
-  width: 100dvw;
-  display: flex;
-  flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: 100dvw;
+    display: flex;
+    flex-direction: column;
+    background-color: #00000066;
 }
 
 /* Header stays at top */
 #header {
-  flex-shrink: 0;
-  height: 88px;
-  background-color: #00000066;
-  display: flex;
-  align-items: center;
-  /* align-content: center; */
-  justify-content: center;
+    flex-shrink: 0;
+    height: 88px;
+    display: flex;
+    align-items: center;
+    /* align-content: center; */
+    justify-content: center;
 }
 
-#header > section {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+#header>section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-right: 30px;
 }
 
 /* Content takes remaining space and scrolls */
 #content {
-  flex: 1;
-  overflow-y: scroll;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-  background-color: #00000066;
-  /* smooth mobile scrolling */
+    flex: 1;
+    overflow-y: scroll;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    /* background-color: #00000066; */
+    /* smooth mobile scrolling */
 }
 
 .section-container {
-  max-width: 1000px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 10px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 10px;
 }
 
 .bg {
-  position: fixed;
-  /* stay in place */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* make it cover the screen */
-  z-index: -1;
-  /* push behind content */
+    position: fixed;
+    /* stay in place */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* make it cover the screen */
+    z-index: -1;
+    /* push behind content */
 }
 
 
-.button-more{
+.button-more {
     cursor: pointer;
     margin-top: 10px;
     width: 100%;
@@ -74,8 +76,8 @@
     font-size: .8em;
 }
 
-.button-more:hover{
-     
+.button-more:hover {
+
     background-color: var(--bg-accent);
     /* border: 2px solid rgba(222, 189, 0, 0.3); */
     color: rgb(222, 189, 0);

@@ -8,6 +8,7 @@ import { ExpandableMapContainer } from "../components/ExpandableMapContainer";
 import { Song } from "../types/models";
 
 import "./page_songs.css";
+import PageEnd from "../components/PageEnd";
 
 function AblumCover({ albumId = "" }: { albumId?: string }) {
     return (
@@ -219,7 +220,10 @@ const Songs: React.FC = () => {
         </div>
     );
 
-    return <ExpandableMapContainer items={songs} renderItem={renderSong} />;
+    return <ExpandableMapContainer items={songs} renderItem={renderSong} >
+        
+            <PageEnd/>
+    </ExpandableMapContainer>;
 };
 
 export default Songs;

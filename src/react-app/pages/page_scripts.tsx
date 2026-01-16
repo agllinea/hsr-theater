@@ -5,6 +5,7 @@ import './page_scripts.css';
 import { scripts } from '../assets/scripts';
 import { Script } from '../types/models';
 import clsx from 'clsx';
+import PageEnd from '../components/PageEnd';
 
 
 const Scripts: React.FC = () => {
@@ -55,7 +56,10 @@ const Scripts: React.FC = () => {
     <ExpandableMapContainer
       items={scripts}
       renderItem={renderScript}
-    />
+    >
+        
+            <PageEnd/>
+    </ExpandableMapContainer>
   );
 };
 

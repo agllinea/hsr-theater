@@ -1,12 +1,14 @@
-import { useState } from "react";
 import clsx from "clsx";
-import { Legends } from "../components/Legends";
+import { motion } from "framer-motion";
+import { useState } from "react";
+
 import { actors_by_fraction, favorite_actors, rarity_order } from "../assets/actors";
 import { fractions } from "../assets/fractions";
+import { Legends } from "../components/Legends";
+import { Actor } from "../types/models";
 
 import "./page_actors.css";
-import { Actor } from "../types/models";
-import { motion } from "framer-motion";
+import PageEnd from "../components/PageEnd";
 
 function ActorCard({ actor, index }: { actor: Actor; index: number }) {
     return (
@@ -15,7 +17,7 @@ function ActorCard({ actor, index }: { actor: Actor; index: number }) {
             className={clsx("actor-card", actor.rarity ?? "S")}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true}}
+            viewport={{ once: true }}
             transition={{
                 duration: 0.4,
                 ease: "easeOut",
@@ -65,19 +67,45 @@ export default function Actors() {
                         {favorite_actors.sort(rarity_order).map((actor, index) => (
                             <ActorCard key={actor.id} actor={actor} index={index} />
                         ))}
-                        
-                    </div>
-                    <motion.div initial={{ opacity: 0, y: 10 }}
+                        <motion.span
+                            key={'more-actors'}
+                            className={clsx("actor-card", "button")}
+                            initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true}}
+                            viewport={{ once: true }}
                             transition={{
-                                duration: 0.3,
-                                ease: "easeOut",delay:.6
-                            }} className="button-more" onClick={() => setFullView(true)}>
+                                duration: 0.4,
+                                ease: "easeOut",
+                                delay: favorite_actors.length * 0.05,
+                            }}
+                        onClick={() => setFullView(true)}
+                        >
+                            <div
+                                className="actor-card-image"
+                            ></div>
+                            <div className="actor-card-flash">
+                                <span>更多角色</span>
+                            </div>
+                        </motion.span>
+                    </div>
+                    {/* <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{
+                            duration: 0.3,
+                            ease: "easeOut",
+                            delay: 0.6,
+                        }}
+                        className="button-more"
+                        onClick={() => setFullView(true)}
+                    >
                         更多角色
-                    </motion.div>
+                    </motion.div> */}
                 </>
             )}
+            
+            <PageEnd/>
         </section>
     );
 }

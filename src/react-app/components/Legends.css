@@ -1,86 +1,89 @@
-.legend-item {
-  padding: 5px 15px;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 5px;
-  gap: 3px;
-  transition: background-color 0.3s ease;
+.legend-container {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--bg-normal);
+    backdrop-filter: blur(10px);
+    margin-bottom: 10px;
 }
-.legend-item.active {
-  background-color: var(--bg-active);
-}
-.legend-block {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-right: 6px;
 
-  vertical-align: middle;
+.legend-item {
+    padding: 5px 15px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    transition: background-color 0.3s ease;
+}
+
+.legend-item:hover {
+    background-color: var(--bg-active);
+}
+
+.legend-block {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+
+    vertical-align: middle;
 }
 
 .legend-block.NPC {
-  background: linear-gradient(
-    120deg,
-    rgb(var(--card-NPC) / 0.3),
-    rgb(var(--card-NPC) / 0.8)
-  );
-  border: 1px solid rgb(var(--card-NPC));
+    background: linear-gradient(120deg,
+            rgb(var(--card-NPC) / 0.3),
+            rgb(var(--card-NPC) / 0.8));
+    border: 1px solid rgb(var(--card-NPC));
 }
 
 .legend-block.A {
-  background: linear-gradient(
-    120deg,
-    rgb(var(--card-A) / 0.3),
-    rgb(var(--card-A) / 0.8)
-  );
-  border: 1px solid rgb(var(--card-A));
+    background: linear-gradient(120deg,
+            rgb(var(--card-A) / 0.3),
+            rgb(var(--card-A) / 0.8));
+    border: 1px solid rgb(var(--card-A));
 }
 
 .legend-block.S {
-  background: linear-gradient(
-    120deg,
-    rgb(var(--card-S) / 0.3),
-    rgb(var(--card-S) / 0.8)
-  );
-  border: 1px solid rgb(var(--card-S));
+    background: linear-gradient(120deg,
+            rgb(var(--card-S) / 0.3),
+            rgb(var(--card-S) / 0.8));
+    border: 1px solid rgb(var(--card-S));
 }
+
 .legend-block.EX {
-  background: linear-gradient(
-    120deg,
-    rgb(var(--card-EX) / 0.3),
-    rgb(var(--card-EX) / 0.8)
-  );
-  border: 1px solid rgb(var(--card-EX));
+    background: linear-gradient(120deg,
+            rgb(var(--card-EX) / 0.3),
+            rgb(var(--card-EX) / 0.8));
+    border: 1px solid rgb(var(--card-EX));
 }
+
 .legend-block.Ω {
-  background: linear-gradient(
-    123deg,
-    rgba(255, 126, 126, 0.8),
-    rgba(255, 255, 128, 0.8),
-    rgba(129, 255, 255, 0.8),
-    rgba(255, 119, 255, 0.8)
-  );
-  border: 1px solid rgb(var(--card-Ω) / 0.8);
+    background: linear-gradient(123deg,
+            rgba(255, 126, 126, 0.8),
+            rgba(255, 255, 128, 0.8),
+            rgba(129, 255, 255, 0.8),
+            rgba(255, 119, 255, 0.8));
+    border: 1px solid rgb(var(--card-Ω) / 0.8);
 }
 
 .legend-lables {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 10px;
-  position: sticky;
-  top: 10px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    /* margin-bottom: 10px; */
 }
+
 .legend-detail-container {
-  position: relative;
-  z-index: 10;
+    position: relative;
+    z-index: 10;
 }
+
 .legend-detail {
-  position: absolute;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.7);
-  width: 100%;
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
