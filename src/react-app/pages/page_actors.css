@@ -1,8 +1,21 @@
+.actors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 3fr));
+  gap: 10px;
+  /* padding: 1.5vw; */
+  justify-content: center;
+}
+
 .actor-card {
   aspect-ratio: 3/5;
   position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 6px 4px #ffffff00;
+  transition: box-shadow 0.3s ease;
 }
-
+.actor-card:hover .actor-card-image {
+  transform: scale(1.1);
+}
 .actor-card-image {
   position: absolute;
   width: 100%;
@@ -11,6 +24,7 @@
   left: 0;
   background-size: cover;
   background-position: center;
+  transition: transform 0.3s ease;
 }
 
 .actor-card-flash {
@@ -49,6 +63,11 @@
     rgb(var(--card-Ω) / 0.5) 100%
   );
 }
+
+.actor-card.Ω:hover {
+  box-shadow: 0 0 15px 6px #ffffff80;
+}
+
 .actor-card.EX {
   background: var(--card-bg-normal);
   border-bottom: 3px solid rgb(var(--card-EX));
@@ -61,6 +80,11 @@
     rgb(var(--card-EX) / 0.8) 100%
   );
 }
+
+.actor-card.EX:hover {
+  box-shadow: 0 0 15px 6px rgb(var(--card-EX) / 0.5);
+}
+
 .actor-card.S {
   background: var(--card-bg-normal);
   border-bottom: 3px solid rgb(var(--card-S));
@@ -72,6 +96,10 @@
     rgba(0, 0, 0, 0) 80%,
     rgb(var(--card-S) / 0.8) 100%
   );
+}
+
+.actor-card.S:hover {
+  box-shadow: 0 0 15px 6px rgb(var(--card-S) / 0.5);
 }
 
 .actor-card.A {
@@ -87,6 +115,10 @@
   );
 }
 
+.actor-card.A:hover {
+  box-shadow: 0 0 15px 6px rgb(var(--card-A) / 0.5);
+}
+
 .actor-card.NPC {
   background: var(--card-bg-normal);
   border-bottom: 3px solid rgb(var(--card-NPC));
@@ -100,79 +132,6 @@
   );
 }
 
-
-
-.legend-block {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-right: 6px;
-
-  vertical-align: middle;
-}
-
-.legend-block.NPC {
-  background: linear-gradient(
-    120deg,
-    rgb(var(--card-NPC) / 0.3),
-    rgb(var(--card-NPC) / 0.8)
-  );
-  border: 1px solid rgb(var(--card-NPC));
-}
-
-.legend-block.A {
-  background: linear-gradient(
-    120deg,
-    rgb(var(--card-A) / 0.3),
-    rgb(var(--card-A) / 0.8)
-  );
-  border: 1px solid rgb(var(--card-A));
-}
-
-.legend-block.S {
-  background: linear-gradient(
-    120deg,
-    rgb(var(--card-S) / 0.3),
-    rgb(var(--card-S) / 0.8)
-  );
-  border: 1px solid rgb(var(--card-S));
-}
-.legend-block.EX {
-  background: linear-gradient(
-    120deg,
-    rgb(var(--card-EX) / 0.3),
-    rgb(var(--card-EX) / 0.8)
-  );
-  border: 1px solid rgb(var(--card-EX));
-}
-.legend-block.Ω {
-  background: linear-gradient(
-    123deg,
-    rgba(255, 126, 126, 0.8),
-    rgba(255, 255, 128, 0.8),
-    rgba(129, 255, 255, 0.8),
-    rgba(255, 119, 255, 0.8)
-  );
-  border: 1px solid rgb(var(--card-Ω) / 0.8);
-}
-
-.legend-lables {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 5px;
-
-  position: sticky;
-  top: 10px;
-}
-.legend-item {
-  margin: 0 5px;
-}
-.legend-detail-container {
-  position: relative;
-}
-.legend-detail {
-  position: absolute;
-  padding: 10px;
-  background-color: black;
+.actor-card.NPC:hover {
+  box-shadow: 0 0 15px 6px rgb(var(--card-NPC) / 0.5);
 }

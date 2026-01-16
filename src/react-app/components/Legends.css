@@ -1,0 +1,92 @@
+.legend-lables {
+  padding: 10px;
+}
+.legend-item {
+  padding: 5px 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  gap: 3px;
+}
+.legend-item.active {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.legend-block {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+
+  vertical-align: middle;
+}
+
+.legend-block.NPC {
+  background: linear-gradient(
+    120deg,
+    rgb(var(--card-NPC) / 0.3),
+    rgb(var(--card-NPC) / 0.8)
+  );
+  border: 1px solid rgb(var(--card-NPC));
+}
+
+.legend-block.A {
+  background: linear-gradient(
+    120deg,
+    rgb(var(--card-A) / 0.3),
+    rgb(var(--card-A) / 0.8)
+  );
+  border: 1px solid rgb(var(--card-A));
+}
+
+.legend-block.S {
+  background: linear-gradient(
+    120deg,
+    rgb(var(--card-S) / 0.3),
+    rgb(var(--card-S) / 0.8)
+  );
+  border: 1px solid rgb(var(--card-S));
+}
+.legend-block.EX {
+  background: linear-gradient(
+    120deg,
+    rgb(var(--card-EX) / 0.3),
+    rgb(var(--card-EX) / 0.8)
+  );
+  border: 1px solid rgb(var(--card-EX));
+}
+.legend-block.Ω {
+  background: linear-gradient(
+    123deg,
+    rgba(255, 126, 126, 0.8),
+    rgba(255, 255, 128, 0.8),
+    rgba(129, 255, 255, 0.8),
+    rgba(255, 119, 255, 0.8)
+  );
+  border: 1px solid rgb(var(--card-Ω) / 0.8);
+}
+
+.legend-lables {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  position: sticky;
+  top: 10px;
+}
+.legend-item {
+  margin: 0 5px;
+}
+.legend-detail-container {
+  position: relative;
+}
+.legend-detail {
+  position: absolute;
+  padding: 10px 20px;
+  margin: 5px;
+  background-color: rgba(0, 0, 0, 0.719);
+  z-index: 10;
+  width: calc(100% - 10px);
+}

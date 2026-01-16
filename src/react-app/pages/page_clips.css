@@ -1,4 +1,7 @@
-.animated-shorts-page {
+/* ============================================
+   PAGE LAYOUT (Unused - for future use)
+   ============================================ */
+/* .animated-shorts-page {
   min-height: 100vh;
   position: relative;
 }
@@ -35,13 +38,11 @@
   gap: 1vw;
 }
 
-/* Only force 2 columns when screen is too small */
 @media (max-width: 640px) {
   .animated-shorts-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
-
 
 .animated-shorts-item {
   background-color: rgba(255, 255, 255, 0.03);
@@ -85,49 +86,67 @@
   margin: 0;
   color: #888;
   font-size: 0.9rem;
-}
-.clip-item{
+} */
+
+/* ============================================
+   CLIP ITEM CARD
+   ============================================ */
+.clip-item {
   display: flex;
   width: 100%;
-  margin: 10px;
+  margin: 10px auto;
   padding: 5px;
-  background-color: rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  background-color: var(--bg-normal);
+  transition: background-color 0.3s ease;
 }
 
-.clip-cover{
+.clip-item:hover {
+  background-color: var(--bg-active);
+}
+
+/* ============================================
+   CLIP COVER IMAGE
+   ============================================ */
+.clip-cover {
   height: 22vw;
   max-height: 140px;
   aspect-ratio: 16/9;
   background-size: cover;
   background-position: center;
   flex-shrink: 0;
-  margin-right: 10px;box-shadow: inset 0 0 16px rgba(0, 0, 0, .8); /* inset black glow */
+  margin-right: 10px;
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.8);
 }
-.clip-info{
-  flex:1;
+
+/* ============================================
+   CLIP INFO SECTION
+   ============================================ */
+.clip-info {
+  flex: 1;
   height: 22vw;
   max-height: 140px;
   overflow: hidden;
   padding: 5px;
 }
-.clip-title{
+
+/* ============================================
+   CLIP TITLE
+   ============================================ */
+.clip-title {
   font-size: 1.2rem;
   font-weight: 600;
   height: 40px;
 }
-.clip-desc{
+
+/* ============================================
+   CLIP DESCRIPTION
+   ============================================ */
+.clip-desc {
+  position: relative;
   height: calc(100% - 40px);
   overflow: hidden;
   font-size: 80%;
   opacity: 0.8;
-  /* width: 100%; */
+  white-space: pre-wrap;
 }
-
-.clip-desc {
-  position: relative;
-  height: calc(100% - 40px); /* your original height */
-  overflow: hidden;
-  font-size: 80%;
-  opacity: 0.8;
-  white-space: pre-wrap; 
-  }

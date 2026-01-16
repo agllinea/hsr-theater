@@ -56,7 +56,7 @@ export const Button: React.FC<{
                 {isMobile ? (
                     <span className={`zzz-button-icon ${iconSizes[size]}`}>{icon}</span>
                 ) : (
-                    <>{children}</>
+                    <>{icon}{children}</>
                 )}
             </div>
         </motion.span>

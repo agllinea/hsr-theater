@@ -12,5 +12,21 @@ export interface Video {
   genre: string;
   url: string;
   display: boolean;
-  cover?: string;
+  desc?: string;
+}
+
+export interface Script {
+  id: string;
+  chapter: string;
+  title: string;
+  status: string;
+  desc?: string;
+  actors?: string[];
+  clips?: string[];
+}
+
+export interface Song {
+    title: string;
+    subtitle?: string;
+    lyrics?: string;
 }

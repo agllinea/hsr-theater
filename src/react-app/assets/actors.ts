@@ -4,9 +4,27 @@ export const actors_by_fraction: {
   [fraction: string]: Actor[];
 } = {
   astral_express: [
-    { id: "trailblazer", name: "穹", va: "秦且歌", rarity: "Ω", favorite: true },
-    { id: "march-7th", name: "三月七", va: "诺亚", rarity: "EX", favorite: true  },
-    { id: "dan-heng", name: "丹恒", va: "李春胤", rarity: "EX", favorite: true  },
+    {
+      id: "trailblazer",
+      name: "穹",
+      va: "秦且歌",
+      rarity: "Ω",
+      favorite: true,
+    },
+    {
+      id: "march-7th",
+      name: "三月七",
+      va: "诺亚",
+      rarity: "EX",
+      favorite: true,
+    },
+    {
+      id: "dan-heng",
+      name: "丹恒",
+      va: "李春胤",
+      rarity: "EX",
+      favorite: true,
+    },
     { id: "himeko", name: "姬子", va: "林簌", rarity: "S" },
     { id: "welt", name: "瓦尔特", va: "彭博", rarity: "S" },
     { id: "", name: "帕姆", va: "蒋丽", rarity: "EX" },
@@ -14,14 +32,20 @@ export const actors_by_fraction: {
   ],
   stellaron_hunters: [
     { id: "", name: "艾利欧", rarity: "Ω" },
-    { id: "firefly", name: "流萤", va: "宋媛媛", rarity: "EX", favorite: true  },
+    { id: "firefly", name: "流萤", va: "宋媛媛", rarity: "EX", favorite: true },
     { id: "kafka", name: "卡芙卡", va: "徐慧", rarity: "EX" },
     { id: "blade", name: "刃", va: "刘以嘉", rarity: "EX" },
     { id: "silver-wolf", name: "银狼", va: "Hanser", rarity: "EX" },
   ],
   aeon: [{ id: "", name: "纳努克", rarity: "Ω" }],
   genius_society: [
-    { id: "the-herta", name: "黑塔", va: "侯小菲", rarity: "EX", favorite: true  },
+    {
+      id: "the-herta",
+      name: "黑塔",
+      va: "侯小菲",
+      rarity: "EX",
+      favorite: true,
+    },
     { id: "herta", name: "黑塔（人偶）", va: "侯小菲", rarity: "S" },
     { id: "ruan-mei", name: "阮 · 梅", va: "张文钰", rarity: "EX" },
   ],
@@ -30,11 +54,17 @@ export const actors_by_fraction: {
     { id: "tingyun", name: "停云（幻胧）", va: "蒋丽", rarity: "S" },
   ],
   amphoreus: [
-    { id: "cyrene", name: "昔涟", va: "宴宁", rarity: "Ω", favorite: true  },
+    { id: "cyrene", name: "昔涟", va: "宴宁", rarity: "Ω", favorite: true },
     { id: "phainon", name: "白厄", va: "秦且歌", rarity: "EX" },
-    { id: "aglaea", name: "阿格莱雅", va: "楚越", rarity: "S", favorite: true  },
+    { id: "aglaea", name: "阿格莱雅", va: "楚越", rarity: "S", favorite: true },
     { id: "cipher", name: "赛飞儿", va: "王雅欣", rarity: "S" },
-    { id: "castorice", name: "遐蝶", va: "阮从青", rarity: "S", favorite: true  },
+    {
+      id: "castorice",
+      name: "遐蝶",
+      va: "阮从青",
+      rarity: "S",
+      favorite: true,
+    },
     { id: "tribbie", name: "缇宝/缇安/缇宁/…", va: "蔡书瑾", rarity: "S" },
     { id: "mydei", name: "万敌", va: "赵成晨", rarity: "S" },
     { id: "anaxa", name: "那刻夏", va: "钱文青", rarity: "S" },
@@ -83,10 +113,10 @@ export const actors_by_fraction: {
     { id: "argenti", name: "银枝", va: "梁达伟", rarity: "S" },
   ],
   self_annihilators: [
-    { id: "acheron", name: "黄泉", va: "菊花花", rarity: "EX", favorite: true  },
+    { id: "acheron", name: "黄泉", va: "菊花花", rarity: "EX", favorite: true },
   ],
   penacony: [
-    { id: "robin", name: "知更鸟", va: "钱琛", rarity: "S", favorite: true  },
+    { id: "robin", name: "知更鸟", va: "钱琛", rarity: "S", favorite: true },
     { id: "sunday", name: "星期日", va: "徐翔", rarity: "EX" },
     { id: "misha", name: "米沙", va: "柳知萧", rarity: "S" },
     { id: "gallagher", name: "加拉赫", va: "马语非", rarity: "S" },
@@ -124,7 +154,41 @@ export const actors_by_fraction: {
 };
 
 export const rarities = ["Ω", "EX", "S", "A", "NPC"];
-export const rarity_order = (a:Actor, b:Actor) => (rarities.indexOf(a.rarity ?? "NPC") - rarities.indexOf(b.rarity ?? "NPC"));
+export const legends = [
+  {
+    label: "寰宇级",
+    code: "Ω",
+    description:
+      "该级别个体被视为能够参与改写寰宇命运的抉择者。<br/>其存在或抉择，足以改变寰宇的现在，未来，甚至重塑过去。",
+  },
+  {
+    label: "王座级",
+    code: "EX",
+    description:
+      "代行星神意志的令使，或是拥有相同位格的存在。<br/>他们在星神面前或许仍显渺小，但已拥有足以撬动寰宇格局的实际能力。",
+  },
+  {
+    label: "鎏金级",
+    code: "S",
+    description:
+      "重大历史事件的关键构成者。<br/>他们就像一段故事里的主角，其抉择往往能影响一个文明乃至无数人的命运。",
+  },
+  {
+    label: "紫晶级",
+    code: "A",
+    description:
+      "在特定事件或阶段中扮演重要角色。<br/>他们的选择能够显著影响局部进程，却难以独立改变历史大势。",
+  },
+  {
+    label: "路人级",
+    code: "NPC",
+    description:
+      "未被判定为变量，仅作为时代背景与社会样本被记录。<br/>他们的行为在宏观层面不构成影响，无关紧要。",
+  },
+];
+
+export const rarity_order = (a: Actor, b: Actor) =>
+  rarities.indexOf(a.rarity ?? "NPC") - rarities.indexOf(b.rarity ?? "NPC");
 
 export const actors: Actor[] = Object.values(
   Object.entries(actors_by_fraction)
@@ -137,7 +201,6 @@ export const actors: Actor[] = Object.values(
       return acc;
     }, {})
 );
-
 
 export const favorite_actors: Actor[] = Object.values(
   Object.entries(actors_by_fraction)

@@ -1,5 +1,5 @@
-import ElementsIcon from "../animated_components/ElementsIcon";
-import WaveText from "../animated_components/wave_text";
+import ElementsIcon from "../components/ElementsIcon";
+import WaveText from "../components/wave_text";
 import { useTheme } from "../stores/useTheme";
 
 export default function Loading({ progress = 0.5 }: { progress: number }) {

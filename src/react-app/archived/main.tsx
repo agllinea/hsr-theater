@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import animated_shorts from "../assets/animated_shorts";
 import Actors from "./Actors";
 import AnimatedShorts from "./AnimatedShorts";
-import { AutoScroll } from "./auto_scroll";
+import { AutoScroll } from "../archived/auto_scroll";
 import Scripts from "./Scripts";
 
 import "./main.css";

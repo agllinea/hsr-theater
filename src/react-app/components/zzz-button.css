@@ -16,7 +16,7 @@
     overflow: visible;
     color: white;
     padding: 0.5rem 2.25rem;
-    font-weight: bold;
+    /* font-weight: bold; */
     transition: color 0.2s;
     background: transparent;
 }
