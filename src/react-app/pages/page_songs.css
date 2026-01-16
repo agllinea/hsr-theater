@@ -2,122 +2,156 @@
    SONG CARD BASE
    ============================================ */
 .song-card {
-  cursor: pointer;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  padding: 10px;
-  margin: 10px auto;
-  height: 70px;
-  transition: height 0.3s ease, background-color 0.3s ease;
-  background-color: var(--bg-normal);
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    padding: 10px;
+    margin: 10px auto;
+    height: 70px;
+    transition: height 0.3s ease, background-color 0.3s ease;
+    background-color: var(--bg-normal);
 }
 
 .song-card:hover,
 .song-card.expanded {
-  background-color: var(--bg-active);
+    background-color: var(--bg-active);
 }
 
 /* ============================================
    SONG CARD EXPANDED STATE
    ============================================ */
 .song-card.expanded {
-  height: 170px;
+    height: 170px;
 }
 
 .song-card.expanded .song-cover {
-  width: 204px;
-  height: 150px;
+    width: 204px;
+    height: 150px;
 }
 
 .song-card.expanded svg {
-  height: 150px;
-  opacity: 1;
+    height: 150px;
+    opacity: 1;
 }
 
 .song-card.expanded .song-lyrics {
-  padding: 5px 0;
-  opacity: 1;
-  height: 100px;
+    transform: translateY(0);
+    transition-delay: 0.1s;
+    opacity: 1;
 }
 
 .song-card.expanded .song-content {
-  width: calc(100% - 204px);
+    width: calc(100% - 204px);
 }
 
 .song-card.expanded .album-track {
-  transform: translateX(0);
-  transition-delay: 0.1s;
+    transform: translateX(0);
+    transition-delay: 0.1s;
 }
 
 /* ============================================
    SONG COVER
    ============================================ */
 .song-cover {
-  position: relative;
-  width: 50px;
-  height: fit-content;
-  transition: all 0.3s ease;
+    position: relative;
+    width: 50px;
+    height: fit-content;
+    transition: all 0.3s ease;
 }
 
 .song-cover svg {
-  height: 50px;
-  opacity: 0.7;
-  transition: all 0.3s ease;
+    height: 50px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
 }
 
 /* ============================================
    ALBUM TRACK ANIMATION
    ============================================ */
 .album-track {
-  transform: translateX(-20%);
-  transition: all 0.3s ease;
+    transform: translateX(-20%);
+    transition: all 0.3s ease;
+}
+
+.song-card.expanded .album-track-inner {
+    transform-origin: 50% 50%;
+    transform-box: fill-box;
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ============================================
    SONG CONTENT
    ============================================ */
 .song-content {
-  padding: 0 15px;
-  width: calc(100% - 50px);
+    padding: 0 15px;
+    width: calc(100% - 50px);
 }
 
 /* ============================================
    SONG NAME & TITLE
    ============================================ */
 .song-name {
-  display: flex;
-  flex-direction: column;
-  height: 50px;
+    display: flex;
+    flex-direction: column;
+    height: 50px;
 }
 
 .song-title {
-  font-size: 1.2em;
-  height: 30px;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-  text-overflow: ellipsis;
+    font-size: 1.2em;
+    height: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
 }
 
 .song-subtitle {
-  color: #ccc;
-  font-size: 0.9em;
-  height: 20px;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-  text-overflow: ellipsis;
+    color: #ccc;
+    font-size: 0.9em;
+    height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
 }
 
 /* ============================================
    SONG LYRICS
    ============================================ */
 .song-lyrics {
-  height: 0;
-  opacity: 0;
-  padding: 0;
-  transition: all 0.3s ease;
-  color: #ccc;
-  font-size: 0.9em;
+    margin: 10px 0 5px 0;
+    padding: 5px 10px;
+    height: 85px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    color: #ccc;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+
+    background-color: var(--bg-normal);
+}
+
+.song-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: var(--bg-normal);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform-origin: left;
+}
+
+.song-card.expanded .song-progress {
+    opacity: 1;
 }
