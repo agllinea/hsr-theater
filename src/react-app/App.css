@@ -33,7 +33,7 @@
 /* Content takes remaining space and scrolls */
 #content {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   background-color: #00000066;
@@ -58,4 +58,25 @@
   /* make it cover the screen */
   z-index: -1;
   /* push behind content */
+}
+
+
+.button-more{
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    padding: 8px 0;
+    background-color: var(--bg-normal);
+    text-align: center;
+    /* border: 2px solid rgba(212, 212, 212, 0.3); */
+    color: rgb(212, 212, 212);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: .8em;
+}
+
+.button-more:hover{
+     
+    background-color: var(--bg-accent);
+    /* border: 2px solid rgba(222, 189, 0, 0.3); */
+    color: rgb(222, 189, 0);
 }

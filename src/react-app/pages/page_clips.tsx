@@ -68,7 +68,14 @@ const AnimatedShorts: React.FC = () => {
       )}
     >
       {!showAll && (
-        <button onClick={() => setShowAll(true)}>show all</button>
+        <motion.div className="button-more" onClick={() => setShowAll(true)}
+        initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                    duration: 0.3,
+                    ease: "easeOut",
+                }}>更多短片</motion.div>
       )}
     </ExpandableMapContainer>
   );

@@ -14,6 +14,7 @@
 
   --bg-normal: rgba(255, 255, 255, 0.1);
   --bg-active: rgba(255, 255, 255, 0.2);
+  --bg-accent: rgba(255, 240, 178, 0.1);
 
   --card-NPC: 86 145 202;
   --card-EX: 206 106 106;
