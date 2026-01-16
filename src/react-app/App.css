@@ -1,8 +1,7 @@
 * {
   box-sizing: border-box;
 }
-#root{
-    
+#root {
 }
 #main {
   position: fixed;
@@ -17,8 +16,12 @@
 /* Header stays at top */
 #header {
   flex-shrink: 0;
-  overscroll-behavior: contain;
+  height: 88px;
   background-color: #00000066;
+  display: flex;
+  align-items: center;
+  /* align-content: center; */
+  justify-content: center;
 }
 
 #header > section {
@@ -43,8 +46,6 @@
   width: 100%;
   padding: 10px;
 }
-
-
 
 .bg {
   position: fixed;
