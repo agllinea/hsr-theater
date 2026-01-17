@@ -1,0 +1,23 @@
+blockquote {
+  margin: 0;
+  padding: 0 1em;
+  border-left: .25em solid #3d444d;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+blockquote>blockquote{
+    background-color: rgba(255, 235, 205, 0.153);
+}
+
+blockquote>:first-child {
+  margin-top: 0;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+ruby>rt{
+    font-size: .75em;
+}

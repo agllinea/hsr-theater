@@ -1,21 +1,43 @@
 import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
+import { DramaIcon, FilmIcon, MusicIcon, ScrollTextIcon } from "lucide-react";
 // src/App.tsx
-
+import "./markdown.css"
 import { useEffect, useState } from "react";
+import ReactMarkdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
+import remarkGfm from 'remark-gfm'
+import remarkAlert from 'remark-github-blockquote-alert'
 
-import { useTheme } from "./stores/useTheme";
+import { Loading } from "./components/loading";
+import { Button, ButtonGroup } from "./components/zzz-button";
 import Actors from "./pages/page_actors";
-
-import "./App.css";
-import { ButtonGroup, Button } from "./components/zzz-button";
-import { DramaIcon, FilmIcon, ScrollTextIcon, MusicIcon } from "lucide-react";
 import AnimatedShorts from "./pages/page_clips";
+import Title from "./pages/page_cover";
 import Scripts from "./pages/page_scripts";
 import Songs from "./pages/page_songs";
-import { AnimatePresence, motion } from "framer-motion";
-import Title from "./pages/page_cover";
-import { Loading } from "./components/loading";
 import Init from "./pages/page-init";
+import { useTheme } from "./stores/useTheme";
+import remarkBreaks from 'remark-breaks'
+import "./App.css";
+
+export const Test = ()=>{
+    const [markdown, setMarkdown] = useState('')
+
+  useEffect(() => {
+    fetch('/hsr script 1.md')
+      .then(res => res.text())
+      .then(text => setMarkdown(text))
+  }, [])
+
+  return <section className="section-container markdown-body">
+    <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks,]}
+      rehypePlugins={[rehypeRaw]}
+      >{markdown}</ReactMarkdown>
+  </section> 
+}
+
+
 
 const menuItems = [
     { id: "Actors", label: "演员", icon: <DramaIcon />, content: <Actors /> },
