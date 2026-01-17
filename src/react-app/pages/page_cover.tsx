@@ -41,7 +41,7 @@ export default function Title({ onScroll }: { onScroll: () => void }) {
         >
             <span className="t0">
                 <HandWriting
-                duration={5}
+                duration={10}
                     paths={[
                         {
                             strokeWidth: 0.4,

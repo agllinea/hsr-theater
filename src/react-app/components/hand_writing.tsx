@@ -67,19 +67,49 @@ export default function HandWriting({ paths, duration = 8, pause = 0.08, stroke 
         });
     }, [duration, pause]);
 
-    return (
-        <svg
-            ref={svgRef}
-            viewBox="0 0 20 20"
-            fill="none"
-            stroke={stroke}
+return (
+  <svg
+    ref={svgRef}
+    viewBox="0 0 20 20"
+    className="handwriting-svg"
+  >
+    <defs>
+      {/* Mask definition */}
+      <mask id="stroke-mask">
+        {/* Start fully hidden */}
+        <rect width="100%" height="100%" fill="black" />
+
+        {/* Your handwriting paths reveal the background */}
+        {strokes.map((s, i) => (
+          <path
+            key={i}
+            d={s.d}
+            stroke="white"
+            strokeWidth={s.strokeWidth}
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="handwriting-svg"
-        >
-            {strokes.map((s, i) => (
-                <path key={i} d={s.d} strokeWidth={s.strokeWidth} style={{ visibility: "hidden" }} />
-            ))}
-        </svg>
-    );
+            fill="none"
+          />
+        ))}
+      </mask>
+    </defs>
+
+    {/* Background that gets revealed */}
+    <rect
+      width="100%"
+      height="100%"
+      mask="url(#stroke-mask)"
+      fill="url(#bg)"
+    />
+
+    {/* Background gradient / image */}
+    <defs>
+      <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stopColor="#ff00d0" />
+        <stop offset="100%" stopColor="#00ff99" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
 }
