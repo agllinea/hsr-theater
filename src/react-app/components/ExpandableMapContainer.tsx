@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { useLoading } from "./loading";
 
 interface ExpandableMapContainerProps<T> {
     items: T[];
@@ -50,12 +51,15 @@ export const ExpandableMapContainer = React.forwardRef<HTMLDivElement, Expandabl
     ({ items, renderItem, className = "section-container", children }, ref) => {
         const [nInView, setNInView] = useState<number>(0);
         const [nothing, setNothing] = useState<boolean>(false);
+        const { setIsLoading } = useLoading();
         useEffect(() => {
             setNothing(true);
             setNInView(0);
+            setIsLoading(true);
             const timeout = setTimeout(() => {
                 setNothing(false);
-            }, 300);
+                setIsLoading(false);
+            }, 500);
             return () => clearTimeout(timeout);
         }, [items]);
         return nothing ? (
@@ -75,7 +79,7 @@ export const ExpandableMapContainer = React.forwardRef<HTMLDivElement, Expandabl
                 {children}
             </section>
         );
-    }
+    },
 );
 
 ExpandableMapContainer.displayName = "ExpandableMapContainer";

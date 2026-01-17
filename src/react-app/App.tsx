@@ -14,6 +14,8 @@ import Scripts from "./pages/page_scripts";
 import Songs from "./pages/page_songs";
 import { AnimatePresence, motion } from "framer-motion";
 import Title from "./pages/page_cover";
+import { Loading } from "./components/loading";
+import Init from "./pages/page-init";
 
 const menuItems = [
     { id: "Actors", label: "演员", icon: <DramaIcon />, content: <Actors /> },
@@ -32,17 +34,27 @@ const menuItems = [
     { id: "Music", label: "音乐", icon: <MusicIcon />, content: <Songs /> },
 ];
 
-
 function App() {
     const [progress, setProgress] = useState(0);
     useEffect(() => {
-        const interval = setInterval(() => {
-            setProgress((prev) => prev + 0.3);
-            if (progress >= 1) {
-                clearInterval(interval);
-            }
-        }, 1000);
-        return () => clearInterval(interval);
+        setTimeout(() => {
+            setProgress(0.233);
+        }, 300);
+        setTimeout(() => {
+            setProgress(0.52);
+        }, 1800);
+        setTimeout(() => {
+            setProgress(0.77);
+        }, 3000);
+        setTimeout(() => {
+            setProgress(0.93);
+        }, 4100);
+        setTimeout(() => {
+            setProgress(1);
+        }, 12000);
+        setTimeout(() => {
+            setShowInit(false);
+        }, 13500);
     }, []);
     const { theme, dark } = useTheme();
 
@@ -60,15 +72,20 @@ function App() {
     const [activeId, setActiveId] = useState<string>(menuItems[0].id);
 
     const [showCover, setShowCover] = useState(true);
-
+    const [showInit, setShowInit] = useState(true);
     const handleCoverScroll = () => {
         setShowCover(false);
     };
     return (
         <body className={clsx(theme, dark ? "dark" : "light")} style={{}}>
             <img src="/bg1.jpg" className="bg" />
+            <button style={{ position: "fixed", top: "0", zIndex: 9999 }} onClick={() => setShowInit(false)}>
+                sheet
+            </button>
             <AnimatePresence>
-                {showCover ? (
+                {showInit ? (
+                    <Init progress={progress} />
+                ) : showCover ? (
                     <Title key="cover" onScroll={handleCoverScroll} />
                 ) : (
                     <motion.section
@@ -112,6 +129,7 @@ function App() {
                     </motion.section>
                 )}
             </AnimatePresence>
+            <Loading />
         </body>
     );
 }

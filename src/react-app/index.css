@@ -90,7 +90,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: white;
+  background-color: rgb(24, 24, 24);
 }
 
 .loading-container svg {
@@ -104,21 +104,6 @@ body {
   align-items: center;
 }
 
-.loading-container > span {
-  font-size: 14px;
-  display: flex;
-  flex: 0.5;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  padding-bottom: 5vh;
-  gap: 10px;
-}
-
-.loading-container img {
-  width: 80px;
-  max-width: 20vw;
-}
 
 .bw {
   background-color: white;

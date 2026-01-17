@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { actors_by_fraction, favorite_actors, rarity_order } from "../assets/actors";
 import { fractions } from "../assets/fractions";
@@ -9,6 +9,7 @@ import { Actor } from "../types/models";
 
 import "./page_actors.css";
 import PageEnd from "../components/PageEnd";
+import { useLoading } from "../components/loading";
 
 function ActorCard({ actor, index }: { actor: Actor; index: number }) {
     return (
@@ -37,7 +38,21 @@ function ActorCard({ actor, index }: { actor: Actor; index: number }) {
 
 export default function Actors() {
     const [fullView, setFullView] = useState<boolean>(false);
-    return (
+    const [nothing, setNothing] = useState<boolean>(false);
+    const { setIsLoading } = useLoading();
+
+    useEffect(() => {
+        setNothing(true);
+        setIsLoading(true);
+        const timeout = setTimeout(() => {
+            setNothing(false);
+            setIsLoading(false);
+        }, 500);
+        return () => clearTimeout(timeout);
+    }, [fullView]);
+    return nothing ? (
+        <></>
+    ) : (
         <section className="section-container">
             <Legends />
             {fullView ? (
@@ -68,7 +83,7 @@ export default function Actors() {
                             <ActorCard key={actor.id} actor={actor} index={index} />
                         ))}
                         <motion.span
-                            key={'more-actors'}
+                            key={"more-actors"}
                             className={clsx("actor-card", "button")}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -78,11 +93,9 @@ export default function Actors() {
                                 ease: "easeOut",
                                 delay: favorite_actors.length * 0.05,
                             }}
-                        onClick={() => setFullView(true)}
+                            onClick={() => setFullView(true)}
                         >
-                            <div
-                                className="actor-card-image"
-                            ></div>
+                            <div className="actor-card-image"></div>
                             <div className="actor-card-flash">
                                 <span>更多角色</span>
                             </div>
@@ -104,8 +117,8 @@ export default function Actors() {
                     </motion.div> */}
                 </>
             )}
-            
-            <PageEnd/>
+
+            <PageEnd />
         </section>
     );
 }
