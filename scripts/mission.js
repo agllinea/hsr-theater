@@ -305,18 +305,16 @@ async function main(urls = ``, asOne = false, filename = "Combined_Mission_Scrip
 }
 
 main(`
-https://wiki.biligame.com/sr/%E7%BA%B7%E4%BA%89%E5%95%8A%EF%BC%8C%E4%BC%90%E6%B8%85%E6%B9%AE%E9%80%94%E7%9A%84%E6%82%BC%E6%83%A7
-https://wiki.biligame.com/sr/%E8%8D%A3%E8%80%80%E5%95%8A%EF%BC%8C%E4%B8%8D%E5%BF%8D%E5%8D%92%E9%A5%AE%E7%9A%84%E9%B8%A9%E9%85%92
-https://wiki.biligame.com/sr/%E8%B0%A7%E6%9E%97%E5%95%8A%EF%BC%8C%E5%AF%A4%E6%80%9D%E8%80%85%E7%BC%98%E4%BD%95%E5%A4%B1%E8%AF%AD
-https://wiki.biligame.com/sr/%E6%82%B2%E9%9F%B3%E5%95%8A%EF%BC%8C%E8%8E%AB%E8%AE%A9%E7%94%9F%E8%80%85%E7%A9%BA%E5%9E%82%E6%B6%95
-https://wiki.biligame.com/sr/%E6%97%A7%E5%BF%86%E5%95%8A%EF%BC%8C%E7%83%AD%E9%9B%BE%E4%B8%AD%E6%98%BE%E9%9A%90%E6%89%91%E6%9C%94
-https://wiki.biligame.com/sr/%E9%97%A8%E6%89%89%E5%95%8A%EF%BC%8C%E5%8F%A9%E5%A3%B0%E4%BB%8D%E6%BF%80%E8%8D%A1%E6%A2%A6%E4%B8%AD
-https://wiki.biligame.com/sr/%E4%BB%87%E5%AF%87%E5%95%8A%EF%BC%8C%E4%B8%94%E9%A2%86%E5%8F%97%E9%87%91%E8%A1%80%E7%83%A7%E7%81%BC
-https://wiki.biligame.com/sr/%E7%8E%8B%E5%BA%A7%E5%95%8A%EF%BC%8C%E7%BB%88%E4%BA%86%E9%82%A3%E6%95%B0%E8%BD%BD%E7%B4%A2%E5%AF%9E
-https://wiki.biligame.com/sr/%E6%9D%A5%E8%B7%AF%E5%95%8A%EF%BC%8C%E8%AF%B7%E5%86%8D%E5%BA%A6%E6%98%BE%E6%98%A0%E5%BE%80%E5%B1%A5
+https://wiki.biligame.com/sr/%E6%99%A8%E6%9B%A6%E5%95%8A%EF%BC%8C%E5%86%8D%E6%8A%9A%E6%98%A0%E9%81%A5%E8%BF%9C%E5%9C%B0%E5%B9%B3
+https://wiki.biligame.com/sr/%E6%98%9F%E8%B7%AF%E9%95%BF%E9%A9%B0%EF%BC%8C%E7%A9%B9%E5%AE%87%E8%BF%9C%E5%BE%81
+https://wiki.biligame.com/sr/%E9%AD%94%E5%A5%B3%E7%9A%84%E5%AD%A4%E8%AF%A3%E8%AF%BE%E9%A2%98
+https://wiki.biligame.com/sr/%E8%8B%B1%E9%9B%84%E5%95%8A%EF%BC%8C%E5%BD%92%E4%BB%A5%E5%87%A1%E8%BA%AB%E5%90%91%E4%BE%B5%E6%99%A8
+https://wiki.biligame.com/sr/%E7%BA%B8%E9%A1%B5%E5%95%8A%EF%BC%8C%E9%95%8C%E7%95%99%E8%AE%B0%E5%BF%86%E7%9A%84%E6%B6%9F%E6%BC%AA
+https://wiki.biligame.com/sr/%E9%93%B6%E8%BE%87%E5%95%8A%EF%BC%8C%E6%8C%BD%E5%88%AB%E9%82%A3%E4%BA%BA%E9%97%B4%E5%8F%B2%E8%AF%97
+https://wiki.biligame.com/sr/%E8%90%BD%E8%8B%B1%E5%95%8A%EF%BC%8C%E6%AE%8B%E8%8A%B3%E7%BA%B7%E9%A3%9E%E7%95%99%E5%BD%92%E8%BA%85
 
 
     `,
     true,
-    "门扉之启，王座之终"
+    "成为昨日的明天"
 );
