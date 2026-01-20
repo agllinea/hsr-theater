@@ -1,4 +1,11 @@
-import { Actor } from "../types/models";
+export interface Actor {
+  id: string;
+  name: string;
+  tags?: string[];
+  va?: string;
+  rarity: "Ω" | "EX" | "S" | "A" | "NPC";
+  favorite?: boolean;
+}
 
 export const actors_by_fraction: {
   [fraction: string]: Actor[];
