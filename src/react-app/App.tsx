@@ -20,21 +20,23 @@ import Init from "./pages/page-init";
 import { useTheme } from "./stores/useTheme";
 import remarkBreaks from 'remark-breaks'
 import "./App.css";
+import Wiki from "./pages/page-wiki";
+import { useNavigation } from "./stores/useNavigation";
 
-export const Test = ()=>{
+export const Test = () => {
     const [markdown, setMarkdown] = useState('')
 
-  useEffect(() => {
-    fetch('/hsr script 1.md')
-      .then(res => res.text())
-      .then(text => setMarkdown(text))
-  }, [])
+    useEffect(() => {
+        fetch('/hsr script 1.md')
+            .then(res => res.text())
+            .then(text => setMarkdown(text))
+    }, [])
 
-  return <section className="section-container markdown-body">
-    <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks,]}
-      rehypePlugins={[rehypeRaw]}
-      >{markdown}</ReactMarkdown>
-  </section> 
+    return <section className="section-container markdown-body">
+        <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks,]}
+            rehypePlugins={[rehypeRaw]}
+        >{markdown}</ReactMarkdown>
+    </section>
 }
 
 
@@ -58,7 +60,33 @@ const menuItems = [
 
 function App() {
     const [progress, setProgress] = useState(0);
+    const { skipCover, page, pageId, initialize } = useNavigation();
+
+    const [showCover, setShowCover] = useState(!skipCover);
+    const [showInit, setShowInit] = useState(!skipCover);
+
+    // Initialize navigation store
     useEffect(() => {
+        const cleanup = initialize(menuItems);
+        return cleanup;
+    }, [initialize]);
+
+    // Update local state when skipCover changes
+    useEffect(() => {
+        if (skipCover) {
+            setShowInit(false);
+            setShowCover(false);
+        }
+    }, [skipCover]);
+
+    useEffect(() => {
+        if (skipCover) {
+            return;
+        }
+
+        setTimeout(() => {
+            setShowInit(false);
+        }, 100);
         setTimeout(() => {
             setProgress(0.233);
         }, 300);
@@ -77,7 +105,8 @@ function App() {
         setTimeout(() => {
             setShowInit(false);
         }, 13500);
-    }, []);
+    }, [skipCover]);
+
     const { theme, dark } = useTheme();
 
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
@@ -91,13 +120,10 @@ function App() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    const [activeId, setActiveId] = useState<string>(menuItems[0].id);
-
-    const [showCover, setShowCover] = useState(true);
-    const [showInit, setShowInit] = useState(true);
     const handleCoverScroll = () => {
         setShowCover(false);
     };
+
     return (
         <body className={clsx(theme, dark ? "dark" : "light")} style={{}}>
             <img src="/bg1.jpg" className="bg" />
@@ -109,6 +135,8 @@ function App() {
                     <Init progress={progress} />
                 ) : showCover ? (
                     <Title key="cover" onScroll={handleCoverScroll} />
+                ) : pageId ? (
+                    <Wiki key={`${page}-${pageId}`} />
                 ) : (
                     <motion.section
                         id="main"
@@ -131,8 +159,8 @@ function App() {
                                             isMobile={isMobile}
                                             icon={item.icon}
                                             aria-label={item.label}
-                                            active={activeId === item.id}
-                                            onClick={() => setActiveId(item.id)}
+                                            active={page === item.id}
+                                            onClick={() => useNavigation.getState().setPage(item.id)}
                                         >
                                             {item.label}
                                         </Button>
@@ -146,7 +174,7 @@ function App() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
                         >
-                            {menuItems.find((item) => item.id === activeId)?.content}
+                            {menuItems.find((item) => item.id === page)?.content}
                         </motion.section>
                     </motion.section>
                 )}
@@ -155,5 +183,4 @@ function App() {
         </body>
     );
 }
-
 export default App;

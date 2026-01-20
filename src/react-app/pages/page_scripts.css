@@ -121,20 +121,58 @@
   background-color: var(--bg-normal);
 }
 
+.button-view-script-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+.button-view-script {
+  display: inline-block;
+  text-align: right;
+  padding: 0.3em 1em;
+  color: #feca57;
+  font-size: 0.9rem;
+  border: 1px solid #feca57;
+  background-color: #feca5755;
+  border-radius: 5px;
+  opacity: 0.8;
+  cursor: pointer;
+  /* transition: background-color 0.3s ease; */
+}
 .scripts-detail {
   padding: 1em 1.5em;
 }
 
+.scripts-detail > * {
+  margin-bottom: 1em;
+}
+.script-detail-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
 /* ============================================
    AVATAR ICONS
    ============================================ */
+
+.avatar {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.avatar span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+  text-align: center;
+  font-size: 0.8rem;
+}
 .avatar img {
   width: 60px;
   height: 60px;
   background-color: rgba(255, 255, 255, 0.534);
   border-radius: 50%;
-  display: inline-block;
   margin: 5px;
-  background-position: top;
-  background-size: cover;
+  object-fit: cover;
+  object-position: top;
 }

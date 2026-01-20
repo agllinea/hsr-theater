@@ -6,10 +6,13 @@ import { scripts } from '../assets/scripts';
 import { Script } from '../types/models';
 import clsx from 'clsx';
 import PageEnd from '../components/PageEnd';
+import { actors_map } from '../assets/actors';
+import { useNavigation } from '../stores/useNavigation';
 
 
 const Scripts: React.FC = () => {
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
+  const { skipCover, setSkipCover, page, setPage, pageId, setPageId } = useNavigation();
 
   const renderScript = (script: Script) => (
     <div className={clsx("scripts-accordion", expandedScript === script.id ? "expanded" : "")} key={script.id}>
@@ -21,7 +24,6 @@ const Scripts: React.FC = () => {
           <div className="scripts-no"><span className='scripts-tag'>{script.status}</span><span>{script.id}</span></div>
           <div className="scripts-title">{script.title}</div>
           <div className="scripts-chapter">{script.chapter}</div>
-          <p className="scripts-description">{script.desc}</p>
         </div>
         <motion.div
           className="scripts-expand-icon"
@@ -41,10 +43,17 @@ const Scripts: React.FC = () => {
             transition={{ duration: 0.3 }}
           >
             <div className='scripts-detail'>
-              <div>演员</div>
-              <div>{(script.actors ?? []).map((actor) => <span key={actor} className='avatar'><img src={`/characters/${actor}-character_icon.webp`}></img></span>)}</div>
-              <div>动画短片</div>
-              <div></div>
+              <p className="scripts-description">{script.desc}</p>
+              <div className='button-view-script-container'>
+                <div className='button-view-script' onClick={() => setPageId(script.id)}>查看剧本</div>
+              </div>
+              <div className='script-detail-title'>演员</div>
+              <div>{(script.actors ?? []).map((actor) => <span key={actor} className='avatar'>
+                <img src={`/characters/${actor}-character_icon.webp`}></img>
+                <span>{actors_map[actor]?.name}</span>
+              </span>)}</div>
+              {/* <div className='script-detail-title'>动画短片</div>
+              <div></div> */}
             </div>
           </motion.div>
         )}
@@ -57,8 +66,8 @@ const Scripts: React.FC = () => {
       items={scripts}
       renderItem={renderScript}
     >
-        
-            <PageEnd/>
+
+      <PageEnd />
     </ExpandableMapContainer>
   );
 };
