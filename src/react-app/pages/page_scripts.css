@@ -135,4 +135,6 @@
   border-radius: 50%;
   display: inline-block;
   margin: 5px;
+  background-position: top;
+  background-size: cover;
 }
