@@ -143,8 +143,12 @@
   padding: 1em 1.5em;
 }
 
-.scripts-detail > * {
+.scripts-detail > *:not(:last-child) {
   margin-bottom: 1em;
+}
+
+.scripts-detail > *:last-child {
+  margin-top: 2em;
 }
 .script-detail-title {
   font-size: 1.1rem;
@@ -154,12 +158,12 @@
    AVATAR ICONS
    ============================================ */
 
-.avatar {
+.avatar,.clip {
   display: inline-flex;
   flex-direction: column;
 }
 
-.avatar span {
+.avatar span,.clip span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -175,4 +179,20 @@
   margin: 5px;
   object-fit: cover;
   object-position: top;
+}
+
+.clip img {
+  height: 100px;
+  margin: 5px;
+  object-fit: cover;
+  object-position: top;
+}
+
+.scripts-stats{
+  color: #888;
+  font-size: 0.6rem;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: wrap;
 }

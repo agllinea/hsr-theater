@@ -1,17 +1,14 @@
 import { motion } from "framer-motion";
 import React, { useState } from "react";
 
-import animated_shorts from "../assets/animated_shorts";
+import animated_shorts, { extractBVID } from "../assets/animated_shorts";
 import { ExpandableMapContainer } from "../components/ExpandableMapContainer";
 import { Video } from "../types/models";
 
 import "./page_clips.css";
 import PageEnd from "../components/PageEnd";
 
-const extractBVID = (url: string): string | null => {
-    const match = url.match(/BV[a-zA-Z0-9]+/);
-    return match ? match[0] : null;
-};
+
 
 const VideoClipCard: React.FC<{ video: Video }> = ({ video }) => {
     const bvid = extractBVID(video.url);

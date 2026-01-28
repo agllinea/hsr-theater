@@ -1,5 +1,8 @@
 import { Video } from "../types/models";
-
+export const extractBVID = (url: string): string | null => {
+    const match = url.match(/BV[a-zA-Z0-9]+/);
+    return match ? match[0] : null;
+};
 const animated_shorts: Video[] = [
   {
     "title": "有关星空的寓言集•其一",
