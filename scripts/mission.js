@@ -305,16 +305,12 @@ async function main(urls = ``, asOne = false, filename = "Combined_Mission_Scrip
 }
 
 main(`
-https://wiki.biligame.com/sr/%E6%99%A8%E6%9B%A6%E5%95%8A%EF%BC%8C%E5%86%8D%E6%8A%9A%E6%98%A0%E9%81%A5%E8%BF%9C%E5%9C%B0%E5%B9%B3
-https://wiki.biligame.com/sr/%E6%98%9F%E8%B7%AF%E9%95%BF%E9%A9%B0%EF%BC%8C%E7%A9%B9%E5%AE%87%E8%BF%9C%E5%BE%81
-https://wiki.biligame.com/sr/%E9%AD%94%E5%A5%B3%E7%9A%84%E5%AD%A4%E8%AF%A3%E8%AF%BE%E9%A2%98
-https://wiki.biligame.com/sr/%E8%8B%B1%E9%9B%84%E5%95%8A%EF%BC%8C%E5%BD%92%E4%BB%A5%E5%87%A1%E8%BA%AB%E5%90%91%E4%BE%B5%E6%99%A8
-https://wiki.biligame.com/sr/%E7%BA%B8%E9%A1%B5%E5%95%8A%EF%BC%8C%E9%95%8C%E7%95%99%E8%AE%B0%E5%BF%86%E7%9A%84%E6%B6%9F%E6%BC%AA
-https://wiki.biligame.com/sr/%E9%93%B6%E8%BE%87%E5%95%8A%EF%BC%8C%E6%8C%BD%E5%88%AB%E9%82%A3%E4%BA%BA%E9%97%B4%E5%8F%B2%E8%AF%97
-https://wiki.biligame.com/sr/%E8%90%BD%E8%8B%B1%E5%95%8A%EF%BC%8C%E6%AE%8B%E8%8A%B3%E7%BA%B7%E9%A3%9E%E7%95%99%E5%BD%92%E8%BA%85
+https://wiki.biligame.com/sr/%E8%AF%B8%E5%A4%A9%E6%97%A0%E5%AE%89%EF%BC%8C%E8%BF%B7%E9%80%94%E9%9A%BE%E8%BF%94
 
 
     `,
-    true,
-    "成为昨日的明天"
+    // true,
+    // "成为昨日的明天"
 );
+
+// node scripts/mission.js
