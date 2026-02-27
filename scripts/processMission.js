@@ -160,12 +160,17 @@ const updatedScripts = scripts.map((script) => {
 
   const matchedActors = script.lock
     ? script.actors
-    : actors
-        .filter((actor) => {
-          const regex = new RegExp(escapeRegExp(actor.name), "g");
-          return regex.test(content);
-        })
-        .map((actor) => actor.id);
+    : Array.from(
+        new Set(
+          content.match(
+            new RegExp(
+              `(${actors.map((a) => escapeRegExp(a.name)).join("|")})`,
+              "g"
+            )
+          ) || []
+        )
+      )
+        .map((name) => actors.find((a) => a.name === name).id);
 
   const totalTalkLineCount = getTotalTalkLineCount(content);
   const plainTalkLineCount = getPlainTalkLineCount(content);
