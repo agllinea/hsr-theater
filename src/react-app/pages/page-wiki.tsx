@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
-import ElementsIcon from "../components/ElementsIcon";
-import WaveText from "../components/wave_text";
-import { useTheme } from "../stores/useTheme";
+// import ElementsIcon from "../components/ElementsIcon";
+// import WaveText from "../components/wave_text";
+// import { useTheme } from "../stores/useTheme";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
@@ -14,7 +14,7 @@ import "./page-wiki.css"
 export default function Wiki() {
     const { page, pageId, setPageId } = useNavigation();
 
-    const { theme } = useTheme();
+    // const { theme } = useTheme();
     const [markdown, setMarkdown] = useState('')
     useEffect(() => {
         fetch(`/scripts/${pageId}.md`)

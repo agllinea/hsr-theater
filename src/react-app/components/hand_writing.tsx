@@ -12,7 +12,7 @@ type Props = {
     strokeWidth?: number;
 };
 
-export default function HandWriting({ paths, duration = 8, pause = 0.08, stroke = "white" }: Props) {
+export default function HandWriting({ paths, duration = 8, pause = 0.08 }: Props) {
     const svgRef = useRef<SVGSVGElement>(null);
 
     // Split by "M" and rebuild valid paths

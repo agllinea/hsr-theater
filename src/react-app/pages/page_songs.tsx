@@ -1,6 +1,4 @@
 import clsx from "clsx";
-import { motion } from "framer-motion";
-import { Album } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { songs } from "../assets/songs";
@@ -63,7 +61,7 @@ const Songs: React.FC = () => {
     const [playingPercentage, setPlayingPercentage] = useState<number>(0);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const lyricsRef = useRef<Array<{ time: number; text: string }>>([]);
-    const animationFrameRef = useRef<number>();
+    const animationFrameRef = useRef<number | null>(null);
     const currentLyricIndexRef = useRef<number>(-1);
 
     const parseLRC = (lrcContent: string) => {
@@ -161,7 +159,7 @@ const Songs: React.FC = () => {
             setExpandedSong(song.title);
 
             // Parse lyrics
-            lyricsRef.current = parseLRC(song.lyrics);
+            lyricsRef.current = parseLRC(song.lyrics ?? "");
             currentLyricIndexRef.current = -1;
             setCurrentLyric(lyricsRef.current.length > 0 ? "" : "no lyrics");
             setPlayingPercentage(0);

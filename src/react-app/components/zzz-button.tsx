@@ -21,7 +21,7 @@ export const Button: React.FC<{
     isMobile?: boolean;
     disabled?: boolean;
     active?: boolean;
-}> = ({ onClick, icon, children, className = "", size = "md", disabled = false, isMobile = false, active = false }) => {
+}> = ({ onClick, icon, children, className = "", size = "md", isMobile = false, active = false }) => {
     return (
         <motion.span
             onClick={onClick}

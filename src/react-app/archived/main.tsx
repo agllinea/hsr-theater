@@ -1,57 +1,15 @@
 import { motion, useInView } from "framer-motion";
 import React, { useEffect, useRef } from "react";
 
-import animated_shorts from "../assets/animated_shorts";
-import Actors from "./Actors";
-import AnimatedShorts from "./AnimatedShorts";
 import { AutoScroll } from "../archived/auto_scroll";
-import Scripts from "./Scripts";
+
 
 import "./main.css";
+import Actors from "../pages/page_actors";
+import AnimatedShorts from "../pages/page_clips";
+import Scripts from "../pages/page_scripts";
 
-interface Script {
-  id: number;
-  title: string;
-  author: string;
-  description: string;
-}
 
-const scripts: Script[] = [
-  {
-    id: 1,
-    title: "Eternal Sunset",
-    author: "Jane Doe",
-    description:
-      "A poignant drama about finding hope in the darkest moments of life.",
-  },
-  {
-    id: 2,
-    title: "Digital Dreams",
-    author: "John Smith",
-    description:
-      "A sci-fi thriller exploring the intersection of technology and consciousness.",
-  },
-  {
-    id: 3,
-    title: "Forgotten Melodies",
-    author: "Sarah Johnson",
-    description: "A musical journey through memory, loss, and rediscovery.",
-  },
-  {
-    id: 4,
-    title: "The Silent Observer",
-    author: "Michael Chen",
-    description:
-      "A psychological mystery that blurs the line between reality and perception.",
-  },
-  {
-    id: 5,
-    title: "Crimson Horizon",
-    author: "Emily Rose",
-    description:
-      "An epic adventure set in a world on the brink of transformation.",
-  },
-];
 
 
 // Cover Component
@@ -95,8 +53,8 @@ const Main: React.FC = () => {
   return (
     <section className="main">
       <Actors />
-      <AnimatedShorts videos={animated_shorts} />
-      <Scripts scripts={scripts} />
+      <AnimatedShorts  />
+      <Scripts />
     </section>
   );
 };

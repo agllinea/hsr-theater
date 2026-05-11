@@ -11,7 +11,7 @@ import animated_shorts, { extractBVID } from "../assets/animated_shorts";
 
 const Scripts: React.FC = () => {
   const [expandedScript, setExpandedScript] = useState<string | null>(null);
-  const { skipCover, setSkipCover, page, setPage, pageId, setPageId } =
+  const { setPageId } =
     useNavigation();
 
   const renderScript = (script: Script) => (

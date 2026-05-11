@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
-import remarkAlert from 'remark-github-blockquote-alert'
+// import remarkAlert from 'remark-github-blockquote-alert'
 
 import { Loading } from "./components/loading";
 import { Button, ButtonGroup } from "./components/zzz-button";

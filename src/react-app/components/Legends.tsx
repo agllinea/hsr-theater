@@ -1,7 +1,7 @@
 import { useState } from "react";
 import clsx from "clsx";
 import "./Legends.css";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { legends } from "../assets/card_types";
 
 export const Legends = () => {

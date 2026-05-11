@@ -21,12 +21,12 @@ const VideoClipCard: React.FC<{ video: Video }> = ({ video }) => {
         const lines = (video.desc ?? "").split("\n");
 
         // Start with all lines and remove from the end until it fits
-        let fitsWithLineRemoval = false;
+        // let fitsWithLineRemoval = false;
         for (let i = lines.length; i > 0; i--) {
             element.textContent = lines.slice(0, i).join("\n");
 
             if (element.scrollHeight <= element.clientHeight) {
-                fitsWithLineRemoval = true;
+                // fitsWithLineRemoval = true;
                 break;
             }
         }

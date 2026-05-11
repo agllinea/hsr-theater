@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import ElementsIcon from "../components/ElementsIcon";
-import WaveText from "../components/wave_text";
-import { useTheme } from "../stores/useTheme";
+// import WaveText from "../components/wave_text";
+// import { useTheme } from "../stores/useTheme";
 
 export default function Init({ progress = 0.5 }: { progress: number }) {
-    const { theme } = useTheme();
+    // const { theme } = useTheme();
 
     return (
         <motion.div
