@@ -16,11 +16,13 @@
   --bg-active: rgba(255, 255, 255, 0.2);
   --bg-accent: rgba(255, 240, 178, 0.1);
 
-  --card-NPC: 86 145 202;
-  --card-EX: 206 106 106;
-  --card-A: 134 86 202;
-  --card-S: 206 163 106;
-  --card-Ω: 255 255 255;
+  --card-cte: 86 145 202;
+  --card-ctb: 195 84 84;
+  --card-ctd: 201 114 84;
+  --card-ctc: 206 163 106;
+  --card-cta: 255 255 255;
+  
+  --card-ctf: 99 99 99;
   --card-bg-normal: var(--bg-normal);
 }
 

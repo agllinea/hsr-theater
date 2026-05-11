@@ -54,7 +54,7 @@ const VideoClipCard: React.FC<{ video: Video }> = ({ video }) => {
 };
 
 const AnimatedShorts: React.FC = () => {
-    const [showAll, setShowAll] = useState(false);
+    const [showAll, setShowAll] = useState(true);
     return (
         <ExpandableMapContainer
             items={showAll ? animated_shorts : animated_shorts.filter((video) => video.display)}

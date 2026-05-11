@@ -15,7 +15,7 @@ function ActorCard({ actor, index }: { actor: Actor; index: number }) {
     return (
         <motion.span
             key={actor.id}
-            className={clsx("actor-card", actor.rarity ?? "S")}
+            className={clsx("actor-card", actor.cardType ?? "ctc")}
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -37,7 +37,7 @@ function ActorCard({ actor, index }: { actor: Actor; index: number }) {
 }
 
 export default function Actors() {
-    const [fullView, setFullView] = useState<boolean>(false);
+    const [fullView, setFullView] = useState<boolean>(true);
     const [nothing, setNothing] = useState<boolean>(false);
     const { setIsLoading } = useLoading();
 

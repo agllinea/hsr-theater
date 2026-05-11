@@ -46,7 +46,7 @@
   font-size: 12px;
 }
 
-.actor-card.Ω {
+.actor-card.cta {
   background: linear-gradient(
     123deg,
     rgba(255, 126, 126, 0.3),
@@ -54,87 +54,104 @@
     rgba(129, 255, 255, 0.3),
     rgba(255, 119, 255, 0.3)
   );
-  border-bottom: 3px solid rgb(var(--card-Ω) / 0.8);
+  border-bottom: 3px solid rgb(var(--card-cta) / 0.8);
 }
 
-.actor-card.Ω .actor-card-flash {
+.actor-card.cta .actor-card-flash {
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 80%,
-    rgb(var(--card-Ω) / 0.5) 100%
+    rgb(var(--card-cta) / 0.5) 100%
   );
 }
 
-.actor-card.Ω:hover {
+.actor-card.cta:hover {
   box-shadow: 0 0 15px 6px #ffffff80;
 }
 
-.actor-card.EX {
+.actor-card.ctb {
   background: var(--card-bg-normal);
-  border-bottom: 3px solid rgb(var(--card-EX));
+  border-bottom: 3px solid rgb(var(--card-ctb));
 }
 
-.actor-card.EX .actor-card-flash {
+.actor-card.ctb .actor-card-flash {
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 80%,
-    rgb(var(--card-EX) / 0.8) 100%
+    rgb(var(--card-ctb) / 0.8) 100%
   );
 }
 
-.actor-card.EX:hover {
-  box-shadow: 0 0 15px 6px rgb(var(--card-EX) / 0.5);
+.actor-card.ctb:hover {
+  box-shadow: 0 0 15px 6px rgb(var(--card-ctb) / 0.5);
 }
 
-.actor-card.S {
+.actor-card.ctc {
   background: var(--card-bg-normal);
-  border-bottom: 3px solid rgb(var(--card-S));
+  border-bottom: 3px solid rgb(var(--card-ctc));
 }
 
-.actor-card.S .actor-card-flash {
+.actor-card.ctc .actor-card-flash {
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 80%,
-    rgb(var(--card-S) / 0.8) 100%
+    rgb(var(--card-ctc) / 0.8) 100%
   );
 }
 
-.actor-card.S:hover {
-  box-shadow: 0 0 15px 6px rgb(var(--card-S) / 0.5);
+.actor-card.ctc:hover {
+  box-shadow: 0 0 15px 6px rgb(var(--card-ctc) / 0.5);
 }
 
-.actor-card.A {
+.actor-card.ctd {
   background: var(--card-bg-normal);
-  border-bottom: 3px solid rgb(var(--card-A));
+  border-bottom: 3px solid rgb(var(--card-ctd));
 }
 
-.actor-card.A .actor-card-flash {
+.actor-card.ctd .actor-card-flash {
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 80%,
-    rgb(var(--card-A) / 0.8) 100%
+    rgb(var(--card-ctd) / 0.8) 100%
   );
 }
 
-.actor-card.A:hover {
-  box-shadow: 0 0 15px 6px rgb(var(--card-A) / 0.5);
+.actor-card.ctd:hover {
+  box-shadow: 0 0 15px 6px rgb(var(--card-ctd) / 0.5);
 }
 
-.actor-card.NPC {
+.actor-card.cte {
   background: var(--card-bg-normal);
-  border-bottom: 3px solid rgb(var(--card-NPC));
+  border-bottom: 3px solid rgb(var(--card-cte));
 }
 
-.actor-card.NPC .actor-card-flash {
+.actor-card.cte .actor-card-flash {
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0) 80%,
-    rgb(var(--card-NPC) / 0.8) 100%
+    rgb(var(--card-cte) / 0.8) 100%
   );
 }
 
-.actor-card.NPC:hover {
-  box-shadow: 0 0 15px 6px rgb(var(--card-NPC) / 0.5);
+.actor-card.cte:hover {
+  box-shadow: 0 0 15px 6px rgb(var(--card-cte) / 0.5);
+}
+
+.actor-card.ctf {
+  background: var(--card-bg-normal);
+  border-bottom: 3px solid rgb(var(--card-ctf));
+}
+
+.actor-card.ctf .actor-card-flash {
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 80%,
+    rgb(var(--card-ctf) / 0.8) 100%
+  );
+}
+
+.actor-card.ctf:hover {
+  box-shadow: 0 0 15px 6px rgb(var(--card-ctf) / 0.5);
 }
 
 .actor-card.button {

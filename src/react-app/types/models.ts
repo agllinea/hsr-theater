@@ -3,7 +3,7 @@ export interface Actor {
   name: string;
   tags?: string[];
   va?: string;
-  rarity: "Ω" | "EX" | "S" | "A" | "NPC";
+  cardType: "cta" | "ctb" | "ctc" | "ctd" | "cte" | "ctf";
   favorite?: boolean;
 }
 

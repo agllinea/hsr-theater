@@ -1,8 +1,8 @@
 import { useState } from "react";
 import clsx from "clsx";
-import { legends } from "../assets/actors";
 import "./Legends.css";
 import { AnimatePresence, motion } from "framer-motion";
+import { legends } from "../assets/card_types";
 
 export const Legends = () => {
     const [openLegend, setOpenLegend] = useState<boolean>(false);
@@ -26,7 +26,7 @@ export const Legends = () => {
                         onMouseLeave={() => handleLegendClick(null)}
                     >
                         <span className={clsx("legend-block", legend.code)}></span>
-                        <span className="legend-code">{legend.code}</span>
+                        {/* <span className="legend-code">{legend.code}</span> */}
                         <span className="legend-label">{legend.label}</span>
                     </div>
                 ))}
