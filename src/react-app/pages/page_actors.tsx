@@ -50,15 +50,44 @@ export default function Actors() {
         }, 500);
         return () => clearTimeout(timeout);
     }, [fullView]);
+//     return (
+//         <motion.span
+//             key={'cyyyy'}
+//             className="actor-bw-test"
+//             initial={{ opacity: 0, y: 30 }}
+//             whileInView={{ opacity: 1, y: 0 }}
+//             viewport={{ once: true }}
+//             transition={{
+//                 duration: 0.4,
+//                 ease: "easeOut",
+//                 delay: 0.05,
+//             }}
+//         >
+//             <div
+//                 className="bw"
+//                 style={{ backgroundSize: 'cover',
+//   backgroundPosition: 'center', height: '160px',width:'90px',backgroundImage: `url("/cyrene-card1.png")` }}
+//             ></div>
+//              <div
+//                 className="cl"
+//                 style={{ backgroundSize: 'cover',
+//   backgroundPosition: 'center', height: '160px',width:'90px',backgroundImage: `url("/character_card/cyrene.webp")` }}
+//             ></div>
+//             <div className="actor-card-flash">
+//                 <span>{'昔涟'}</span>
+//             </div>
+//         </motion.span>
+//     )
     return nothing ? (
         <></>
     ) : (
         <section className="section-container">
-            <Legends />
+            {/* <Legends /> */}
+          
             {fullView ? (
                 Object.entries(actors_by_fraction).map(([fraction, list]) => (
                     <div key={fraction}>
-                        <motion.h2
+                        {/* <motion.h2
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -68,7 +97,7 @@ export default function Actors() {
                             }}
                         >
                             {fractions[fraction]?.name}
-                        </motion.h2>
+                        </motion.h2> */}
                         <div className="actors-grid">
                             {list.map((actor) => (
                                 <ActorCard key={actor.id} actor={actor} index={0} />

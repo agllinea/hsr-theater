@@ -4,6 +4,10 @@ import clsx from "clsx";
 import { create } from "zustand";
 import "./AppV2.css";
 import HeaderNav, { type Tab } from "./HeaderNav";
+import { SongPlayer } from "./components/SongPlayer";
+import { songs } from "./assets/songs";
+import Actors from "./pages/page_actors";
+import Characters from "./pages/page_characters";
 
 // ─── Store ────────────────────────────────────────────────────────────────────
 
@@ -23,8 +27,8 @@ const useAppStore = create<AppState>((set) => ({
 
 // ─── Content map ──────────────────────────────────────────────────────────────
 
-const CONTENT: Record<Tab, string> = {
-  roles: "这里展示角色",
+const CONTENT: Record<Tab, React.ReactNode> = {
+  roles: <Characters />,
   scripts: "这里展示剧本",
   shorts: "这里展示短片",
 };
@@ -101,10 +105,7 @@ function Header() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
-      {/* left: intentionally empty */}
-      <div className="header__left" />
-
-      {/* right: nav */}
+      <SongPlayer song={songs[1]} autoPlay />
       <HeaderNav activeTab={activeTab} setTab={setTab} />
     </motion.header>
   );
@@ -128,7 +129,8 @@ function MainContent() {
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
           >
-            <p className="content-panel__placeholder">{CONTENT[activeTab]}</p>
+            {CONTENT[activeTab]}
+            {/* <p className="content-panel__placeholder">{CONTENT[activeTab]}</p> */}
           </motion.div>
         </AnimatePresence>
       </div>

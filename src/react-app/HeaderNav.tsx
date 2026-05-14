@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
+import "./HeaderNav.css";
 
 export type Tab = "roles" | "scripts" | "shorts";
 
@@ -31,7 +32,7 @@ function generateCrystalPoints(): string {
 
 // ─── Crystal background ───────────────────────────────────────────────────────
 
-function CrystalBg({ points, isActive }: { points: string; isActive: boolean }) {
+function CrystalBg({ points }: { points: string }) {
   return (
     <motion.div
       className="nav-btn__crystal"
@@ -42,22 +43,14 @@ function CrystalBg({ points, isActive }: { points: string; isActive: boolean }) 
     >
       <motion.div
         style={{ width: "100%", height: "100%" }}
-        animate={
-          isActive
-            ? {
-                filter: [
-                  "drop-shadow(0 0 1.5px rgba(255,255,255,0.2))",
-                  "drop-shadow(0 0 7px rgba(255,255,255,0.75)) drop-shadow(0 0 14px rgba(255,255,255,0.2))",
-                  "drop-shadow(0 0 1.5px rgba(255,255,255,0.2))",
-                ],
-              }
-            : { filter: "none" }
-        }
-        transition={
-          isActive
-            ? { filter: { repeat: Infinity, duration: 2.8, ease: "easeInOut" } }
-            : { duration: 0.25 }
-        }
+        animate={{
+          filter: [
+            "drop-shadow(0 0 1.5px rgba(255,255,255,0.2))",
+            "drop-shadow(0 0 7px rgba(255,255,255,0.75)) drop-shadow(0 0 14px rgba(255,255,255,0.2))",
+            "drop-shadow(0 0 1.5px rgba(255,255,255,0.2))",
+          ],
+        }}
+        transition={{ filter: { repeat: Infinity, duration: 2.8, ease: "easeInOut" } }}
       >
         <svg
           viewBox="0 0 100 40"
@@ -67,8 +60,8 @@ function CrystalBg({ points, isActive }: { points: string; isActive: boolean }) 
         >
           <polygon
             points={points}
-            fill={isActive ? "rgba(255,255,255,0.05)" : "rgba(245,243,238,0.03)"}
-            stroke={isActive ? "rgba(255,255,255,0.88)" : "rgba(245,243,238,0.32)"}
+            fill="rgba(255,255,255,0.05)"
+            stroke="rgba(255,255,255,0.88)"
             strokeWidth={0.75}
           />
         </svg>
@@ -79,11 +72,14 @@ function CrystalBg({ points, isActive }: { points: string; isActive: boolean }) 
 
 // ─── Nav button ───────────────────────────────────────────────────────────────
 
+type NavButtonSize = "sm" | "md" | "lg";
+
 function NavButton({
   navKey,
   label,
   isActive,
   hoveredKey,
+  size = "md",
   onClick,
   onHoverStart,
   onHoverEnd,
@@ -92,6 +88,7 @@ function NavButton({
   label: string;
   isActive: boolean;
   hoveredKey: Tab | null;
+  size?: NavButtonSize;
   onClick: () => void;
   onHoverStart: (key: Tab) => void;
   onHoverEnd: () => void;
@@ -106,13 +103,12 @@ function NavButton({
 
   const handleMouseLeave = useCallback(() => onHoverEnd(), [onHoverEnd]);
 
-  // show crystal only if this button is hovered, OR it's active and nothing else is hovered
   const showCrystal = hovered || (isActive && hoveredKey === null);
-  const crystalKey = isActive ? "active" : crystalPoints;
+  const crystalKey = crystalPoints;
 
   return (
     <button
-      className={clsx("nav-btn", isActive && "nav-btn--active")}
+      className={clsx("nav-btn", `nav-btn--${size}`, isActive && "nav-btn--active")}
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -120,7 +116,7 @@ function NavButton({
     >
       <AnimatePresence>
         {showCrystal && (
-          <CrystalBg key={crystalKey} points={crystalPoints} isActive={isActive} />
+          <CrystalBg key={crystalKey} points={crystalPoints} />
         )}
       </AnimatePresence>
 
@@ -128,8 +124,8 @@ function NavButton({
 
       {isActive && (
         <motion.span
-          className="nav-btn__underline"
-          layoutId="nav-underline"
+          className="nav-btn__highlight"
+          layoutId="nav-highlight"
           transition={{ type: "spring", stiffness: 420, damping: 34 }}
         />
       )}

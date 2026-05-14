@@ -1,3 +1,12 @@
+.section-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 10px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────── */
+
 .actors-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 3fr));
@@ -13,9 +22,15 @@
   cursor: pointer;
   box-shadow: 0 0 6px 4px #ffffff00;
   transition: box-shadow 0.3s ease;
+  filter:grayscale(1) invert(0.6) opacity(0.5);
+}
+.actor-card:hover{
+
+  filter:grayscale(0) invert(0);
 }
 .actor-card:hover .actor-card-image {
-  transform: scale(1.1);
+  /* transform: scale(1.1); */
+  /* filter:grayscale(0); */
 }
 .actor-card-image {
   position: absolute;
@@ -23,6 +38,7 @@
   height: 100%;
   top: 0;
   left: 0;
+  /* filter:grayscale(1); */
   background-size: cover;
   background-position: center;
   transition: transform 0.3s ease;

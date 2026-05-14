@@ -1,0 +1,71 @@
+.chars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+    width: 100%;
+}
+
+.char-card {
+    aspect-ratio: 3 / 5;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.char-card-image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: all 0.5s ease;
+}
+
+.char-card-image--bw {
+    filter: grayscale(1) invert(0.6) opacity(0.3);
+    z-index: 1;
+}
+
+.char-card-image--color {
+    opacity: 0;
+    z-index: 2;
+}
+
+.char-card:hover .char-card-image--bw {
+    transform: translate(3px, 3px);
+}
+
+
+.char-card:hover .char-card-image--color {
+    opacity: 1;
+    animation: flash 10s .5s ease infinite;
+    transform: translate(-3px, -3px);
+}
+@keyframes flash {
+    0% {
+        filter: brightness(1);
+    }
+    50% {
+        
+        filter: brightness(.9);
+    }
+    100% {
+        filter: brightness(1);
+    }
+}
+.char-card-flash {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    background: linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.5) 100%);
+}
+
+.char-card-flash span {
+    margin-bottom: 8px;
+    font-size: 11px;
+    color: rgba(245, 243, 238, 0.9);
+    letter-spacing: 0.06em;
+}
