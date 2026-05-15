@@ -8,6 +8,8 @@ import { SongPlayer } from "./components/SongPlayer";
 import { songs } from "./assets/songs";
 import Actors from "./pages/page_actors";
 import Characters from "./pages/page_characters";
+import Videos from "./pages/page_videos";
+import Chapters from "./pages/page_chapters";
 
 // ─── Store ────────────────────────────────────────────────────────────────────
 
@@ -29,8 +31,8 @@ const useAppStore = create<AppState>((set) => ({
 
 const CONTENT: Record<Tab, React.ReactNode> = {
   roles: <Characters />,
-  scripts: "这里展示剧本",
-  shorts: "这里展示短片",
+  scripts:<Chapters />,
+  shorts: <Videos />,
 };
 
 // ─── Cover ────────────────────────────────────────────────────────────────────

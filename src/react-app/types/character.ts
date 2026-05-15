@@ -1,3 +1,11 @@
+export enum Rarity {
+  N = "N",
+  R = "R",
+  SR = "SR",
+  SSR = "SSR",
+  UR = "UR",
+}
+
 export interface Character {
   id: string;
   name: string | MultilingualText;
@@ -5,6 +13,7 @@ export interface Character {
   va?: string | MultilingualText;
   img?: CharacterDisplayImage;
   priority?: number;
+  rarity?: Rarity;
 }
 
 export interface MultilingualText {
@@ -12,6 +21,6 @@ export interface MultilingualText {
 }
 
 export interface CharacterDisplayImage {
-  card_colored?: string;
-  card_bw_lined?: string;
+  card?: string;
+  avatar?: string;
 }

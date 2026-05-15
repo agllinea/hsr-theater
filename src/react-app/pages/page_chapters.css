@@ -1,0 +1,158 @@
+@font-face {
+    font-family: "Amphoreus";
+    src: url("/fonts/Amphoreus.ttf") format("truetype");
+    font-display: swap;
+}
+
+.chapters-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 700px;
+}
+
+/* row */
+
+.chapter-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: default;
+}
+
+.chapter-row {
+    /* display: grid;
+    grid-template-columns: 2fr 1fr 3fr 1fr; */
+    position: relative;
+    gap: 12px;
+    padding: 10px 16px;
+    align-items: center;
+}
+
+.chapter-hover-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(245, 243, 238, 0.04);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    background: linear-gradient(90deg, rgba(230, 144, 43, .3), hsl(252deg 33% 3% / 57%));
+}
+
+.chapter-item:hover .chapter-hover-bg {
+    opacity: 1;
+}
+
+@media (max-width: 600px) {
+    .chapter-row {
+        /* grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto; */
+    }
+
+    .chapter-cell--series {
+        grid-column: 1 / -1;
+    }
+
+    .chapter-cell--chapter {
+        grid-column: 1;
+    }
+
+    .chapter-cell--status {
+        grid-column: 2;
+        text-align: right;
+    }
+
+    .chapter-cell--title {
+        grid-column: 1 / -1;
+    }
+}
+
+/* txt c/d swap */
+
+.chapter-cell {
+    position: relative;
+    min-height: 1.3em;
+    display: flex;
+    align-items: baseline;
+}
+
+
+
+.txt-c,
+.txt-d {
+    display: block;
+    transition: opacity 0.35s ease;
+    /* font-size: 13px;
+    line-height: 1.4; */
+    /* line-height: 20px; */
+    line-height: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: hidden;
+}
+
+.txt-c {
+    font-family: "Amphoreus", serif;
+    letter-spacing: 0.05em;
+    color: rgba(245, 243, 238, 0.75);
+    opacity: 1;
+    font-size: 18px;
+}
+
+.txt-d {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    color: rgba(245, 243, 238, 0.9);
+    font-size: 11px;
+}
+
+.chapter-item:hover .txt-c {
+    opacity: 0;
+}
+
+.chapter-item:hover .txt-d {
+    opacity: 1;
+}
+
+.chapter-cell--title .txt-c {
+    font-size: 24px;
+}
+
+.chapter-cell--title .txt-d {
+    font-size: 16px;
+}
+
+.chapter-cell--actors .actors-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chapter-cell--actors .actors-list .avatar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.chapter-cell--actors .actors-list img {
+    width: 50px;
+    height: 50px;
+    border-radius: 999px;
+}
+
+.chapter-cell--actors .txt-c .actors-list img {
+    filter: grayscale(1) invert(0.6) opacity(0.3);
+}
+
+.chapter-cell--actors .actors-list .avatar span {
+    text-align: center;
+    width: 50px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: hidden;
+    font-size: 14px;
+}
+
+.chapter-cell--actors .txt-d .actors-list .avatar span {
+    font-size: 10px;
+}

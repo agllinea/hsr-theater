@@ -175,13 +175,14 @@ body {
   width: 100%;
   min-height: 100vh;
   background: var(--black);
+  overflow: hidden;
 }
 
 .main__stage {
   padding-top: var(--header-h);
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -189,7 +190,7 @@ body {
 
 .content-panel {
   width: 100%;
-  max-width: 860px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 80px 40px;
   display: flex;
