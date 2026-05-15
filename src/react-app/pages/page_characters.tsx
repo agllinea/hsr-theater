@@ -15,7 +15,7 @@ function CharacterCard({ actor }: { actor: Actor }) {
                 style={{ backgroundImage: `url("/character_card/${actor.id}.webp")` }}
             />
             <div className="char-card-flash">
-                <span>{actor.name}</span>
+                <span>{actor.id}</span>
             </div>
         </span>
     );
