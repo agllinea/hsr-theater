@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import { scripts } from "../assets/chapters";
 import chars, { chars_map } from "../assets/char";
 import { Chapter } from "../types/chapters";
@@ -9,14 +11,15 @@ function resolveD(txt: TXT): string {
     return typeof txt.d === "string" ? txt.d : "";
 }
 
-function ChapterRow({ item }: { item: Chapter }) {
+function ChapterRow({ item }: { item: ScriptEntry }) {
     return (
         <div className="chapter-item">
             <div className="chapter-row">
-                <div className="chapter-hover-bg"></div>
+                <div className="chapter-hover-bg chapter-hover-bg--1" style={{ backgroundImage: `url("/scripts/cover/${item.cover}")` }}></div>
+                <div className="chapter-hover-bg chapter-hover-bg--2"></div>
                 <div className="chapter-cell chapter-cell--series">
-                    <span className="txt-c">{`${item.series.c} · ${item.chapter.c}`}</span>
-                    <span className="txt-d">{`${item.series.d} · ${item.chapter.d}`}</span>
+                    <span className="txt-c">{`${item.series.c}`}</span>
+                    <span className="txt-d">{`${item.series.d}`}</span>
                 </div>
                 <div className="chapter-cell chapter-cell--title">
                     <span className="txt-c">{item.title.c}</span>
@@ -35,7 +38,7 @@ function ChapterRow({ item }: { item: Chapter }) {
                         </div>
                     </span>
                     <span className="txt-d">
-                        <div>Characters</div>
+                        <div>出场角色</div>
                         <div className="actors-list">
                             {(item.actors ?? []).map((actor) => (
                                 <span key={actor} className="avatar">
@@ -46,28 +49,50 @@ function ChapterRow({ item }: { item: Chapter }) {
                         </div>
                     </span>
                 </div>
-                {/* <div className="chapter-cell chapter-cell--status">
-                    <span className="txt-c">{item.status.c}</span>
-                    <span className="txt-d">{item.status.d}</span>
-                </div> */}
             </div>
-            {/* {(item.actors ?? []).length > 0 && (
-                <div className="chapter-panel">
-                    <div className="chapter-panel-actors">
-                        {(item.actors ?? []).map((actor) => (
-                            <span key={actor}>{actor}</span>
-                        ))}
-                    </div>
-                </div>
-            )} */}
         </div>
     );
 }
 
+type ScriptEntry = {
+    id: string;
+    series: TXT;
+    title: TXT;
+    actors?: string[];
+    cover?:string;
+};
+
 export default function Chapters() {
+    const [index, setIndex] = useState<ScriptEntry[]>([]);
+
+    useEffect(() => {
+        fetch("/scripts/index.txt")
+            .then((res) => res.text())
+            .then((text) => {
+                const entries = text
+                    .replace(/\r/g, "")
+                    .split(/\n\n+/)
+                    .filter((block) => block.trim())
+                    .map((block) => {
+                        const [line1, line2, line3, line4] = block.trim().split("\n");
+                        const [id, series_d, title_d] = line1.split("|");
+                        const [series_c, title_c] = line2.split("|");
+                        const actors = line3 ? line3.split("|") : undefined;
+                        return {
+                            id,
+                            series: { c: series_c, d: series_d },
+                            title: { c: title_c, d: title_d },
+                            actors,
+                            cover: line4 ? line4.trim() : undefined,
+                        };
+                    });
+                setIndex(entries);
+            });
+    }, []);
+
     return (
         <div className="chapters-list">
-            {scripts.map((item, i) => (
+            {index.map((item, i) => (
                 <ChapterRow key={i} item={item} />
             ))}
         </div>

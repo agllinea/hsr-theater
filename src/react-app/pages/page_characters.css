@@ -23,7 +23,7 @@
     inset: 0;
     background-size: cover;
     background-position: center;
-    transition: all 0.5s ease;
+    transition: all var(--reveal-duration) ease;
 }
 
 .char-card-image--bw {
@@ -67,7 +67,7 @@
     inset: 0;
     z-index: 0;
     opacity: 0;
-    transition: opacity 0.5s ease;
+    transition: opacity var(--reveal-duration) ease;
 }
 
 .char-card:hover .char-card-hover-bg {
@@ -78,7 +78,7 @@
     position: absolute;
     inset: 0;
     z-index: 1;
-    transition: opacity 0.5s ease;
+    transition: opacity var(--reveal-duration) ease;
 }
 
 .char-card-flash--id {

@@ -19,7 +19,7 @@
     inset: 0;
     background-size: cover;
     background-position: center;
-    transition: opacity 0.5s ease;
+    transition: opacity var(--reveal-duration) ease;
 }
 
 .video-card-image--bw {
@@ -50,7 +50,7 @@
     flex-direction: column;
     justify-content: flex-end;
     padding: 10px 12px;
-    transition: opacity 0.5s ease;
+    transition: opacity var(--reveal-duration) ease;
 }
 
 .video-card-flash--default {

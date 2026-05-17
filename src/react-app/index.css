@@ -24,6 +24,8 @@
   
   --card-ctf: 99 99 99;
   --card-bg-normal: var(--bg-normal);
+
+  --reveal-duration: 1s;
 }
 
 svg.lucide {
