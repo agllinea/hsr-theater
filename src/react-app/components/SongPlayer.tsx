@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Song } from "../types/models";
+import { Song } from "../types/song";
 import "./SongPlayer.css";
 
 export interface SongPlayerProps {

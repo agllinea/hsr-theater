@@ -7,7 +7,7 @@ export interface Clip {
 }
 
 export async function fetchClip(): Promise<Clip[]> {
-  const text = await fetch("/clips.txt").then((res) => res.text());
+  const text = await fetch("/clips/index.txt").then((res) => res.text());
   return text
     .replace(/\r\n/g, "\n")
     .split(/\n\n+/)

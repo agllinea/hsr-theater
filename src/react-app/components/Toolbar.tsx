@@ -88,23 +88,26 @@ export function Toolbar({ items }: { items: ToolbarItem[] }) {
                     ))}
                 </div>
 
-                {activePanels.length > 0 && (
-                    <div className="toolbar__dropdown">
-                        {activePanels.map(({ item, i }, ordinal) => (
-                            <motion.div
-                                key={i}
-                                className={clsx("toolbar__panel", ordinal > 0 && "toolbar__panel--divided")}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.2 }}
-                            >
-                                <div className="toolbar__panel-inner">
-                                    {item.dropdownPanel}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                )}
+                <AnimatePresence>
+                    {activePanels.length > 0 && (
+                        <div className="toolbar__dropdown">
+                            {activePanels.map(({ item, i }, ordinal) => (
+                                <motion.div
+                                    key={i}
+                                    className={clsx("toolbar__panel", ordinal > 0 && "toolbar__panel--divided")}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.5 }}
+                                >
+                                    <div className="toolbar__panel-inner">
+                                        {item.dropdownPanel}
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    )}
+                </AnimatePresence>
             </div>
         </motion.div>
     );

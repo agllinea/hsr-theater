@@ -1,7 +1,36 @@
+
+export enum Rarity {
+  N = "N",
+  R = "R",
+  SR = "SR",
+  SSR = "SSR",
+  UR = "UR",
+}
+
+export interface Character {
+  id: string;
+  name: string;
+  tags?: string[];
+  va?: string;
+  img?: CharacterDisplayImage;
+  priority?: number;
+  rarity?: Rarity;
+}
+
+export interface MultilingualText {
+  zh?: string;
+}
+
+export interface CharacterDisplayImage {
+  card?: string;
+  avatar?: string;
+}
+
+
 export async function fetchCharacters(): Promise<Character[]> {
-  const res = await fetch("/char.txt");
+  const res = await fetch("/characters/index.txt");
   const text = await res.text();
-  const blocks = text.split(/\n\n+/);
+  const blocks = text.replace(/\r\n/g, "\n").split(/\n\n+/);
   const list = blocks
     .map(block => block.trim())
     .filter(block => block.length > 0)
@@ -29,31 +58,4 @@ export async function fetchCharacters(): Promise<Character[]> {
     const pb = b.priority === 0 ? Infinity : (b.priority ?? 1);
     return pb - pa;
   });
-}
-
-export enum Rarity {
-  N = "N",
-  R = "R",
-  SR = "SR",
-  SSR = "SSR",
-  UR = "UR",
-}
-
-export interface Character {
-  id: string;
-  name: string;
-  tags?: string[];
-  va?: string;
-  img?: CharacterDisplayImage;
-  priority?: number;
-  rarity?: Rarity;
-}
-
-export interface MultilingualText {
-  zh?: string;
-}
-
-export interface CharacterDisplayImage {
-  card?: string;
-  avatar?: string;
 }

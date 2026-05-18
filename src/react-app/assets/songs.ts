@@ -1,4 +1,4 @@
-import { Song } from "../types/models";
+import { Song } from "../types/song";
 
 export const songs: Song[] = [
     {
@@ -74,11 +74,6 @@ export const songs: Song[] = [
 [al:崩坏星穹铁道-昔涟 Ripples of Past Reverie]
 [by:]
 [offset:0]
-[00:00.20]昔涟 (《崩坏：星穹铁道》昔涟动画短片中文单曲) - 张韶涵/HOYO-MiX
-[00:04.27]作曲 Composer：崔瀚普TSAR (HOYO-MiX)
-[00:05.91]作词 Lyricist：烧鸡/KBShinya/陆棠疏
-[00:07.15]编曲 Arranger：崔瀚普TSAR (HOYO-MiX)
-[00:07.21]制作人 Producer：崔瀚普TSAR (HOYO-MiX)/宫奇Gon (HOYO-MiX)
 [00:07.22]曾许下心愿 等待你 的出现
 [00:14.16]褪色的秋千 有本书 会纪念
 [00:21.29]我循着时间 捡起梦 的照片
@@ -102,22 +97,7 @@ export const songs: Song[] = [
 [02:33.74]要相信 浪漫 一如 初见
 [02:39.04]请笑着 向我 道别
 [02:44.84]最后这一页 就让它无言
-[02:51.95]我会在扉页 等待你续写 起点
-[02:56.97]人声 Vocal Artist：张韶涵
-[02:57.68]制谱 Music Copyist：吴泽熙 Jersey Wu (HOYO-MiX)
-[02:58.05]和声 Backing Vocal：张韶涵/奏Sou
-[02:58.35]配唱制作人 Vocal Producer：杨钧尧 Bryan Yang
-[02:58.74]音频编辑 Vocal Editing：杨钧尧 Bryan Yang
-[02:59.11]乐队 Orchestra：龙之艺交响乐团 Art of Loong Orchestra
-[02:59.56]贝斯 Bass：宣一亨Hento
-[02:59.80]架子鼓 Drums：眭逸凡Patrick
-[03:00.06]人声录音棚 Vocal Recording Studio：52Hz Studio
-[03:00.42]人声录音师 Vocal Recording Engineer：徐威 Aaron Xu
-[03:00.82]乐器录音棚 Instrumental Recording Studio：升赫录音棚Soundhub Studio/上海音像公司录音棚 YX STUDIO
-[03:01.68]乐器录音师 Instrumental Recording Engineer：吴身宝/李仁珏@Soundhub Studios/莫家伟
-[03:02.30]混音师 Mixing Engineer：宫奇Gon (HOYO-MiX)
-[03:02.63]母带制作 Mastering Engineer：宫奇Gon (HOYO-MiX)
-[03:03.00]出品 Produced by：HOYO-MiX`,
+[02:51.95]我会在扉页 等待你续写 起点`,
     },
     {
         title: "使一颗心免于哀伤",

@@ -1,0 +1,120 @@
+.clips-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.clips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(clamp(160px, 28vw, 280px), 1fr));
+    gap: 12px;
+    width: 100%;
+}
+
+.clip-card {
+    aspect-ratio: 16 / 9;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+/* images */
+
+.clip-card-image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: opacity var(--reveal-duration) ease;
+}
+
+.clip-card-image--bw {
+    filter: grayscale(1) invert(0.55) opacity(0.3);
+    z-index: 0;
+}
+
+.clip-card-image--color {
+    opacity: 0;
+    z-index: 1;
+}
+
+.clip-card:hover .clip-card-image--color,
+.clips-grid--palette .clip-card .clip-card-image--color {
+    opacity: .9;
+}
+
+.clip-card-hover-bg {
+    display: none;
+}
+
+/* flash layers */
+
+.clip-card-flash {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px 12px;
+    transition: opacity var(--reveal-duration) ease;
+}
+
+.clip-card-flash--default {
+    background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.6) 100%);
+    opacity: 1;
+}
+
+.clip-card-flash--hover {
+    background: linear-gradient(to bottom, transparent 20%,rgba(0, 0, 0, 0.5) 70%, rgba(0, 0, 0, 0.8) 100%);
+    opacity: 0;
+    gap: 4px;
+}
+
+.clip-card:hover .clip-card-flash--default,
+.clips-grid--palette .clip-card .clip-card-flash--default {
+    opacity: 0;
+}
+
+.clip-card:hover .clip-card-flash--hover,
+.clips-grid--palette .clip-card .clip-card-flash--hover {
+    opacity: 1;
+}
+
+/* labels */
+
+.clip-card-label {
+    display: block;
+    color: rgba(245, 243, 238, 0.92);
+    line-height: 1.3;
+}
+
+.clip-card-flash--default .clip-card-label--title {
+    font-family: "Amphoreus", serif;
+    font-size: 15px;
+    letter-spacing: 0.06em;
+}
+
+.clip-card-flash--hover .clip-card-label--title {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+.clip-card-label--desc {
+    font-size: 10px;
+    color: rgba(245, 243, 238, 0.65);
+    letter-spacing: 0.01em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+    .clip-card-label--desc {
+        display: none;
+    }
+}
