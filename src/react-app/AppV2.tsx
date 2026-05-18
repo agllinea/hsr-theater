@@ -132,7 +132,10 @@ function MainContent() {
             transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
           >
             {CONTENT[activeTab]}
-            {/* <p className="content-panel__placeholder">{CONTENT[activeTab]}</p> */}
+            <footer className="site-footer">
+              <p>本站展示的角色、剧本与短片版权归米哈游所有。角色的排序、稀有度标注与收录范围，以及剧本、短片的展示选择，均出于作者个人喜好，不代表任何官方立场。</p>
+              <p>如有冒犯——那你是对的，我道歉。</p>
+            </footer>
           </motion.div>
         </AnimatePresence>
       </div>

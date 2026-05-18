@@ -1,3 +1,10 @@
+.videos-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
 .videos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(clamp(160px, 28vw, 280px), 1fr));
@@ -32,7 +39,8 @@
     z-index: 1;
 }
 
-.video-card:hover .video-card-image--color {
+.video-card:hover .video-card-image--color,
+.videos-grid--palette .video-card .video-card-image--color {
     opacity: 1;
 }
 
@@ -64,11 +72,13 @@
     gap: 4px;
 }
 
-.video-card:hover .video-card-flash--default {
+.video-card:hover .video-card-flash--default,
+.videos-grid--palette .video-card .video-card-flash--default {
     opacity: 0;
 }
 
-.video-card:hover .video-card-flash--hover {
+.video-card:hover .video-card-flash--hover,
+.videos-grid--palette .video-card .video-card-flash--hover {
     opacity: 1;
 }
 

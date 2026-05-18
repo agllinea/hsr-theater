@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-
+import { PaletteIcon } from "lucide-react";
 import { TXT } from "../types/text";
-
 import "./page_chapters.css";
 import { fetchScript, Script } from "../types/script";
 import { Character, fetchCharacters } from "../types/character";
+import { Toolbar } from "../components/Toolbar";
 
 function resolveD(txt: TXT): string {
     return typeof txt.d === "string" ? txt.d : "";
@@ -58,6 +58,7 @@ function ChapterRow({ item, chars_map }: { item: Script; chars_map: Record<strin
 export default function Chapters() {
     const [index, setIndex] = useState<Script[]>([]);
     const [chars_map, setCharsMap] = useState<Record<string, Character>>({});
+    const [colorActive, setColorActive] = useState(false);
 
     useEffect(() => {
         fetchScript().then(setIndex);
@@ -66,11 +67,22 @@ export default function Chapters() {
         );
     }, []);
 
+    const toolbarItems = [
+        {
+            icon: <PaletteIcon size={16} />,
+            isActive: colorActive,
+            onClick: () => setColorActive((v) => !v),
+        },
+    ];
+
     return (
-        <div className="chapters-list">
-            {index.map((item, i) => (
-                <ChapterRow key={i} item={item} chars_map={chars_map} />
-            ))}
-        </div>
+        <section className="chapters-section">
+            <Toolbar items={toolbarItems} />
+            <div className={`chapters-list${colorActive ? " chapters-list--palette" : ""}`}>
+                {index.map((item, i) => (
+                    <ChapterRow key={i} item={item} chars_map={chars_map} />
+                ))}
+            </div>
+        </section>
     );
 }

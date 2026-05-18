@@ -4,6 +4,43 @@
     font-display: swap;
 }
 
+.chars-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.faction-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.faction-tag {
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 12px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    white-space: nowrap;
+    line-height: 1.6;
+}
+
+.faction-tag:hover {
+    border-color: rgba(255, 255, 255, 0.35);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.faction-tag--active {
+    border-color: rgba(255, 255, 255, 0.7);
+    color: white;
+    background: rgba(255, 255, 255, 0.08);
+}
+
 .chars-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(clamp(100px, 14vw, 160px), 1fr));
@@ -41,10 +78,10 @@
 }
 
 
-.char-card:hover .char-card-image--color {
+.char-card:hover .char-card-image--color,
+.chars-grid--palette .char-card .char-card-image--color {
     opacity: 1;
     animation: flash 10s .5s ease infinite;
-    /* transform: translate(-3px, -3px); */
 }
 
 @keyframes flash {
@@ -70,7 +107,8 @@
     transition: opacity var(--reveal-duration) ease;
 }
 
-.char-card:hover .char-card-hover-bg {
+.char-card:hover .char-card-hover-bg,
+.chars-grid--palette .char-card .char-card-hover-bg {
     opacity: 1;
 }
 
@@ -90,11 +128,13 @@
     opacity: 0;
 }
 
-.char-card:hover .char-card-flash--id {
+.char-card:hover .char-card-flash--id,
+.chars-grid--palette .char-card .char-card-flash--id {
     opacity: 0;
 }
 
-.char-card:hover .char-card-flash--name {
+.char-card:hover .char-card-flash--name,
+.chars-grid--palette .char-card .char-card-flash--name {
     opacity: 1;
 }
 

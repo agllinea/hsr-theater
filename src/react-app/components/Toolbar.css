@@ -1,0 +1,71 @@
+.toolbar {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* ── Button row ──────────────────────────────────────────────────────────── */
+
+.toolbar__buttons {
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    justify-content: flex-end;
+    gap: 2px;
+    padding: 4px;
+}
+
+.toolbar-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 7px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: color 0.18s, background 0.18s;
+    flex-shrink: 0;
+}
+
+.toolbar-btn:hover {
+    color: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.toolbar-btn--active {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.toolbar-btn__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+}
+
+/* ── Dropdown ─────────────────────────────────────────────────────────────── */
+
+.toolbar__dropdown {
+    margin-top: 3px;
+    border-radius: 10px;
+    /* border: 1px solid rgba(255, 255, 255, 0.09); */
+    background: rgba(12, 12, 18, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    overflow: hidden;
+}
+
+.toolbar__panel-inner {
+    padding: 12px;
+}
+
+.toolbar__panel--divided .toolbar__panel-inner {
+    /* border-top: 1px solid rgba(255, 255, 255, 0.06); */
+}

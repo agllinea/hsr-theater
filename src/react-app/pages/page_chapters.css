@@ -4,6 +4,13 @@
     font-display: swap;
 }
 
+.chapters-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
 .chapters-list {
     display: flex;
     flex-direction: column;
@@ -43,7 +50,8 @@
     filter: blur(4px);
 }
 
-.chapter-item:hover .chapter-hover-bg--1 {
+.chapter-item:hover .chapter-hover-bg--1,
+.chapters-list--palette .chapter-item .chapter-hover-bg--1 {
     opacity: .3;
 }
 
@@ -51,7 +59,8 @@
     background: linear-gradient(90deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1) 50%, transparent 100%);
 }
 
-.chapter-item:hover .chapter-hover-bg--2 {
+.chapter-item:hover .chapter-hover-bg--2,
+.chapters-list--palette .chapter-item .chapter-hover-bg--2 {
     opacity: 1;
 }
 
@@ -95,11 +104,13 @@
     font-size: 11px;
 }
 
-.chapter-item:hover .txt-c {
+.chapter-item:hover .txt-c,
+.chapters-list--palette .chapter-item .txt-c {
     opacity: 0;
 }
 
-.chapter-item:hover .txt-d {
+.chapter-item:hover .txt-d,
+.chapters-list--palette .chapter-item .txt-d {
     opacity: 1;
 }
 
