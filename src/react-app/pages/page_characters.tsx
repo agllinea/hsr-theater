@@ -1,13 +1,7 @@
-import chars from "../assets/char";
-import { Character } from "../types/character";
+import { useState, useEffect } from "react";
+import { Character, fetchCharacters } from "../types/character";
 
 import "./page_characters.css";
-
-const sortedChars = [...chars].sort((a, b) => {
-    const pa = a.priority === 0 ? Infinity : (a.priority ?? 1);
-    const pb = b.priority === 0 ? Infinity : (b.priority ?? 1);
-    return pb - pa;
-});
 
 function CharacterCard({ char }: { char: Character }) {
     const card = char.img?.card ?? "";
@@ -21,7 +15,7 @@ function CharacterCard({ char }: { char: Character }) {
             </div>
             <div className="char-card-flash char-card-flash--name">
                 <span className="char-card-label">
-                    {typeof char.name === "string" ? char.name : char.name.zh}
+                    {char.name}
                 </span>
             </div>
         </span>
@@ -29,14 +23,20 @@ function CharacterCard({ char }: { char: Character }) {
 }
 
 export default function Characters() {
+    const [chars, setChars] = useState<Character[]>([]);
+
+    useEffect(() => {
+        fetchCharacters().then(setChars);
+    }, []);
+
     return (
         <section className="chars-grid">
-            {sortedChars.map((char) => (
+            {chars.map((char) => (
                 <CharacterCard key={char.id} char={char} />
             ))}
-            <p className="chars-disclaimer">
+            {/* <p className="chars-disclaimer">
                 角色的收录、展示、排序和稀有度皆基于作者的个人喜好，不代表米哈游官方立场。
-            </p>
+            </p> */}
         </section>
     );
 }

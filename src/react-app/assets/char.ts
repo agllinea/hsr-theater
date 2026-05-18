@@ -28,7 +28,7 @@ const chars: Character[] = [
   { id: "Aglaea", name: "阿格莱雅", va: "楚越", tags: ["amphoreus"], img: { card: "/character_card/aglaea.webp",avatar:"/characters/aglaea-character_icon.webp" }, priority: 1, rarity: Rarity.N },
   { id: "Cipher", name: "赛飞儿", va: "王雅欣", tags: ["amphoreus"], img: { card: "/character_card/cipher.webp",avatar:"/characters/cipher-character_icon.webp" }, priority: 1, rarity: Rarity.N },
   { id: "Castorice", name: "遐蝶", va: "阮从青", tags: ["amphoreus"], img: { card: "/character_card/castorice.webp",avatar:"/characters/castorice-character_icon.webp" }, priority: 1, rarity: Rarity.N },
-  { id: "Tribbie", name: "缇宝/缇安/缇宁/…", va: "蔡书瑾", tags: ["amphoreus"], img: { card: "/character_card/tribbie.webp",avatar:"/characters/tribbie-character_icon.webp" }, priority: 1, rarity: Rarity.N },
+  { id: "Tribbie", name: "缇宝", va: "蔡书瑾", tags: ["amphoreus"], img: { card: "/character_card/tribbie.webp",avatar:"/characters/tribbie-character_icon.webp" }, priority: 1, rarity: Rarity.N },
   { id: "Mydei", name: "万敌", va: "赵成晨", tags: ["amphoreus"], img: { card:"/character_card/mydei.webp",avatar:"/characters/mydei-character_icon.webp" }, priority: 1, rarity: Rarity.N },
   { id: "Anaxa", name: "那刻夏", va:"钱文青", tags:["amphoreus"], img:{ card:"/character_card/anaxa.webp",avatar:" /characters/anaxa-character_icon.webp" }, priority:1,rarity:Rarity.N },
   { id: "Hyacine", name: "风堇", va: "静宸", tags: ["amphoreus"], img: { card: "/character_card/hyacine.webp",avatar:"/characters/hyacine-character_icon.webp" }, priority: 1, rarity: Rarity.N },

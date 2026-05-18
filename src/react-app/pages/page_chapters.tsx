@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 
-import { scripts } from "../assets/chapters";
-import chars, { chars_map } from "../assets/char";
-import { Chapter } from "../types/chapters";
 import { TXT } from "../types/text";
 
 import "./page_chapters.css";
+import { fetchScript, Script } from "../types/script";
+import { Character, fetchCharacters } from "../types/character";
 
 function resolveD(txt: TXT): string {
     return typeof txt.d === "string" ? txt.d : "";
 }
 
-function ChapterRow({ item }: { item: ScriptEntry }) {
+function ChapterRow({ item, chars_map }: { item: Script; chars_map: Record<string, Character> }) {
     return (
         <div className="chapter-item">
             <div className="chapter-row">
@@ -31,7 +30,7 @@ function ChapterRow({ item }: { item: ScriptEntry }) {
                         <div className="actors-list">
                             {(item.actors ?? []).map((actor) => (
                                 <span key={actor} className="avatar">
-                                    <img src={chars_map[actor]?.img.avatar}></img>
+                                    <img src={chars_map[actor]?.img?.avatar}></img>
                                     <span>{chars_map[actor]?.id}</span>
                                 </span>
                             ))}
@@ -42,7 +41,7 @@ function ChapterRow({ item }: { item: ScriptEntry }) {
                         <div className="actors-list">
                             {(item.actors ?? []).map((actor) => (
                                 <span key={actor} className="avatar">
-                                    <img src={chars_map[actor]?.img.avatar}></img>
+                                    <img src={chars_map[actor]?.img?.avatar}></img>
                                     <span>{chars_map[actor]?.name}</span>
                                 </span>
                             ))}
@@ -54,46 +53,23 @@ function ChapterRow({ item }: { item: ScriptEntry }) {
     );
 }
 
-type ScriptEntry = {
-    id: string;
-    series: TXT;
-    title: TXT;
-    actors?: string[];
-    cover?:string;
-};
+
 
 export default function Chapters() {
-    const [index, setIndex] = useState<ScriptEntry[]>([]);
+    const [index, setIndex] = useState<Script[]>([]);
+    const [chars_map, setCharsMap] = useState<Record<string, Character>>({});
 
     useEffect(() => {
-        fetch("/scripts/index.txt")
-            .then((res) => res.text())
-            .then((text) => {
-                const entries = text
-                    .replace(/\r/g, "")
-                    .split(/\n\n+/)
-                    .filter((block) => block.trim())
-                    .map((block) => {
-                        const [line1, line2, line3, line4] = block.trim().split("\n");
-                        const [id, series_d, title_d] = line1.split("|");
-                        const [series_c, title_c] = line2.split("|");
-                        const actors = line3 ? line3.split("|") : undefined;
-                        return {
-                            id,
-                            series: { c: series_c, d: series_d },
-                            title: { c: title_c, d: title_d },
-                            actors,
-                            cover: line4 ? line4.trim() : undefined,
-                        };
-                    });
-                setIndex(entries);
-            });
+        fetchScript().then(setIndex);
+        fetchCharacters().then(chars =>
+            setCharsMap(chars.reduce<Record<string, Character>>((map, c) => { map[c.id] = c; return map; }, {}))
+        );
     }, []);
 
     return (
         <div className="chapters-list">
             {index.map((item, i) => (
-                <ChapterRow key={i} item={item} />
+                <ChapterRow key={i} item={item} chars_map={chars_map} />
             ))}
         </div>
     );
