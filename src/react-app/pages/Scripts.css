@@ -14,6 +14,14 @@
 .scripts-section  .toolbar{
     max-width: 886px;
 }
+.scripts-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
 .scripts-list {
     display: flex;
     flex-direction: column;
@@ -160,4 +168,125 @@
 
 .script-cell--actors .txt-d .actors-list .avatar span {
     font-size: 10px;
+}
+
+/* viewer overlay */
+
+.script-viewer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 886px;
+}
+
+.script-viewer-header {
+    display: flex;
+    padding: 4px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(245, 243, 238, 0.1);
+    flex-shrink: 0;
+}
+
+.script-viewer-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgba(245, 243, 238, 0.55);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+}
+
+.script-viewer-breadcrumb span:last-child {
+    color: rgba(245, 243, 238, 0.9);
+}
+
+.script-viewer-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(245, 243, 238, 0.5);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s ease;
+}
+
+.script-viewer-close:hover {
+    color: rgba(245, 243, 238, 0.9);
+}
+
+.script-viewer-body {
+    padding: 0px 24px;
+    color: rgba(245, 243, 238, 0.85);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.script-viewer-loading {
+    color: rgba(245, 243, 238, 0.3);
+    padding: 24px 0;
+}
+
+.script-viewer-body h1,
+.script-viewer-body h2,
+.script-viewer-body h3 {
+    font-family: "Amphoreus", serif;
+    color: rgba(245, 243, 238, 0.95);
+    margin: 1.5em 0 0.5em;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+}
+
+/* simple blockquote: > xxx — player dialogue, dark gold gradient */
+.script-viewer-body blockquote:not(:has(> blockquote)) {
+    margin: 0.6em 0;
+    padding: 6px 16px;
+    border-left: 2px solid rgba(180, 130, 45, 0.5);
+    background: linear-gradient(to right, rgba(160, 115, 35, 0.18), transparent 70%);
+    color: rgba(245, 235, 200, 0.8);
+}
+
+/* outer blockquote that starts with > > — default bw styling */
+.script-viewer-body blockquote:has(> blockquote) {
+    margin: 0.6em 0;
+    padding: 6px 16px;
+    border-left: 2px solid rgba(245, 243, 238, 0.2);
+    background: none;
+    color: rgba(245, 243, 238, 0.6);
+}
+
+/* the > > xxx first line — highlighted stage direction label */
+.script-viewer-body blockquote > blockquote {
+    margin: 0 0 0.5em;
+    padding: 4px 12px;
+    border: none;
+    background: none;
+    color: rgba(245, 215, 120, 0.9);
+    font-style: italic;
+    letter-spacing: 0.06em;
+}
+
+.script-viewer-body ul,
+.script-viewer-body ol {
+    padding-left: 1.2em;
+}
+
+.script-viewer-body li {
+    margin: 0.2em 0;
+}
+
+.script-viewer-body hr {
+    border: none;
+    border-top: 1px solid rgba(245, 243, 238, 0.12);
+    margin: 1.5em 0;
+}
+
+.script-viewer-body em {
+    color: rgba(245, 243, 238, 0.5);
+    font-style: italic;
+}
+
+.script-viewer-body ruby rt {
+    color: rgba(245, 243, 238, 0.45);
 }

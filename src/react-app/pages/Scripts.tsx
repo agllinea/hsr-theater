@@ -1,13 +1,63 @@
 import { useEffect, useState } from "react";
-import { PaletteIcon } from "lucide-react";
+import { PaletteIcon, X, ChevronRight } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
+import rehypeRaw from "rehype-raw";
 import "./Scripts.css";
 import { fetchScript, Script } from "../types/script";
 import { Character, fetchCharacters } from "../types/character";
 import { Toolbar } from "../components/Toolbar";
 
-function ScriptRow({ item, chars_map }: { item: Script; chars_map: Record<string, Character> }) {
+const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.25 } };
+
+function ScriptViewer({ item, onClose }: { item: Script; onClose: () => void }) {
+    const [content, setContent] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetch(`/scripts/content/${item.id}.md`)
+            .then((res) => res.text())
+            .then(setContent);
+    }, [item.id]);
+
+    useEffect(() => {
+        const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [onClose]);
+
     return (
-        <div className="script-item">
+        <motion.div className="script-viewer" {...fade}>
+            <div className="script-viewer-header">
+                <div className="script-viewer-breadcrumb">
+                    <span>{item.series.d}</span>
+                    <ChevronRight size={14} />
+                    <span>{item.title.d}</span>
+                </div>
+                <button className="script-viewer-close" onClick={onClose}>
+                    <X size={20} />
+                </button>
+            </div>
+            <div className="script-viewer-body">
+                {content == null ? (
+                    <div className="script-viewer-loading">...</div>
+                ) : (
+                    <ReactMarkdown
+                        remarkPlugins={[remarkGfm, remarkBreaks]}
+                        rehypePlugins={[rehypeRaw]}
+                    >
+                        {content}
+                    </ReactMarkdown>
+                )}
+            </div>
+        </motion.div>
+    );
+}
+
+function ScriptRow({ item, chars_map, onClick }: { item: Script; chars_map: Record<string, Character>; onClick: () => void }) {
+    return (
+        <div className="script-item" onClick={onClick}>
             <div className="script-row">
                 <div className="script-hover-bg script-hover-bg--1" style={{ backgroundImage: `url("/scripts/cover/${item.cover}")` }}></div>
                 <div className="script-hover-bg script-hover-bg--2"></div>
@@ -48,12 +98,11 @@ function ScriptRow({ item, chars_map }: { item: Script; chars_map: Record<string
     );
 }
 
-
-
 export default function Scripts() {
     const [index, setIndex] = useState<Script[]>([]);
     const [chars_map, setCharsMap] = useState<Record<string, Character>>({});
     const [colorActive, setColorActive] = useState(false);
+    const [activeScript, setActiveScript] = useState<Script | null>(null);
 
     useEffect(() => {
         fetchScript().then(setIndex);
@@ -72,12 +121,20 @@ export default function Scripts() {
 
     return (
         <section className="scripts-section">
-            <Toolbar items={toolbarItems} />
-            <div className={`scripts-list${colorActive ? " scripts-list--palette" : ""}`}>
-                {index.map((item, i) => (
-                    <ScriptRow key={i} item={item} chars_map={chars_map} />
-                ))}
-            </div>
+            <AnimatePresence mode="wait">
+                {activeScript ? (
+                    <ScriptViewer key="viewer" item={activeScript} onClose={() => setActiveScript(null)} />
+                ) : (
+                    <motion.div key="list" className="scripts-list-wrapper" {...fade}>
+                        <Toolbar items={toolbarItems} />
+                        <div className={`scripts-list${colorActive ? " scripts-list--palette" : ""}`}>
+                            {index.map((item, i) => (
+                                <ScriptRow key={i} item={item} chars_map={chars_map} onClick={() => setActiveScript(item)} />
+                            ))}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }

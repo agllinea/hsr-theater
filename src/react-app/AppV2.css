@@ -132,6 +132,38 @@ body {
   user-select: none;
 }
 
+/* ─── Scroll to top ─────────────────────────────────────────────────────── */
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 36px;
+  right: 36px;
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.scroll-to-top:focus-visible {
+  box-shadow: 0 0 0 2px rgba(200, 185, 154, 0.55);
+  border-radius: 50%;
+}
+
+.scroll-to-top__crystal {
+  position: absolute;
+  inset: -8px;
+  pointer-events: none;
+  z-index: 0;
+  overflow: visible;
+}
+
+
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
 
 @media (max-width: 600px) {
@@ -141,6 +173,6 @@ body {
 
 
   .content-panel {
-    padding: 60px 24px;
+    padding: 0px 24px;
   }
 }

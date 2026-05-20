@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { create } from "zustand";
@@ -83,6 +84,83 @@ function MainContent() {
   );
 }
 
+// ─── Scroll to top ────────────────────────────────────────────────────────────
+
+// Slim upward arrow-crystal: narrow shoulders, elongated body, shallow V-notch
+const CRYSTAL_BASE = [
+  [50,  2],  // top apex
+  [78, 44],  // right shoulder (waist)
+  [72, 94],  // right base
+  [50, 82],  // bottom notch (shallow)
+  [28, 94],  // left base
+  [22, 44],  // left shoulder (waist)
+] as const;
+
+function generateCrystalPoints(): string {
+  const j = (range: number) => (Math.random() - 0.5) * range * 2;
+  return CRYSTAL_BASE
+    .map(([x, y], i) => {
+      const isWaist = i === 1 || i === 5;
+      return `${(x + j(4)).toFixed(1)},${(y + j(isWaist ? 12 : 4)).toFixed(1)}`;
+    })
+    .join(" ");
+}
+
+function ScrollToTop() {
+  const [visible, setVisible] = useState(false);
+  const [points, setPoints] = useState(generateCrystalPoints);
+
+  useEffect(() => {
+    if (visible) setPoints(generateCrystalPoints());
+  }, [visible]);
+
+  useEffect(() => {
+    const onScroll = () => setVisible(window.scrollY > 300);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.button
+          className="scroll-to-top"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8 }}
+          transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+          aria-label="Scroll to top"
+        >
+          {/* crystal shell */}
+          <div className="scroll-to-top__crystal">
+            <motion.div
+              style={{ width: "100%", height: "100%" }}
+              animate={{
+                filter: [
+                  "drop-shadow(0 0 1.5px rgba(255,255,255,0.2))",
+                  "drop-shadow(0 0 7px rgba(255,255,255,0.75)) drop-shadow(0 0 14px rgba(255,255,255,0.2))",
+                  "drop-shadow(0 0 1.5px rgba(255,255,255,0.2))",
+                ],
+              }}
+              transition={{ filter: { repeat: Infinity, duration: 2.8, ease: "easeInOut" } }}
+            >
+              <svg viewBox="0 0 100 100" width="100%" height="100%" style={{ overflow: "visible" }}>
+                <polygon
+                  points={points}
+                  fill="rgba(255,255,255,0.06)"
+                  stroke="rgba(255,255,255,0.88)"
+                  strokeWidth={0.8}
+                />
+              </svg>
+            </motion.div>
+          </div>
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // ─── Root ─────────────────────────────────────────────────────────────────────
 
 export default function AppV2() {
@@ -103,6 +181,7 @@ export default function AppV2() {
             style={{ width: "100%", minHeight: "100vh" }}
           >
             <MainContent />
+            <ScrollToTop />
           </motion.div>
         )}
       </AnimatePresence>
