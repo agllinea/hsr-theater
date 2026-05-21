@@ -36,6 +36,31 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ─── Scrollbar ─────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 243, 238, 0.15);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(200, 185, 154, 0.45);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(245, 243, 238, 0.15) transparent;
+}
+
 /* ─── App shell ─────────────────────────────────────────────────────────── */
 
 .app {
@@ -71,8 +96,6 @@ body {
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
 }
 
-
-
 /* ─── Main stage ─────────────────────────────────────────────────────────── */
 
 .main {
@@ -105,6 +128,9 @@ body {
 
 .site-footer {
   margin-top: auto;
+  padding-top: 100px;
+}
+.site-footer-inner {
   padding: 24px 0 40px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
@@ -112,7 +138,6 @@ body {
   gap: 4px;
   text-align: center;
 }
-
 .site-footer p {
   font-size: 11px;
   line-height: 1.7;
@@ -163,14 +188,12 @@ body {
   overflow: visible;
 }
 
-
 /* ─── Responsive ─────────────────────────────────────────────────────────── */
 
 @media (max-width: 600px) {
   .header {
     padding: 0 20px;
   }
-
 
   .content-panel {
     padding: 0px 24px;

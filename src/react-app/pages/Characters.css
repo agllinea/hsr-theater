@@ -220,7 +220,65 @@
     border-bottom: 3px solid rgb(var(--card-color-n) / 0.9);
 }
 
+/* character viewer */
+
+.chars-grid-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.char-viewer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.char-viewer-header {
+    display: flex;
+    padding: 4px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(245, 243, 238, 0.1);
+    flex-shrink: 0;
+}
+
+.char-viewer-title {
+    color: rgba(245, 243, 238, 0.9);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    padding: 0 4px;
+}
+
+.char-viewer-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(245, 243, 238, 0.5);
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    transition: color 0.15s ease;
+}
+
+.char-viewer-close:hover {
+    color: rgba(245, 243, 238, 0.9);
+}
+
+.char-viewer-body {
+    padding: 32px 24px;
+}
+
+.char-viewer-placeholder {
+    color: rgba(245, 243, 238, 0.35);
+    font-size: 13px;
+    text-align: center;
+    margin: 0;
+}
 .chars-disclaimer {
+/* rarity color palette */
     grid-column: 1 / -1;
     text-align: right;
     font-size: 10px;

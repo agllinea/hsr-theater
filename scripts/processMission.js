@@ -2,217 +2,87 @@
 
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
 
-// enable ts imports
-import "ts-node/register";
+const CHARACTERS_INDEX = path.resolve("public/characters/index.txt");
+const SCRIPTS_INDEX = path.resolve("public/scripts/index.txt");
+const SCRIPTS_CONTENT_DIR = path.resolve("public/scripts/content");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Parse characters/index.txt → { chineseName: charId }
+// Each block: line1=ID|Name|Rarity|sort, line2=VA, line3=fractions, line4=card, line5=avatar
+function parseCharacters(text) {
+  const nameToId = {};
+  for (const block of text.split(/\r?\n\r?\n/)) {
+    const firstLine = block.trim().split(/\r?\n/)[0];
+    if (!firstLine) continue;
+    const parts = firstLine.split("|");
+    if (parts.length < 2) continue;
+    nameToId[parts[1].trim()] = parts[0].trim();
+  }
+  return nameToId;
+}
 
-// paths
-const ACTORS_PATH = path.resolve("src/react-app/assets/actors.ts");
-const SCRIPTS_PATH = path.resolve("src/react-app/assets/scripts.ts");
-const MD_DIR = path.resolve("public/scripts");
-
-// dynamic imports
-import { pathToFileURL } from "url";
-
-const { actors_by_fraction } = await import(pathToFileURL(ACTORS_PATH).href);
-
-const { scripts } = await import(pathToFileURL(SCRIPTS_PATH).href);
-
-// flatten actors
-const actors = Object.values(actors_by_fraction).flat();
-
-// helper
-const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-
-function stripMarkdownAndHtml(text) {
-  return (
-    text
-      // remove HTML tags
-      .replace(/<[^>]*>/g, "")
-
-      // remove code blocks
-      .replace(/```[\s\S]*?```/g, "")
-      .replace(/`[^`]*`/g, "")
-
-      // remove markdown images & links, keep text
-      .replace(/!\[.*?\]\(.*?\)/g, "")
-      .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
-
-      // remove headings, blockquotes, emphasis, lists
-      .replace(/^#{1,6}\s*/gm, "")
-      .replace(/^>\s*/gm, "")
-      .replace(/[*_~]+/g, "")
-      .replace(/^\s*[-+*]\s+/gm, "")
-
-      // normalize whitespace
-      .replace(/\s+/g, "")
-      .trim()
+// Find all characters mentioned as speakers ({name}：) in md content
+function findCharacters(content, nameToId) {
+  const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pattern = new RegExp(
+    `(${Object.keys(nameToId).map(escapeRegExp).join("|")})：`,
+    "g"
   );
-}
-
-function getPlainTalkAmount(content) {
-  const lines = content.split(/\r?\n/);
-
-  const sectionPairs = [
-    { start: "###### PPT对话开始", end: "###### PPT对话结束" },
-    { start: "###### 站桩对话开始", end: "###### 站桩对话结束" },
-  ];
-
-  let inSection = false;
-  let activeEnd = null;
-
-  let sectionText = "";
-  let fullText = "";
-
-  for (const line of lines) {
-    fullText += line + "\n";
-
-    const startMatch = sectionPairs.find((p) => line.startsWith(p.start));
-    if (startMatch) {
-      inSection = true;
-      activeEnd = startMatch.end;
-      continue;
-    }
-
-    if (inSection && line.startsWith(activeEnd)) {
-      inSection = false;
-      activeEnd = null;
-      continue;
-    }
-
-    if (inSection) {
-      sectionText += line + "\n";
-    }
-  }
-
-  const cleanSection = stripMarkdownAndHtml(sectionText);
-  const cleanFull = stripMarkdownAndHtml(fullText);
-
-  if (!cleanFull.length) return 0;
-
-  return Number(((cleanSection.length / cleanFull.length) * 100).toFixed(2));
-}
-
-function getVideoNames(content) {
-  const regex = /^>\s*播放短片「(.+?)」/gm;
-  const names = [];
+  const found = new Set();
   let match;
-
-  while ((match = regex.exec(content)) !== null) {
-    names.push(match[1]);
+  while ((match = pattern.exec(content)) !== null) {
+    found.add(nameToId[match[1]]);
   }
-
-  return names;
+  return [...found];
 }
-function getTotalTalkLineCount(content) {
-  return content.split(/\r?\n/).filter((line) => line.startsWith("* ")).length;
-}
-function getPlainTalkLineCount(content) {
-  const lines = content.split(/\r?\n/);
 
-  const sectionPairs = [
-    { start: "###### PPT对话开始", end: "###### PPT对话结束" },
-    { start: "###### 站桩对话开始", end: "###### 站桩对话结束" },
-  ];
+const nameToId = parseCharacters(fs.readFileSync(CHARACTERS_INDEX, "utf-8"));
 
-  let inSection = false;
-  let activeEnd = null;
-  let count = 0;
+const scriptText = fs.readFileSync(SCRIPTS_INDEX, "utf-8");
+const useCRLF = scriptText.includes("\r\n");
+const NL = useCRLF ? "\r\n" : "\n";
 
-  for (const line of lines) {
-    // section start
-    const startMatch = sectionPairs.find((p) => line.startsWith(p.start));
-    if (startMatch) {
-      inSection = true;
-      activeEnd = startMatch.end;
-      continue;
-    }
-
-    // section end
-    if (inSection && line.startsWith(activeEnd)) {
-      inSection = false;
-      activeEnd = null;
-      continue;
-    }
-
-    // count bullet talk lines
-    if (inSection && line.startsWith("* ")) {
-      count++;
-    }
+// Parse into blocks (arrays of non-empty lines), preserving order
+const rawLines = scriptText.split(/\r?\n/);
+const blocks = [];
+let i = 0;
+while (i < rawLines.length) {
+  if (!rawLines[i].trim()) { i++; continue; }
+  const block = [];
+  while (i < rawLines.length && rawLines[i].trim()) {
+    block.push(rawLines[i]);
+    i++;
   }
-
-  return count;
+  blocks.push(block);
 }
-// process scripts
-const updatedScripts = scripts.map((script) => {
-  const mdPath = path.join(MD_DIR, `${script.id}.md`);
+
+// Update each block's 4th line with discovered characters (line 3 is now tag)
+const updatedBlocks = blocks.map((block) => {
+  const idMatch = block[0].match(/^(\d+)\|/);
+  if (!idMatch) return block;
+
+  const scriptId = idMatch[1];
+  const mdPath = path.join(SCRIPTS_CONTENT_DIR, `${scriptId}.md`);
 
   if (!fs.existsSync(mdPath)) {
-    console.warn(`⚠️  Missing md: ${script.id}.md`);
-    return script;
+    console.warn(`⚠️  Missing md: ${scriptId}.md`);
+    return block;
   }
 
-  const content = fs.readFileSync(mdPath, "utf-8");
-
-  const matchedActors = script.lock
-    ? script.actors
-    : Array.from(
-        new Set(
-          content.match(
-            new RegExp(
-              `(${actors.map((a) => escapeRegExp(a.name)).join("|")})`,
-              "g"
-            )
-          ) || []
-        )
-      )
-        .map((name) => actors.find((a) => a.name === name).id);
-
-  const totalTalkLineCount = getTotalTalkLineCount(content);
-  const plainTalkLineCount = getPlainTalkLineCount(content);
-
-  return {
-    ...script,
-    actors: [...new Set(matchedActors)],
-    clips: getVideoNames(content),
-    lock: false,
-    stats: {
-      totalTalkLineCount: totalTalkLineCount,
-      plainTalkAmount:
-        totalTalkLineCount === 0
-          ? 0
-          : Number(
-              ((plainTalkLineCount / totalTalkLineCount) * 100).toFixed(2),
-            ),
-    },
-  };
+  const characters = findCharacters(fs.readFileSync(mdPath, "utf-8"), nameToId);
+  if (!characters.includes("Trailblazer")) characters.unshift("Trailblazer");
+  const out = [block[0], block[1]];
+  if (block[2]) out.push(block[2]); // preserve tag line
+  if (characters.length > 0) out.push(characters.join("|"));
+  return out;
 });
 
-// rewrite scripts.ts
-const output = `export interface Script {
-  id: string;
-  chapter: string;
-  title: string;
-  status: string;
-  desc?: string;
-  actors?: string[];
-  clips?: string[];
-  lock?: boolean;
-  stats?: {
-    totalTalkLineCount: number;
-    plainTalkAmount: number;
-  };
-}
+fs.writeFileSync(
+  SCRIPTS_INDEX,
+  updatedBlocks.map((b) => b.join(NL)).join(NL + NL),
+  "utf-8"
+);
 
-export const scripts: Script[] = ${JSON.stringify(updatedScripts, null, 2)};
-`;
-
-fs.writeFileSync(SCRIPTS_PATH, output, "utf-8");
-
-console.log("✅ scripts.ts actors updated");
+console.log("✅ scripts/index.txt characters updated");
 
 // node scripts/processMission.js

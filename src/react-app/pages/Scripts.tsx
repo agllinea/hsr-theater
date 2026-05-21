@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { PaletteIcon, X, ChevronRight } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import { PaletteIcon, FilterIcon, X, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -98,10 +98,28 @@ function ScriptRow({ item, chars_map, onClick }: { item: Script; chars_map: Reco
     );
 }
 
+function TagFilter({ tags, selected, onToggle }: { tags: string[]; selected: string | null; onToggle: (t: string) => void }) {
+    return (
+        <div className="script-tag-filter">
+            {tags.map((t) => (
+                <button
+                    key={t}
+                    className={`script-tag${selected === t ? " script-tag--active" : ""}`}
+                    onClick={() => onToggle(t)}
+                >
+                    {t}
+                </button>
+            ))}
+        </div>
+    );
+}
+
 export default function Scripts() {
     const [index, setIndex] = useState<Script[]>([]);
     const [chars_map, setCharsMap] = useState<Record<string, Character>>({});
     const [colorActive, setColorActive] = useState(false);
+    const [filterActive, setFilterActive] = useState(false);
+    const [selectedTag, setSelectedTag] = useState<string | null>(null);
     const [activeScript, setActiveScript] = useState<Script | null>(null);
 
     useEffect(() => {
@@ -111,11 +129,31 @@ export default function Scripts() {
         );
     }, []);
 
+    const allTags = useMemo(() => {
+        const seen = new Set<string>();
+        index.forEach((s) => s.tags?.forEach((t) => seen.add(t)));
+        return [...seen];
+    }, [index]);
+
+    const filteredIndex = selectedTag === null ? index : index.filter((s) => s.tags?.includes(selectedTag));
+
     const toolbarItems = [
         {
             icon: <PaletteIcon size={16} />,
             isActive: colorActive,
             onClick: () => setColorActive((v) => !v),
+        },
+        {
+            icon: <FilterIcon size={16} />,
+            isActive: filterActive,
+            onClick: () => setFilterActive((v) => !v),
+            dropdownPanel: (
+                <TagFilter
+                    tags={allTags}
+                    selected={selectedTag}
+                    onToggle={(t) => setSelectedTag((prev) => prev === t ? null : t)}
+                />
+            ),
         },
     ];
 
@@ -128,7 +166,7 @@ export default function Scripts() {
                     <motion.div key="list" className="scripts-list-wrapper" {...fade}>
                         <Toolbar items={toolbarItems} />
                         <div className={`scripts-list${colorActive ? " scripts-list--palette" : ""}`}>
-                            {index.map((item, i) => (
+                            {filteredIndex.map((item, i) => (
                                 <ScriptRow key={i} item={item} chars_map={chars_map} onClick={() => setActiveScript(item)} />
                             ))}
                         </div>

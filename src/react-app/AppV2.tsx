@@ -32,7 +32,7 @@ const useAppStore = create<AppState>((set) => ({
 
 const CONTENT: Record<Tab, ReactNode> = {
   roles: <Characters />,
-  scripts:<Scripts />,
+  scripts: <Scripts />,
   shorts: <Clips />,
 };
 
@@ -74,8 +74,10 @@ function MainContent() {
           >
             {CONTENT[activeTab]}
             <footer className="site-footer">
-              <p>本站展示的角色、剧本与短片版权归米哈游所有。角色的排序、稀有度标注与收录范围，以及剧本、短片的展示选择，均出于作者个人喜好，不代表任何官方立场。</p>
-              <p>如有冒犯——那你是对的，我道歉。</p>
+              <div className="site-footer-inner">
+                <p>本站展示的角色、剧本与短片版权归米哈游所有。角色的排序、稀有度标注与收录范围，以及剧本、短片的展示选择，均出于作者个人喜好，不代表任何官方立场。</p>
+                <p>如有冒犯——那你是对的，我道歉。</p>
+              </div>
             </footer>
           </motion.div>
         </AnimatePresence>
@@ -88,7 +90,7 @@ function MainContent() {
 
 // Slim upward arrow-crystal: narrow shoulders, elongated body, shallow V-notch
 const CRYSTAL_BASE = [
-  [50,  2],  // top apex
+  [50, 2],  // top apex
   [78, 44],  // right shoulder (waist)
   [72, 94],  // right base
   [50, 82],  // bottom notch (shallow)

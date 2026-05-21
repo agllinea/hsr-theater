@@ -1,10 +1,35 @@
 import { useState, useEffect, useMemo } from "react";
-import { PaletteIcon, FilterIcon } from "lucide-react";
+import { PaletteIcon, FilterIcon, X } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Character, fetchCharacters } from "../types/character";
 import { Toolbar } from "../components/Toolbar";
 import { fractions } from "../assets/fractions";
 
 import "./Characters.css";
+
+const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.25 } };
+
+function CharacterViewer({ char, onClose }: { char: Character; onClose: () => void }) {
+    useEffect(() => {
+        const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [onClose]);
+
+    return (
+        <motion.div className="char-viewer" {...fade}>
+            <div className="char-viewer-header">
+                <span className="char-viewer-title">{char.name}</span>
+                <button className="char-viewer-close" onClick={onClose}>
+                    <X size={20} />
+                </button>
+            </div>
+            <div className="char-viewer-body">
+                <p className="char-viewer-placeholder">这个角色还没有专属的页面哦~</p>
+            </div>
+        </motion.div>
+    );
+}
 
 function FactionFilter({
     factions,
@@ -30,10 +55,10 @@ function FactionFilter({
     );
 }
 
-function CharacterCard({ char }: { char: Character }) {
+function CharacterCard({ char, onClick }: { char: Character; onClick: () => void }) {
     const card = char.img?.card ?? "";
     return (
-        <span className="char-card" data-rarity={char.rarity}>
+        <span className="char-card" data-rarity={char.rarity} onClick={onClick}>
             <div className="char-card-image char-card-image--color" style={{ backgroundImage: `url("${card}")` }} />
             <div className="char-card-image char-card-image--bw" style={{ backgroundImage: `url("${card}")` }} />
             <div className="char-card-hover-bg" />
@@ -52,6 +77,7 @@ export default function Characters() {
     const [colorActive, setColorActive] = useState(false);
     const [filterActive, setFilterActive] = useState(false);
     const [selectedFaction, setSelectedFaction] = useState<string | null>(null);
+    const [activeChar, setActiveChar] = useState<Character | null>(null);
 
     useEffect(() => {
         fetchCharacters().then(setChars);
@@ -93,12 +119,20 @@ export default function Characters() {
 
     return (
         <section className="chars-section">
-            <Toolbar items={toolbarItems} />
-            <section className={`chars-grid${colorActive ? " chars-grid--palette" : ""}`}>
-                {filteredChars.map((char) => (
-                    <CharacterCard key={char.id} char={char} />
-                ))}
-            </section>
+            <AnimatePresence mode="wait">
+                {activeChar ? (
+                    <CharacterViewer key="viewer" char={activeChar} onClose={() => setActiveChar(null)} />
+                ) : (
+                    <motion.div key="grid" className="chars-grid-wrapper" {...fade}>
+                        <Toolbar items={toolbarItems} />
+                        <section className={`chars-grid${colorActive ? " chars-grid--palette" : ""}`}>
+                            {filteredChars.map((char) => (
+                                <CharacterCard key={char.id} char={char} onClick={() => setActiveChar(char)} />
+                            ))}
+                        </section>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }
