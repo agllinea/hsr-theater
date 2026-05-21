@@ -9,7 +9,7 @@
   font-family: var(--font-body);
   font-size: 13px;
   letter-spacing: 0.08em;
-  color: rgba(245, 243, 238, 0.45);
+  color: rgb(var(--white-rgb) / 0.45);
   background: none;
   border: none;
   cursor: pointer;
@@ -33,7 +33,7 @@
 }
 
 .nav-btn:focus-visible {
-  box-shadow: 0 0 0 2px rgba(200, 185, 154, 0.55);
+  box-shadow: 0 0 0 2px rgb(var(--accent-rgb) / 0.55);
 }
 
 .nav-btn__crystal {
@@ -55,7 +55,7 @@
   right: 10px;
   bottom: 6px;
   height: 14px;
-  background: rgba(200, 185, 154, 0.38);
+  background: rgb(var(--accent-rgb) / 0.38);
   /* wavy top edge simulating a hand-drawn highlighter stroke */
   clip-path: polygon(
     0% 55%,

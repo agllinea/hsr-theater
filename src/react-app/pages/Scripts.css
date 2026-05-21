@@ -41,9 +41,9 @@
 .script-tag {
     padding: 3px 10px;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid rgb(var(--white-rgb) / 0.2);
     background: transparent;
-    color: rgba(255, 255, 255, 0.45);
+    color: rgb(var(--white-rgb) / 0.45);
     font-size: 12px;
     cursor: pointer;
     transition: border-color 0.15s, color 0.15s, background 0.15s;
@@ -52,23 +52,27 @@
 }
 
 .script-tag:hover {
-    border-color: rgba(255, 255, 255, 0.35);
-    color: rgba(255, 255, 255, 0.85);
+    border-color: rgb(var(--white-rgb) / 0.5);
+    color: rgb(var(--white-rgb) / 0.85);
 }
 
 .script-tag--active {
-    border-color: rgba(255, 255, 255, 0.7);
-    color: white;
-    background: rgba(255, 255, 255, 0.08);
+    border-color: rgb(var(--white-rgb) / 0.7);
+    color: var(--white);
+    background: rgb(var(--white-rgb) / 0.08);
 }
 
 /* row */
 
 .script-item {
-    border-left: 4px solid rgba(255, 255, 255, 0.4);
-    cursor: default;
-    overflow: hidden;
+    border-left: 4px solid rgb(var(--white-rgb) / 0.4);
     cursor: pointer;
+    overflow: hidden;
+    background: rgb(var(--white-rgb) / 0.06);
+}
+
+.script-item:not(:hover) {
+    
 }
 .script-row {
     position: relative;
@@ -80,7 +84,7 @@
 .script-hover-bg {
     position: absolute;
     inset: 0;
-    background: rgba(245, 243, 238, 0.04);
+    background: rgb(var(--white-rgb) / 0.04);
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--reveal-duration) ease;
@@ -135,7 +139,7 @@
 .txt-c {
     font-family: "Amphoreus", serif;
     letter-spacing: 0.05em;
-    color: rgba(245, 243, 238, 0.75);
+    color: rgb(var(--white-rgb) / 0.75);
     opacity: 1;
     font-size: 18px;
 }
@@ -144,7 +148,7 @@
     position: absolute;
     inset: 0;
     opacity: 0;
-    color: rgba(245, 243, 238, 0.9);
+    color: rgb(var(--white-rgb) / 0.9);
     font-size: 11px;
 }
 
@@ -156,6 +160,7 @@
 .script-item:hover .txt-d,
 .scripts-list--palette .script-item .txt-d {
     opacity: 1;
+    color: rgba(245, 243, 238, 0.9);
 }
 
 .script-cell--title .txt-c {
@@ -216,7 +221,7 @@
     padding: 4px;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid rgba(245, 243, 238, 0.1);
+    border-bottom: 1px solid rgb(var(--white-rgb) / 0.1);
     flex-shrink: 0;
 }
 
@@ -224,20 +229,20 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    color: rgba(245, 243, 238, 0.55);
+    color: rgb(var(--white-rgb) / 0.55);
     font-size: 13px;
     letter-spacing: 0.04em;
 }
 
 .script-viewer-breadcrumb span:last-child {
-    color: rgba(245, 243, 238, 0.9);
+    color: rgb(var(--white-rgb) / 0.9);
 }
 
 .script-viewer-close {
     background: none;
     border: none;
     cursor: pointer;
-    color: rgba(245, 243, 238, 0.5);
+    color: rgb(var(--white-rgb) / 0.5);
     padding: 4px;
     display: flex;
     align-items: center;
@@ -245,18 +250,18 @@
 }
 
 .script-viewer-close:hover {
-    color: rgba(245, 243, 238, 0.9);
+    color: rgb(var(--white-rgb) / 0.9);
 }
 
 .script-viewer-body {
     padding: 0px 24px;
-    color: rgba(245, 243, 238, 0.85);
+    color: rgb(var(--white-rgb) / 0.85);
     font-size: 14px;
     line-height: 1.8;
 }
 
 .script-viewer-loading {
-    color: rgba(245, 243, 238, 0.3);
+    color: rgb(var(--white-rgb) / 0.3);
     padding: 24px 0;
 }
 
@@ -264,7 +269,7 @@
 .script-viewer-body h2,
 .script-viewer-body h3 {
     font-family: "Amphoreus", serif;
-    color: rgba(245, 243, 238, 0.95);
+    color: rgb(var(--white-rgb) / 0.95);
     margin: 1.5em 0 0.5em;
     font-weight: normal;
     letter-spacing: 0.05em;
@@ -283,9 +288,9 @@
 .script-viewer-body blockquote:has(> blockquote) {
     margin: 0.6em 0;
     padding: 6px 16px;
-    border-left: 2px solid rgba(245, 243, 238, 0.2);
+    border-left: 2px solid rgb(var(--white-rgb) / 0.2);
     background: none;
-    color: rgba(245, 243, 238, 0.6);
+    color: rgb(var(--white-rgb) / 0.6);
 }
 
 /* the > > xxx first line — highlighted stage direction label */
@@ -310,15 +315,15 @@
 
 .script-viewer-body hr {
     border: none;
-    border-top: 1px solid rgba(245, 243, 238, 0.12);
+    border-top: 1px solid rgb(var(--white-rgb) / 0.12);
     margin: 1.5em 0;
 }
 
 .script-viewer-body em {
-    color: rgba(245, 243, 238, 0.5);
+    color: rgb(var(--white-rgb) / 0.5);
     font-style: italic;
 }
 
 .script-viewer-body ruby rt {
-    color: rgba(245, 243, 238, 0.45);
+    color: rgb(var(--white-rgb) / 0.45);
 }

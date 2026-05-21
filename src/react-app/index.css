@@ -1,31 +1,54 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* ─── Dark theme (default) ───────────────────────────────────────────────── */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  --bg-normal: rgba(255, 255, 255, 0.1);
-  --bg-active: rgba(255, 255, 255, 0.2);
-  --bg-accent: rgba(255, 240, 178, 0.1);
-
-  --card-cte: 86 145 202;
-  --card-ctb: 195 84 84;
-  --card-ctd: 201 114 84;
-  --card-ctc: 206 163 106;
-  --card-cta: 255 255 255;
-  
-  --card-ctf: 99 99 99;
-  --card-bg-normal: var(--bg-normal);
-
+  /* ─── Timing ───────────────────────────────── */
   --reveal-duration: 1s;
+
+  /* ─── Base palette ─────────────────────────── */
+  --black:     #0e0d0c;
+  --white:     #f5f3ee;
+  --ink:       #1a1917;
+  --muted:     rgba(26, 25, 23, 0.42);
+  --border:    rgba(26, 25, 23, 0.12);
+  --accent:    #c8b99a;
+
+  /* rgb components for rgba usage */
+  --black-rgb:  14 13 12;
+  --white-rgb:  245 243 238;
+  --accent-rgb: 200 185 154;
+
+  /* ─── Character rarity ─────────────────────── */
+  --card-color-ur:  233 233 233;
+  --card-color-ssr: 170 140 75;
+  --card-color-sr:  125 95 155;
+  --card-color-r:   75 110 155;
+  --card-color-n:   75 135 100;
+
+  --card-bw-filter: grayscale(1) invert(0.6) opacity(0.3);
+}
+
+/* ─── Light theme ────────────────────────────────────────────────────────── */
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --black:     #f5f3ee;
+  --white:     #1a1917;
+  --ink:       #e8e3d8;
+  --muted:     rgba(26, 25, 23, 0.45);
+  --border:    rgba(26, 25, 23, 0.14);
+  --accent:    #8a6730;
+
+  --black-rgb:  245 243 238;
+  --white-rgb:  26 25 23;
+  --accent-rgb: 138 103 48;
+
+  --card-color-ur: 99 99 99;
+
+  --card-bw-filter: grayscale(1) invert(0.5) opacity(0.2);
 }
 
 svg.lucide {
@@ -38,36 +61,12 @@ body {
   padding: 0;
   width: 100%;
   height: 100%;
-  /* overflow: hidden; */
-  /* 🚫 no body scroll */
 }
 
 #root {
   width: 100%;
   height: 100dvh;
-  /* ✅ dynamic viewport height */
   position: relative;
-  /* overflow: hidden; */
-}
-
-.page {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  /* ✅ page-level scrolling */
-  overflow-x: hidden;
-
-  /* Optional but recommended */
-  overscroll-behavior: contain;
-  /* prevents scroll chaining */
-  -webkit-overflow-scrolling: touch;
-  /* smooth iOS scroll */
-}
-
-.subpage {
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
 }
 
 @supports not (height: 100dvh) {
@@ -75,95 +74,3 @@ body {
     height: 100vh;
   }
 }
-
-.page {
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-  position: absolute;
-  inset: 0;
-}
-
-.text-default {
-  color: rgb(15, 15, 15);
-}
-
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(24, 24, 24);
-}
-
-.loading-container svg {
-  width: 400px;
-  max-width: 75vw;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-.bw {
-  /* background-color: white; */
-}
-
-.main-container {
-  /* background-color: white; */
-  color: white;
-  flex-direction: column;
-}
-
-.main-container svg {
-  width: 400px;
-  max-width: 75vw;
-}
-
-.main-container > span {
-  font-size: 14px;
-  padding-bottom: 10vh;
-  gap: 10px;
-}
-
-.title {
-  color: white;
-  font-size: 24px;
-}
-
-.t0 {
-  display: flex;
-  /* flex: .5; */
-}
-
-.t1 {
-  display: flex;
-  gap: 4em;
-  flex-wrap: wrap;
-  max-width: 60vw;
-}
-
-.t1 span {
-  background-color: rgba(255, 255, 255, 0.368);
-  padding: 0.5em 2em;
-  width: fit-content;
-  border-radius: 1rem;
-}
-
-@keyframes handwriting {
-  from {
-    stroke-dashoffset: inherit;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-/* .handwriting-svg path {
-  stroke-dasharray: 9999;
-  stroke-dashoffset: 9999;
-  visibility: hidden;
-} */

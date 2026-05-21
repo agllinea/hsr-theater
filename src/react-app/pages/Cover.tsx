@@ -1,12 +1,15 @@
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { SunIcon, MoonIcon } from "lucide-react";
 import "./Cover.css";
 
 interface CoverProps {
     onLeave: () => void;
+    theme: "dark" | "light";
+    onToggleTheme: () => void;
 }
 
-export default function Cover({ onLeave }: CoverProps) {
+export default function Cover({ onLeave, theme, onToggleTheme }: CoverProps) {
     const triggered = useRef(false);
 
     useEffect(() => {
@@ -31,6 +34,11 @@ export default function Cover({ onLeave }: CoverProps) {
         >
             {/* grain overlay */}
             <div className="cover__grain" aria-hidden />
+
+            {/* theme toggle */}
+            <button className="cover__theme-toggle" onClick={onToggleTheme} aria-label="Toggle theme">
+                {theme === "dark" ? <SunIcon size={18} /> : <MoonIcon size={18} />}
+            </button>
 
             {/* center text */}
             <motion.div

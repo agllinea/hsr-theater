@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
+import { useTheme } from "../hooks/useTheme";
 import "./HeaderNav.css";
 
 export type Tab = "roles" | "scripts" | "shorts";
@@ -33,6 +34,9 @@ function generateCrystalPoints(): string {
 // ─── Crystal background ───────────────────────────────────────────────────────
 
 function CrystalBg({ points }: { points: string }) {
+  const theme = useTheme();
+  const c = theme === "dark" ? "255,255,255" : "26,25,23";
+
   return (
     <motion.div
       className="nav-btn__crystal"
@@ -45,23 +49,18 @@ function CrystalBg({ points }: { points: string }) {
         style={{ width: "100%", height: "100%" }}
         animate={{
           filter: [
-            "drop-shadow(0 0 1.5px rgba(255,255,255,0.2))",
-            "drop-shadow(0 0 7px rgba(255,255,255,0.75)) drop-shadow(0 0 14px rgba(255,255,255,0.2))",
-            "drop-shadow(0 0 1.5px rgba(255,255,255,0.2))",
+            `drop-shadow(0 0 1.5px rgba(${c},0.2))`,
+            `drop-shadow(0 0 7px rgba(${c},0.75)) drop-shadow(0 0 14px rgba(${c},0.2))`,
+            `drop-shadow(0 0 1.5px rgba(${c},0.2))`,
           ],
         }}
         transition={{ filter: { repeat: Infinity, duration: 2.8, ease: "easeInOut" } }}
       >
-        <svg
-          viewBox="0 0 100 40"
-          width="100%"
-          height="100%"
-          style={{ overflow: "visible" }}
-        >
+        <svg viewBox="0 0 100 40" width="100%" height="100%" style={{ overflow: "visible" }}>
           <polygon
             points={points}
-            fill="rgba(255,255,255,0.05)"
-            stroke="rgba(255,255,255,0.88)"
+            fill={`rgba(${c},0.05)`}
+            stroke={`rgba(${c},0.88)`}
             strokeWidth={0.75}
           />
         </svg>

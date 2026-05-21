@@ -26,20 +26,20 @@
     border-radius: 7px;
     border: none;
     background: transparent;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgb(var(--white-rgb) / 0.4);
     cursor: pointer;
     transition: color 0.18s, background 0.18s;
     flex-shrink: 0;
 }
 
 .toolbar-btn:hover {
-    color: rgba(255, 255, 255, 0.9);
-    background: rgba(255, 255, 255, 0.08);
+    color: rgb(var(--white-rgb) / 0.9);
+    background: rgb(var(--white-rgb) / 0.08);
 }
 
 .toolbar-btn--active {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    background: rgb(var(--white-rgb) / 0.1);
 }
 
 .toolbar-btn__icon {
@@ -55,11 +55,11 @@
 .toolbar__dropdown {
     margin-top: 3px;
     border-radius: 10px;
-    /* border: 1px solid rgba(255, 255, 255, 0.09); */
-    background: rgba(12, 12, 18, 0.88);
+    background: rgb(var(--black-rgb) / 0.88);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
     overflow: hidden;
+    border: 1px solid rgb(var(--white-rgb) / 0.08);
 }
 
 .toolbar__panel-inner {

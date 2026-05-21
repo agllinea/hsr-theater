@@ -65,7 +65,7 @@
 }
 
 .char-card-image--bw {
-    filter: grayscale(1) invert(0.6) opacity(0.3);
+    filter: var(--card-bw-filter);
     z-index: 1;
 }
 
@@ -121,7 +121,7 @@
 }
 
 .char-card-flash--id {
-    background: linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.5) 100%);
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.5) 100%);
     opacity: 1;
 }
 
@@ -159,15 +159,6 @@
     font-size: 11px;
     letter-spacing: 0.03em;
     color: white;
-}
-
-/* rarity color palette */
-:root {
-    --card-color-ur: 233 233 233;
-    --card-color-ssr: 170 140 75;
-    --card-color-sr: 125 95 155;
-    --card-color-r: 75 110 155;
-    --card-color-n: 75 135 100;
 }
 
 /* rarity — gradient on --name flash, appears with name on hover */

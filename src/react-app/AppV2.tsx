@@ -14,18 +14,32 @@ import Cover from "./pages/Cover";
 
 // ─── Store ────────────────────────────────────────────────────────────────────
 
+type Theme = "dark" | "light";
+
 interface AppState {
   phase: "cover" | "main";
   activeTab: Tab;
+  theme: Theme;
   setPhase: (p: "cover" | "main") => void;
   setTab: (t: Tab) => void;
+  toggleTheme: () => void;
 }
+
+const savedTheme = (localStorage.getItem("theme") as Theme | null) ?? "dark";
 
 const useAppStore = create<AppState>((set) => ({
   phase: "cover",
   activeTab: "roles",
+  theme: savedTheme,
   setPhase: (phase) => set({ phase }),
   setTab: (activeTab) => set({ activeTab }),
+  toggleTheme: () =>
+    set((s) => {
+      const next: Theme = s.theme === "dark" ? "light" : "dark";
+      localStorage.setItem("theme", next);
+      document.documentElement.dataset.theme = next;
+      return { theme: next };
+    }),
 }));
 
 // ─── Content map ──────────────────────────────────────────────────────────────
@@ -168,12 +182,18 @@ function ScrollToTop() {
 export default function AppV2() {
   const phase = useAppStore((s) => s.phase);
   const setPhase = useAppStore((s) => s.setPhase);
+  const theme = useAppStore((s) => s.theme);
+  const toggleTheme = useAppStore((s) => s.toggleTheme);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
 
   return (
     <div className={clsx("app", phase === "cover" && "app--cover-mode")}>
       <AnimatePresence mode="wait">
         {phase === "cover" ? (
-          <Cover key="cover" onLeave={() => setPhase("main")} />
+          <Cover key="cover" onLeave={() => setPhase("main")} theme={theme} onToggleTheme={toggleTheme} />
         ) : (
           <motion.div
             key="main"

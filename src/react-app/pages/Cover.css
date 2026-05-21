@@ -34,8 +34,7 @@
   font-size: 11px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--muted);
-  color: rgba(245, 243, 238, 0.38);
+  color: rgb(var(--white-rgb) / 0.38);
 }
 
 .cover__title {
@@ -48,8 +47,8 @@
   color: var(--white);
   /* fine horizontal rule above + below */
   padding: 0.3em 0;
-  border-top: 0.5px solid rgba(245, 243, 238, 0.15);
-  border-bottom: 0.5px solid rgba(245, 243, 238, 0.15);
+  border-top: 0.5px solid rgb(var(--white-rgb) / 0.15);
+  border-bottom: 0.5px solid rgb(var(--white-rgb) / 0.15);
 }
 
 /* ─── Scroll hint ──────────────────────────────────────────────────────── */
@@ -71,13 +70,13 @@
   font-size: 10px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(245, 243, 238, 0.3);
+  color: rgb(var(--white-rgb) / 0.3);
 }
 
 .cover__hint-track {
   width: 1px;
   height: 38px;
-  background: rgba(245, 243, 238, 0.14);
+  background: rgb(var(--white-rgb) / 0.14);
   border-radius: 999px;
   position: relative;
   overflow: hidden;
@@ -86,9 +85,30 @@
 .cover__hint-dot {
   width: 1px;
   height: 12px;
-  background: rgba(245, 243, 238, 0.55);
+  background: rgb(var(--white-rgb) / 0.55);
   border-radius: 999px;
   position: absolute;
   top: 0;
   left: 0;
+}
+
+/* ─── Theme toggle ─────────────────────────────────────────────────────────── */
+
+.cover__theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 2;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgb(var(--white-rgb) / 0.35);
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.cover__theme-toggle:hover {
+  color: rgb(var(--white-rgb) / 0.85);
 }
