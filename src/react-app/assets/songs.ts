@@ -67,7 +67,7 @@ export const songs: Song[] = [
     },
     {
         title: "昔涟",
-        subtitle: "“往昔的涟漪 Ripples of Past Reverie”",
+        subtitle: "Ripples of Past Reverie",
         cover: "Ripples of Past Reverie",
         lyrics: `[ti:昔涟 (《崩坏：星穹铁道》昔涟动画短片中文单曲)]
 [ar:张韶涵/HOYO-MiX]

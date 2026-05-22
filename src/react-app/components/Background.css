@@ -1,0 +1,20 @@
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.background__image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+.background__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgb(var(--black-rgb) / 0.2);
+}

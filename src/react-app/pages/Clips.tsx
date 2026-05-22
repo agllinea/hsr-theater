@@ -15,17 +15,18 @@ function ClipViewer({ clip, onClose }: { clip: Clip; onClose: () => void }) {
     }, [onClose]);
 
     return (
-        <motion.div className="clip-viewer-overlay" {...fade} onClick={onClose}>
-            <div className="clip-viewer" onClick={(e) => e.stopPropagation()}>
-                <div className="clip-viewer-header">
-                    <span className="clip-viewer-title">{clip.title}</span>
-                    <button className="clip-viewer-close" onClick={onClose}>
-                        <X size={20} />
-                    </button>
-                </div>
-                <div className="clip-viewer-body">
-                    <iframe width="100%" height="100%" src={`//player.bilibili.com/player.html?isOutside=true&${clip.previewUrl}`} allowFullScreen></iframe>
-                </div>
+        <motion.div className="clip-viewer" {...fade}>
+            <div className="clip-viewer-header">
+                <span className="clip-viewer-title">{clip.title}</span>
+                <button className="clip-viewer-close" onClick={onClose}>
+                    <X size={20} />
+                </button>
+            </div>
+            <div className="clip-viewer-body">
+                <iframe
+                    src={`//player.bilibili.com/player.html?isOutside=true&${clip.previewUrl}`}
+                    allowFullScreen
+                />
             </div>
         </motion.div>
     );
@@ -54,11 +55,11 @@ function ClipCard({ clip, onClick }: { clip: Clip; onClick: () => void }) {
 
 function TagFilter({ tags, selected, onToggle }: { tags: string[]; selected: string | null; onToggle: (t: string) => void }) {
     return (
-        <div className="clip-tag-filter">
+        <div className="tag-filter">
             {tags.map((t) => (
                 <button
                     key={t}
-                    className={`clip-tag${selected === t ? " clip-tag--active" : ""}`}
+                    className={`tag${selected === t ? " tag--active" : ""}`}
                     onClick={() => onToggle(t)}
                 >
                     {t}
@@ -109,15 +110,18 @@ export default function Clips() {
 
     return (
         <section className="clips-section">
-            <Toolbar items={toolbarItems} />
-            <section className={`clips-grid${colorActive ? " clips-grid--palette" : ""}`}>
-                {filteredClips.map((clip) => (
-                    <ClipCard key={clip.id} clip={clip} onClick={() => setActiveClip(clip)} />
-                ))}
-            </section>
-            <AnimatePresence>
-                {activeClip && (
+            <AnimatePresence mode="wait">
+                {activeClip ? (
                     <ClipViewer key="viewer" clip={activeClip} onClose={() => setActiveClip(null)} />
+                ) : (
+                    <motion.div key="list" className="clips-grid-wrapper" {...fade}>
+                        <Toolbar items={toolbarItems} />
+                        <section className={`clips-grid${colorActive ? " clips-grid--palette" : ""}`}>
+                            {filteredClips.map((clip) => (
+                                <ClipCard key={clip.id} clip={clip} onClick={() => setActiveClip(clip)} />
+                            ))}
+                        </section>
+                    </motion.div>
                 )}
             </AnimatePresence>
         </section>

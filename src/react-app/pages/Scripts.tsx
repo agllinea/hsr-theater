@@ -100,11 +100,11 @@ function ScriptRow({ item, chars_map, onClick }: { item: Script; chars_map: Reco
 
 function TagFilter({ tags, selected, onToggle }: { tags: string[]; selected: string | null; onToggle: (t: string) => void }) {
     return (
-        <div className="script-tag-filter">
+        <div className="tag-filter">
             {tags.map((t) => (
                 <button
                     key={t}
-                    className={`script-tag${selected === t ? " script-tag--active" : ""}`}
+                    className={`tag${selected === t ? " tag--active" : ""}`}
                     onClick={() => onToggle(t)}
                 >
                     {t}

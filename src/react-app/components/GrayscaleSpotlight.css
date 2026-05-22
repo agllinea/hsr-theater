@@ -1,0 +1,8 @@
+.grayscale-spotlight {
+  position: fixed;
+  inset: 0;
+  backdrop-filter: grayscale(1);
+  -webkit-backdrop-filter: grayscale(1);
+  pointer-events: none;
+  z-index: 9999;
+}

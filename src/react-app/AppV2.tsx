@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import { create } from "zustand";
@@ -11,6 +11,10 @@ import Characters from "./pages/Characters";
 import Clips from "./pages/Clips";
 import Scripts from "./pages/Scripts";
 import Cover from "./pages/Cover";
+import { Background } from "./components/Background";
+import { useBackground } from "./hooks/useBackground";
+import { GrayscaleSpotlight } from "./components/GrayscaleSpotlight";
+import { useGrayscaleSpotlight } from "./hooks/useGrayscaleSpotlight";
 
 // ─── Store ────────────────────────────────────────────────────────────────────
 
@@ -100,6 +104,67 @@ function MainContent() {
   );
 }
 
+// ─── Cover crystal hint ───────────────────────────────────────────────────────
+
+const BTN_W = 224;
+const BTN_H = 62;
+
+function makeCrystal() {
+  const cx = BTN_W / 2, cy = BTN_H / 2;
+  const n = 6 + Math.floor(Math.random() * 2);
+  const pts: { x: number; y: number }[] = [];
+  for (let i = 0; i < n; i++) {
+    const base = (i / n) * Math.PI * 2 - Math.PI / 2;
+    const a = base + (Math.random() - 0.5) * (Math.PI / n) * 0.55;
+    const rx = cx * (0.88 + Math.random() * 0.12);
+    const ry = cy * (0.82 + Math.random() * 0.14);
+    pts.push({ x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry });
+  }
+  const fmt = (p: { x: number; y: number }) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+  return {
+    svgPoints: pts.map(fmt).join(" "),
+    clipPath: `polygon(${pts.map(p => `${p.x.toFixed(1)}px ${p.y.toFixed(1)}px`).join(", ")})`,
+  };
+}
+
+function ScrollCrystal() {
+  const shape = useRef(makeCrystal());
+  const { svgPoints, clipPath } = shape.current;
+  return (
+    <motion.div
+      className="cover__hint-crystal"
+      style={{ filter: "drop-shadow(0 6px 24px rgba(255,255,255,0.10)) drop-shadow(0 2px 8px rgba(0,0,0,0.28))" }}
+    >
+      <div
+        className="cover__hint-glass"
+        style={{
+          width: BTN_W, height: BTN_H, clipPath,
+          backdropFilter: "blur(22px) saturate(1.8) brightness(1.06)",
+          WebkitBackdropFilter: "blur(22px) saturate(1.8) brightness(1.06)",
+        }}
+      >
+        <svg viewBox={`0 0 ${BTN_W} ${BTN_H}`} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+          <defs>
+            <linearGradient id="lg-tint" x1="20%" y1="0%" x2="80%" y2="100%">
+              <stop offset="0%" stopColor="rgba(200,200,200,0.22)" />
+              <stop offset="100%" stopColor="rgba(200,200,200,0.05)" />
+            </linearGradient>
+            <linearGradient id="lg-sheen" x1="0%" y1="0%" x2="42%" y2="58%">
+              <stop offset="0%" stopColor="rgba(200,200,200,0.40)" />
+              <stop offset="100%" stopColor="rgba(200,200,200,0.00)" />
+            </linearGradient>
+          </defs>
+          <polygon points={svgPoints} fill="url(#lg-tint)" />
+          <polygon points={svgPoints} fill="url(#lg-sheen)" />
+          <polygon points={svgPoints} fill="none" stroke="rgba(255,255,255,0.50)" strokeWidth={1} />
+          <polygon points={svgPoints} fill="none" stroke="rgba(255,255,255,0.80)" strokeWidth={0.5} style={{ filter: "blur(0.3px)" }} />
+        </svg>
+        <span className="cover__hint-text">下划以继续</span>
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── Scroll to top ────────────────────────────────────────────────────────────
 
 // Slim upward arrow-crystal: narrow shoulders, elongated body, shallow V-notch
@@ -184,29 +249,66 @@ export default function AppV2() {
   const setPhase = useAppStore((s) => s.setPhase);
   const theme = useAppStore((s) => s.theme);
   const toggleTheme = useAppStore((s) => s.toggleTheme);
+  const { setBackground } = useBackground();
+  const setBurstFrom = useGrayscaleSpotlight((s) => s.setBurstFrom);
+  const setSpotlightEnabled = useGrayscaleSpotlight((s) => s.setEnabled);
+  const crystalRef = useRef<HTMLDivElement>(null);
+  const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => () => { if (leaveTimer.current) clearTimeout(leaveTimer.current); }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
+    setBackground(`/bg.jpg`);
   }, [theme]);
 
+  const handleLeave = () => {
+    if (crystalRef.current) {
+      const rect = crystalRef.current.getBoundingClientRect();
+      setBurstFrom({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
+    } else {
+      setSpotlightEnabled(false);
+    }
+    leaveTimer.current = setTimeout(() => setPhase("main"), 900);
+  };
+
   return (
-    <div className={clsx("app", phase === "cover" && "app--cover-mode")}>
-      <AnimatePresence mode="wait">
-        {phase === "cover" ? (
-          <Cover key="cover" onLeave={() => setPhase("main")} theme={theme} onToggleTheme={toggleTheme} />
-        ) : (
+    <>
+      <Background />
+      <GrayscaleSpotlight />
+      <AnimatePresence>
+        {phase === "cover" && (
           <motion.div
-            key="main"
+            className="cover__hint"
+            ref={crystalRef}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            style={{ width: "100%", minHeight: "100vh" }}
+            exit={{ opacity: 0 }}
+            transition={{ delay: 1.1, duration: 0.8 }}
           >
-            <MainContent />
-            <ScrollToTop />
+            <ScrollCrystal />
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+      <div className={clsx("app", phase === "cover" && "app--cover-mode")}>
+
+        <AnimatePresence mode="wait">
+          {phase === "cover" ? (
+            <Cover key="cover" onLeave={handleLeave} theme={theme} onToggleTheme={toggleTheme} />
+          ) : (
+            <motion.div
+              key="main"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              style={{ width: "100%", minHeight: "100vh" }}
+            >
+              <MainContent />
+              <ScrollToTop />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </>
   );
 }

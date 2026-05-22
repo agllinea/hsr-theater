@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Song } from "../types/song";
+import { useSongPlayer } from "../hooks/useSongPlayer";
 import "./SongPlayer.css";
 
 export interface SongPlayerProps {
@@ -9,14 +10,19 @@ export interface SongPlayerProps {
 }
 
 export function SongPlayer({ song, autoPlay = false }: SongPlayerProps) {
-    const [isPlaying, setIsPlaying] = useState(false);
+    const isPlaying = useSongPlayer((s) => s.isPlaying);
+    const _setIsPlaying = useSongPlayer((s) => s._setIsPlaying);
+    const _register = useSongPlayer((s) => s._register);
+
     const [currentLyric, setCurrentLyric] = useState("");
     const [playingPercentage, setPlayingPercentage] = useState(0);
+    const [playCount, setPlayCount] = useState(0);
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const lyricsRef = useRef<Array<{ time: number; text: string }>>([]);
     const animationFrameRef = useRef<number | null>(null);
     const currentLyricIndexRef = useRef<number>(-1);
+    const playCountRef = useRef(0);
 
     const parseLRC = (lrcContent: string) => {
         const lyrics: Array<{ time: number; text: string }> = [];
@@ -34,104 +40,126 @@ export function SongPlayer({ song, autoPlay = false }: SongPlayerProps) {
         return lyrics.sort((a, b) => a.time - b.time);
     };
 
-    const updateLyrics = () => {
-        if (!audioRef.current) return;
-
-        const currentTime = audioRef.current.currentTime;
-        const duration = audioRef.current.duration;
-        const lyrics = lyricsRef.current;
-
-        if (duration && !isNaN(duration) && duration > 0) {
-            setPlayingPercentage((currentTime / duration) * 100);
+    const stopAnimation = () => {
+        if (animationFrameRef.current) {
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = null;
         }
-
-        if (lyrics.length > 0) {
-            const threshold = 0.25;
-            let idx = currentLyricIndexRef.current;
-
-            if (idx < lyrics.length - 1 && currentTime >= lyrics[idx + 1].time - threshold) {
-                idx++;
-                while (idx < lyrics.length - 1 && currentTime >= lyrics[idx + 1].time - threshold) idx++;
-            } else if (idx > 0 && currentTime < lyrics[idx].time - threshold) {
-                idx--;
-                while (idx > 0 && currentTime < lyrics[idx].time - threshold) idx--;
-            } else if (idx === -1 && currentTime >= lyrics[0].time - threshold) {
-                idx = 0;
-            }
-
-            if (idx !== currentLyricIndexRef.current) {
-                currentLyricIndexRef.current = idx;
-                if (idx >= 0) setCurrentLyric(lyrics[idx].text);
-            }
-        }
-
-        animationFrameRef.current = requestAnimationFrame(updateLyrics);
     };
 
-    const startPlaying = () => {
-        const audio = new Audio(`/songs/${song.title}.ogg`);
-        audioRef.current = audio;
-        lyricsRef.current = parseLRC(song.lyrics ?? "");
-        currentLyricIndexRef.current = -1;
+    const startAnimation = () => {
+        const tick = () => {
+            const audio = audioRef.current;
+            if (!audio) return;
 
-        audio.play().catch((e) => console.error("Audio play error:", e));
-        setIsPlaying(true);
-        animationFrameRef.current = requestAnimationFrame(updateLyrics);
+            const currentTime = audio.currentTime;
+            const duration = audio.duration;
+            const lyrics = lyricsRef.current;
 
-        audio.onended = () => {
-            setIsPlaying(false);
-            setCurrentLyric("");
-            setPlayingPercentage(0);
-            currentLyricIndexRef.current = -1;
-            audioRef.current = null;
-            if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+            if (duration && !isNaN(duration) && duration > 0) {
+                setPlayingPercentage((currentTime / duration) * 100);
+            }
+
+            if (lyrics.length > 0) {
+                const threshold = 0.25;
+                let idx = currentLyricIndexRef.current;
+                if (idx < lyrics.length - 1 && currentTime >= lyrics[idx + 1].time - threshold) {
+                    idx++;
+                    while (idx < lyrics.length - 1 && currentTime >= lyrics[idx + 1].time - threshold) idx++;
+                } else if (idx > 0 && currentTime < lyrics[idx].time - threshold) {
+                    idx--;
+                    while (idx > 0 && currentTime < lyrics[idx].time - threshold) idx--;
+                } else if (idx === -1 && currentTime >= lyrics[0].time - threshold) {
+                    idx = 0;
+                }
+                if (idx !== currentLyricIndexRef.current) {
+                    currentLyricIndexRef.current = idx;
+                    if (idx >= 0) setCurrentLyric(lyrics[idx].text);
+                }
+            }
+
+            animationFrameRef.current = requestAnimationFrame(tick);
         };
+        animationFrameRef.current = requestAnimationFrame(tick);
     };
 
-    const handleToggle = () => {
+    const doPlay = () => {
         if (!audioRef.current) {
-            startPlaying();
-        } else if (isPlaying) {
-            audioRef.current.pause();
-            setIsPlaying(false);
-            if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+            const audio = new Audio(`/songs/${song.title}.ogg`);
+            audioRef.current = audio;
+            lyricsRef.current = parseLRC(song.lyrics ?? "");
+
+            audio.onended = () => {
+                playCountRef.current++;
+                setPlayCount(playCountRef.current);
+                currentLyricIndexRef.current = -1;
+                setCurrentLyric("");
+                audio.currentTime = 0;
+                audio.play().catch(console.error);
+            };
+
+            audio.play().catch(console.error);
         } else {
-            audioRef.current.play().catch((e) => console.error("Audio play error:", e));
-            setIsPlaying(true);
-            animationFrameRef.current = requestAnimationFrame(updateLyrics);
+            audioRef.current.play().catch(console.error);
         }
+
+        _setIsPlaying(true);
+        startAnimation();
     };
+
+    const doPause = () => {
+        audioRef.current?.pause();
+        _setIsPlaying(false);
+        stopAnimation();
+    };
+
+    // Keep refs current so the store's stable wrappers always call the latest version
+    const doPlayRef = useRef(doPlay);
+    const doPauseRef = useRef(doPause);
+    doPlayRef.current = doPlay;
+    doPauseRef.current = doPause;
 
     useEffect(() => {
-        if (autoPlay) startPlaying();
+        _register({
+            play: () => doPlayRef.current(),
+            pause: () => doPauseRef.current(),
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        if (autoPlay) doPlay();
         return () => {
-            audioRef.current?.pause();
+            doPauseRef.current();
             audioRef.current = null;
-            if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const handleToggle = () => (isPlaying ? doPause() : doPlay());
+
+    // Odd plays (0-indexed even): left→right. Even plays (0-indexed odd): right→left (retreat).
+    const isReverse = playCount % 2 === 1;
+    const barScale = isReverse ? 1 - playingPercentage / 100 : playingPercentage / 100;
+    const showLyric = isPlaying && !!currentLyric;
+
     return (
         <>
-            {/* Full-header progress bar */}
             <div
                 className="song-player__progress"
-                style={{ transform: `scaleX(${playingPercentage}%)` }}
+                style={{ transform: `scaleX(${barScale})` }}
             />
-
-            {/* Lyric block */}
             <div className="song-player" onClick={handleToggle}>
                 <AnimatePresence mode="wait">
                     <motion.span
-                        key={isPlaying ? currentLyric : "subtitle"}
-                        className="song-player__lyric"
+                        key={showLyric ? currentLyric : "subtitle"}
+                        className={`song-player__lyric${showLyric ? "" : " song-player__lyric--subtitle"}`}
                         initial={{ opacity: 0, y: 6 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -6 }}
                         transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
                     >
-                        {isPlaying ? (currentLyric || song.subtitle) : song.subtitle}
+                        {showLyric ? currentLyric : song.subtitle}
                     </motion.span>
                 </AnimatePresence>
             </div>

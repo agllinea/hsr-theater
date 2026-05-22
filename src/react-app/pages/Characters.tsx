@@ -41,11 +41,11 @@ function FactionFilter({
     onToggle: (f: string) => void;
 }) {
     return (
-        <div className="faction-filter">
+        <div className="tag-filter">
             {factions.map((f) => (
                 <button
                     key={f}
-                    className={`faction-tag${selected === f ? " faction-tag--active" : ""}`}
+                    className={`tag${selected === f ? " tag--active" : ""}`}
                     onClick={() => onToggle(f)}
                 >
                     {fractions[f]?.name ?? f}

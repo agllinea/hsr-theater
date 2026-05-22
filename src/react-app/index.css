@@ -8,26 +8,32 @@
   --reveal-duration: 1s;
 
   /* ─── Base palette ─────────────────────────── */
-  --black:     #0e0d0c;
-  --white:     #f5f3ee;
-  --ink:       #1a1917;
-  --muted:     rgba(26, 25, 23, 0.42);
-  --border:    rgba(26, 25, 23, 0.12);
-  --accent:    #c8b99a;
+  --black: #0e0d0c;
+  --white: #f5f3ee;
+  --ink: #1a1917;
+  --muted: rgba(26, 25, 23, 0.42);
+  --border: rgba(26, 25, 23, 0.12);
+  --accent: #c8b99a;
 
   /* rgb components for rgba usage */
-  --black-rgb:  14 13 12;
-  --white-rgb:  245 243 238;
+  --black-rgb: 14 13 12;
+  --white-rgb: 245 243 238;
   --accent-rgb: 200 185 154;
 
   /* ─── Character rarity ─────────────────────── */
-  --card-color-ur:  233 233 233;
+  --card-color-ur: 233 233 233;
   --card-color-ssr: 170 140 75;
-  --card-color-sr:  125 95 155;
-  --card-color-r:   75 110 155;
-  --card-color-n:   75 135 100;
+  --card-color-sr: 125 95 155;
+  --card-color-r: 75 110 155;
+  --card-color-n: 75 135 100;
 
   --card-bw-filter: grayscale(1) invert(0.6) opacity(0.3);
+
+  --card-bottom-ur: 3px solid rgb(var(--card-color-ur) / 0.6);
+  --card-bottom-ssr: 3px solid rgb(var(--card-color-ssr) / 0.9);
+  --card-bottom-sr: 3px solid rgb(var(--card-color-sr) / 0.9);
+  --card-bottom-r: 3px solid rgb(var(--card-color-r) / 0.9);
+  --card-bottom-n: 3px solid rgb(var(--card-color-n) / 0.9);
 }
 
 /* ─── Light theme ────────────────────────────────────────────────────────── */
@@ -35,18 +41,22 @@
 [data-theme="light"] {
   color-scheme: light;
 
-  --black:     #f5f3ee;
-  --white:     #1a1917;
-  --ink:       #e8e3d8;
-  --muted:     rgba(26, 25, 23, 0.45);
-  --border:    rgba(26, 25, 23, 0.14);
-  --accent:    #8a6730;
+  --black: #f5f3ee;
+  --white: #1a1917;
+  --ink: #e8e3d8;
+  --muted: rgba(26, 25, 23, 0.45);
+  --border: rgba(26, 25, 23, 0.14);
+  --accent: #8a6730;
 
-  --black-rgb:  245 243 238;
-  --white-rgb:  26 25 23;
+  --black-rgb: 245 243 238;
+  --white-rgb: 26 25 23;
   --accent-rgb: 138 103 48;
 
-  --card-color-ur: 99 99 99;
+  --card-color-ur: 99 99 99; 
+  --card-color-ssr: 170 140 75;
+  --card-color-sr: 125 95 155;
+  --card-color-r: 75 110 155;
+  --card-color-n: 75 135 100;
 
   --card-bw-filter: grayscale(1) invert(0.5) opacity(0.2);
 }

@@ -12,35 +12,6 @@
     width: 100%;
 }
 
-.faction-filter {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.faction-tag {
-    padding: 3px 10px;
-    border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    background: transparent;
-    color: rgba(255, 255, 255, 0.45);
-    font-size: 12px;
-    cursor: pointer;
-    transition: border-color 0.15s, color 0.15s, background 0.15s;
-    white-space: nowrap;
-    line-height: 1.6;
-}
-
-.faction-tag:hover {
-    border-color: rgba(255, 255, 255, 0.35);
-    color: rgba(255, 255, 255, 0.85);
-}
-
-.faction-tag--active {
-    border-color: rgba(255, 255, 255, 0.7);
-    color: white;
-    background: rgba(255, 255, 255, 0.08);
-}
 
 .chars-grid {
     display: grid;
@@ -121,7 +92,7 @@
 }
 
 .char-card-flash--id {
-    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.5) 100%);
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 50%, rgba(66, 66, 66, 0.5) 100%);
     opacity: 1;
 }
 
@@ -168,11 +139,11 @@
 
 .char-card[data-rarity="UR"] .char-card-hover-bg {
     background: linear-gradient(123deg,
-            rgba(255, 126, 126, 0.2),
-            rgba(255, 255, 128, 0.2),
-            rgba(129, 255, 255, 0.2),
-            rgba(255, 119, 255, 0.2));
-    border-bottom: 3px solid rgb(var(--card-color-ur) / 0.6);
+            rgba(255, 126, 126, 0.3),
+            rgba(255, 255, 128, 0.3),
+            rgba(129, 255, 255, 0.3),
+            rgba(255, 119, 255, 0.3));
+    border-bottom: var(--card-bottom-ur);
 }
 
 .char-card[data-rarity="SSR"] .char-card-flash--name {
@@ -181,7 +152,7 @@
 
 .char-card[data-rarity="SSR"] .char-card-hover-bg {
     background: rgb(var(--card-color-ssr) / 0.13);
-    border-bottom: 3px solid rgb(var(--card-color-ssr) / 0.9);
+    border-bottom: var(--card-bottom-ssr);
 }
 
 .char-card[data-rarity="SR"] .char-card-flash--name {
@@ -190,7 +161,7 @@
 
 .char-card[data-rarity="SR"] .char-card-hover-bg {
     background: rgb(var(--card-color-sr) / 0.13);
-    border-bottom: 3px solid rgb(var(--card-color-sr) / 0.9);
+    border-bottom: var(--card-bottom-sr);
 }
 
 .char-card[data-rarity="R"] .char-card-flash--name {
@@ -199,7 +170,7 @@
 
 .char-card[data-rarity="R"] .char-card-hover-bg {
     background: rgb(var(--card-color-r) / 0.13);
-    border-bottom: 3px solid rgb(var(--card-color-r) / 0.9);
+    border-bottom: var(--card-bottom-r);
 }
 
 .char-card[data-rarity="N"] .char-card-flash--name {
@@ -208,7 +179,7 @@
 
 .char-card[data-rarity="N"] .char-card-hover-bg {
     background: rgb(var(--card-color-n) / 0.13);
-    border-bottom: 3px solid rgb(var(--card-color-n) / 0.9);
+    border-bottom: var(--card-bottom-n);
 }
 
 /* character viewer */

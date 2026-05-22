@@ -41,7 +41,7 @@ export default function Cover({ onLeave, theme, onToggleTheme }: CoverProps) {
             </button>
 
             {/* center text */}
-            <motion.div
+            {/* <motion.div
                 className="cover__center"
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -49,24 +49,8 @@ export default function Cover({ onLeave, theme, onToggleTheme }: CoverProps) {
             >
                 <span className="cover__eyebrow">— 作品集 —</span>
                 <h1 className="cover__title">this is cover</h1>
-            </motion.div>
+            </motion.div> */}
 
-            {/* scroll hint */}
-            <motion.div
-                className="cover__hint"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.1, duration: 0.8 }}
-            >
-                <span className="cover__hint-label">scroll down</span>
-                <div className="cover__hint-track">
-                    <motion.div
-                        className="cover__hint-dot"
-                        animate={{ y: [0, 18, 0] }}
-                        transition={{ repeat: Infinity, duration: 1.6, ease: "easeInOut" }}
-                    />
-                </div>
-            </motion.div>
         </motion.div>
     );
 }

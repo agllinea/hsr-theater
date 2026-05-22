@@ -59,9 +59,9 @@ body {
 .app {
   width: 100%;
   min-height: 100vh;
-  background: var(--black);
   position: relative;
   overflow-x: hidden;
+  z-index: 2;
 }
 
 .app--cover-mode {
@@ -84,7 +84,7 @@ body {
   z-index: 100;
   border-bottom: 0.5px solid var(--border);
   /* frosted glass */
-  background: rgb(var(--black-rgb) / 0.72);
+  background: rgb(var(--black-rgb) / 0.8);
   backdrop-filter: blur(18px) saturate(1.4);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
 }
@@ -94,7 +94,6 @@ body {
 .main {
   width: 100%;
   min-height: 100vh;
-  background: var(--black);
   overflow: hidden;
 }
 
@@ -117,6 +116,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  background: rgb(var(--black-rgb) / 0.8);
+  backdrop-filter: blur(18px);
 }
 
 .site-footer {
@@ -125,7 +126,7 @@ body {
 }
 .site-footer-inner {
   padding: 24px 0 40px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid rgb(var(--white-rgb) / 0.1);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -134,7 +135,7 @@ body {
 .site-footer p {
   font-size: 11px;
   line-height: 1.7;
-  color: rgba(245, 243, 238, 0.22);
+  color: rgb(var(--white-rgb) / 0.4);
   letter-spacing: 0.03em;
 }
 
@@ -147,6 +148,46 @@ body {
   text-align: center;
   letter-spacing: 0.01em;
   line-height: 1.4;
+  user-select: none;
+}
+
+/* ─── Cover crystal hint ────────────────────────────────────────────────── */
+
+.cover__hint {
+  position: fixed;
+  bottom: 48px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.cover__hint-crystal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover__hint-glass {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cover__hint-text {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.20em;
+  color: rgba(255, 255, 255, 0.88);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
   user-select: none;
 }
 
