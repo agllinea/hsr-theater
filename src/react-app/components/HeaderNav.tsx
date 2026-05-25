@@ -1,7 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
-import { useTheme } from "../hooks/useTheme";
 import "./HeaderNav.css";
 
 export type Tab = "roles" | "scripts" | "shorts";
@@ -34,8 +33,7 @@ function generateCrystalPoints(): string {
 // ─── Crystal background ───────────────────────────────────────────────────────
 
 function CrystalBg({ points }: { points: string }) {
-  const theme = useTheme();
-  const c = theme === "dark" ? "255,255,255" : "26,25,23";
+  const c = "26,25,23";
 
   return (
     <motion.div

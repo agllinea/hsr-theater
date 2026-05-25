@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { PaletteIcon, FilterIcon, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import "./Clips.css";
@@ -32,11 +32,38 @@ function ClipViewer({ clip, onClose }: { clip: Clip; onClose: () => void }) {
     );
 }
 
-function ClipCard({ clip, onClick }: { clip: Clip; onClick: () => void }) {
-    const cover = clip.img?.cover ?? "";
+function ClipCard({ clip, onClick, isTouchHighlighted, onTouchHighlight }: {
+    clip: Clip;
+    onClick: () => void;
+    isTouchHighlighted: boolean;
+    onTouchHighlight: () => void;
+}) {
+    const elRef = useRef<HTMLElement>(null);
+    const latest = useRef({ isTouchHighlighted, onClick, onTouchHighlight });
+    latest.current = { isTouchHighlighted, onClick, onTouchHighlight };
 
+    useEffect(() => {
+        const el = elRef.current;
+        if (!el) return;
+        const onTouchEnd = (e: TouchEvent) => {
+            e.preventDefault();
+            if (latest.current.isTouchHighlighted) {
+                latest.current.onClick();
+            } else {
+                latest.current.onTouchHighlight();
+            }
+        };
+        el.addEventListener("touchend", onTouchEnd, { passive: false });
+        return () => el.removeEventListener("touchend", onTouchEnd);
+    }, []);
+
+    const cover = clip.img?.cover ?? "";
     return (
-        <article className="clip-card" onClick={onClick}>
+        <article
+            ref={elRef}
+            className={`clip-card${isTouchHighlighted ? " clip-card--touch-hover" : ""}`}
+            onClick={onClick}
+        >
             <div className="clip-card-image clip-card-image--bw" style={{ backgroundImage: `url("${cover}")` }} />
             <div className="clip-card-image clip-card-image--color" style={{ backgroundImage: `url("${cover}")` }} />
             <div className="clip-card-hover-bg" />
@@ -75,9 +102,20 @@ export default function Clips() {
     const [filterActive, setFilterActive] = useState(false);
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
     const [activeClip, setActiveClip] = useState<Clip | null>(null);
+    const [touchHighlighted, setTouchHighlighted] = useState<string | null>(null);
 
     useEffect(() => {
         fetchClip().then(setClips);
+    }, []);
+
+    useEffect(() => {
+        const onTouchEnd = (e: TouchEvent) => {
+            if (!(e.target as Element).closest(".clip-card")) {
+                setTouchHighlighted(null);
+            }
+        };
+        document.addEventListener("touchend", onTouchEnd);
+        return () => document.removeEventListener("touchend", onTouchEnd);
     }, []);
 
     const allTags = useMemo(() => {
@@ -118,7 +156,13 @@ export default function Clips() {
                         <Toolbar items={toolbarItems} />
                         <section className={`clips-grid${colorActive ? " clips-grid--palette" : ""}`}>
                             {filteredClips.map((clip) => (
-                                <ClipCard key={clip.id} clip={clip} onClick={() => setActiveClip(clip)} />
+                                <ClipCard
+                                    key={clip.id}
+                                    clip={clip}
+                                    onClick={() => { setTouchHighlighted(null); setActiveClip(clip); }}
+                                    isTouchHighlighted={touchHighlighted === clip.id}
+                                    onTouchHighlight={() => setTouchHighlighted(clip.id)}
+                                />
                             ))}
                         </section>
                     </motion.div>

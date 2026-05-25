@@ -51,6 +51,7 @@
 
 
 .char-card:hover .char-card-image--color,
+.char-card--touch-hover .char-card-image--color,
 .chars-grid--palette .char-card .char-card-image--color {
     opacity: 1;
     animation: flash 10s .5s ease infinite;
@@ -80,6 +81,7 @@
 }
 
 .char-card:hover .char-card-hover-bg,
+.char-card--touch-hover .char-card-hover-bg,
 .chars-grid--palette .char-card .char-card-hover-bg {
     opacity: 1;
 }
@@ -102,11 +104,13 @@
 }
 
 .char-card:hover .char-card-flash--id,
+.char-card--touch-hover .char-card-flash--id,
 .chars-grid--palette .char-card .char-card-flash--id {
     opacity: 0;
 }
 
 .char-card:hover .char-card-flash--name,
+.char-card--touch-hover .char-card-flash--name,
 .chars-grid--palette .char-card .char-card-flash--name {
     opacity: 1;
 }
@@ -213,7 +217,7 @@
 }
 
 .char-viewer-title {
-    color: rgba(245, 243, 238, 0.9);
+    color: rgb(var(--white-rgb) / 0.9);
     font-size: 13px;
     letter-spacing: 0.04em;
     padding: 0 4px;
@@ -223,7 +227,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: rgba(245, 243, 238, 0.5);
+    color: rgb(var(--white-rgb) / 0.5);
     padding: 4px;
     display: flex;
     align-items: center;
@@ -231,7 +235,7 @@
 }
 
 .char-viewer-close:hover {
-    color: rgba(245, 243, 238, 0.9);
+    color: rgb(var(--white-rgb) / 0.9);
 }
 
 .char-viewer-body {
@@ -239,7 +243,7 @@
 }
 
 .char-viewer-placeholder {
-    color: rgba(245, 243, 238, 0.35);
+    color: rgb(var(--white-rgb) / 0.35);
     font-size: 13px;
     text-align: center;
     margin: 0;
@@ -249,7 +253,7 @@
     grid-column: 1 / -1;
     text-align: right;
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.25);
+    color: rgb(var(--white-rgb) / 0.25);
     margin: 4px 0 0;
     line-height: 1.4;
 }

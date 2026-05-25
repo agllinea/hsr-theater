@@ -54,21 +54,12 @@
 
 .toolbar__dropdown {
     margin-top: 3px;
-    /* border-radius: 10px; */
-    /* background: rgb(var(--black-rgb) / 0.88); */
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
     overflow: hidden; 
     color: var(--white);
-    /* border: 1px solid rgb(var(--white-rgb) / 0.08); */
 }
 
 .toolbar__panel-inner {
     padding: 12px;
-}
-
-.toolbar__panel--divided .toolbar__panel-inner {
-    /* border-top: 1px solid rgba(255, 255, 255, 0.06); */
 }
 
 /* ── Tag filter ───────────────────────────────────────────────────────────── */

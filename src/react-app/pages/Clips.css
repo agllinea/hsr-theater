@@ -41,6 +41,7 @@
 }
 
 .clip-card:hover .clip-card-image--color,
+.clip-card--touch-hover .clip-card-image--color,
 .clips-grid--palette .clip-card .clip-card-image--color {
     opacity: .9;
 }
@@ -74,11 +75,13 @@
 }
 
 .clip-card:hover .clip-card-flash--default,
+.clip-card--touch-hover .clip-card-flash--default,
 .clips-grid--palette .clip-card .clip-card-flash--default {
     opacity: 0;
 }
 
 .clip-card:hover .clip-card-flash--hover,
+.clip-card--touch-hover .clip-card-flash--hover,
 .clips-grid--palette .clip-card .clip-card-flash--hover {
     opacity: 1;
 }

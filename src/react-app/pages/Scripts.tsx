@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { PaletteIcon, FilterIcon, X, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
@@ -55,9 +55,38 @@ function ScriptViewer({ item, onClose }: { item: Script; onClose: () => void }) 
     );
 }
 
-function ScriptRow({ item, chars_map, onClick }: { item: Script; chars_map: Record<string, Character>; onClick: () => void }) {
+function ScriptRow({ item, chars_map, onClick, isTouchHighlighted, onTouchHighlight }: {
+    item: Script;
+    chars_map: Record<string, Character>;
+    onClick: () => void;
+    isTouchHighlighted: boolean;
+    onTouchHighlight: () => void;
+}) {
+    const elRef = useRef<HTMLDivElement>(null);
+    const latest = useRef({ isTouchHighlighted, onClick, onTouchHighlight });
+    latest.current = { isTouchHighlighted, onClick, onTouchHighlight };
+
+    useEffect(() => {
+        const el = elRef.current;
+        if (!el) return;
+        const onTouchEnd = (e: TouchEvent) => {
+            e.preventDefault();
+            if (latest.current.isTouchHighlighted) {
+                latest.current.onClick();
+            } else {
+                latest.current.onTouchHighlight();
+            }
+        };
+        el.addEventListener("touchend", onTouchEnd, { passive: false });
+        return () => el.removeEventListener("touchend", onTouchEnd);
+    }, []);
+
     return (
-        <div className="script-item" onClick={onClick}>
+        <div
+            ref={elRef}
+            className={`script-item${isTouchHighlighted ? " script-item--touch-hover" : ""}`}
+            onClick={onClick}
+        >
             <div className="script-row">
                 <div className="script-hover-bg script-hover-bg--1" style={{ backgroundImage: `url("/scripts/cover/${item.cover}")` }}></div>
                 <div className="script-hover-bg script-hover-bg--2"></div>
@@ -121,12 +150,23 @@ export default function Scripts() {
     const [filterActive, setFilterActive] = useState(false);
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
     const [activeScript, setActiveScript] = useState<Script | null>(null);
+    const [touchHighlighted, setTouchHighlighted] = useState<string | null>(null);
 
     useEffect(() => {
         fetchScript().then(setIndex);
         fetchCharacters().then(chars =>
             setCharsMap(chars.reduce<Record<string, Character>>((map, c) => { map[c.id] = c; return map; }, {}))
         );
+    }, []);
+
+    useEffect(() => {
+        const onTouchEnd = (e: TouchEvent) => {
+            if (!(e.target as Element).closest(".script-item")) {
+                setTouchHighlighted(null);
+            }
+        };
+        document.addEventListener("touchend", onTouchEnd);
+        return () => document.removeEventListener("touchend", onTouchEnd);
     }, []);
 
     const allTags = useMemo(() => {
@@ -167,7 +207,14 @@ export default function Scripts() {
                         <Toolbar items={toolbarItems} />
                         <div className={`scripts-list${colorActive ? " scripts-list--palette" : ""}`}>
                             {filteredIndex.map((item, i) => (
-                                <ScriptRow key={i} item={item} chars_map={chars_map} onClick={() => setActiveScript(item)} />
+                                <ScriptRow
+                                    key={i}
+                                    item={item}
+                                    chars_map={chars_map}
+                                    onClick={() => { setTouchHighlighted(null); setActiveScript(item); }}
+                                    isTouchHighlighted={touchHighlighted === item.id}
+                                    onTouchHighlight={() => setTouchHighlighted(item.id)}
+                                />
                             ))}
                         </div>
                     </motion.div>

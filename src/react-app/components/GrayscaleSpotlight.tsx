@@ -22,7 +22,7 @@ export function GrayscaleSpotlight() {
     });
   }, [softness]);
 
-  // Cursor tracking
+  // Cursor / touch tracking
   useEffect(() => {
     if (!enabled) return;
     const root = document.documentElement;
@@ -35,9 +35,32 @@ export function GrayscaleSpotlight() {
       root.style.setProperty("--spotlight-y", `${e.clientY}px`);
     };
 
+    const onTouch = (e: TouchEvent) => {
+      if (isBursting.current) return;
+      const t = e.touches[0];
+      if (!t) return;
+      root.style.setProperty("--spotlight-x", `${t.clientX}px`);
+      root.style.setProperty("--spotlight-y", `${t.clientY}px`);
+    };
+
+    const onTouchEnd = () => {
+      if (isBursting.current) return;
+      root.style.setProperty("--spotlight-x", "-9999px");
+      root.style.setProperty("--spotlight-y", "-9999px");
+    };
+
     window.addEventListener("mousemove", onMove);
+    window.addEventListener("touchstart", onTouch, { passive: true });
+    window.addEventListener("touchmove", onTouch, { passive: true });
+    window.addEventListener("touchend", onTouchEnd);
+    window.addEventListener("touchcancel", onTouchEnd);
+
     return () => {
       window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("touchstart", onTouch);
+      window.removeEventListener("touchmove", onTouch);
+      window.removeEventListener("touchend", onTouchEnd);
+      window.removeEventListener("touchcancel", onTouchEnd);
       root.style.removeProperty("--spotlight-x");
       root.style.removeProperty("--spotlight-y");
     };

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { PaletteIcon, FilterIcon, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Character, fetchCharacters } from "../types/character";
@@ -55,10 +55,39 @@ function FactionFilter({
     );
 }
 
-function CharacterCard({ char, onClick }: { char: Character; onClick: () => void }) {
+function CharacterCard({ char, onClick, isTouchHighlighted, onTouchHighlight }: {
+    char: Character;
+    onClick: () => void;
+    isTouchHighlighted: boolean;
+    onTouchHighlight: () => void;
+}) {
+    const elRef = useRef<HTMLSpanElement>(null);
+    const latest = useRef({ isTouchHighlighted, onClick, onTouchHighlight });
+    latest.current = { isTouchHighlighted, onClick, onTouchHighlight };
+
+    useEffect(() => {
+        const el = elRef.current;
+        if (!el) return;
+        const onTouchEnd = (e: TouchEvent) => {
+            e.preventDefault();
+            if (latest.current.isTouchHighlighted) {
+                latest.current.onClick();
+            } else {
+                latest.current.onTouchHighlight();
+            }
+        };
+        el.addEventListener("touchend", onTouchEnd, { passive: false });
+        return () => el.removeEventListener("touchend", onTouchEnd);
+    }, []);
+
     const card = char.img?.card ?? "";
     return (
-        <span className="char-card" data-rarity={char.rarity} onClick={onClick}>
+        <span
+            ref={elRef}
+            className={`char-card${isTouchHighlighted ? " char-card--touch-hover" : ""}`}
+            data-rarity={char.rarity}
+            onClick={onClick}
+        >
             <div className="char-card-image char-card-image--color" style={{ backgroundImage: `url("${card}")` }} />
             <div className="char-card-image char-card-image--bw" style={{ backgroundImage: `url("${card}")` }} />
             <div className="char-card-hover-bg" />
@@ -78,9 +107,20 @@ export default function Characters() {
     const [filterActive, setFilterActive] = useState(false);
     const [selectedFaction, setSelectedFaction] = useState<string | null>(null);
     const [activeChar, setActiveChar] = useState<Character | null>(null);
+    const [touchHighlighted, setTouchHighlighted] = useState<string | null>(null);
 
     useEffect(() => {
         fetchCharacters().then(setChars);
+    }, []);
+
+    useEffect(() => {
+        const onTouchEnd = (e: TouchEvent) => {
+            if (!(e.target as Element).closest(".char-card")) {
+                setTouchHighlighted(null);
+            }
+        };
+        document.addEventListener("touchend", onTouchEnd);
+        return () => document.removeEventListener("touchend", onTouchEnd);
     }, []);
 
     const allFactions = useMemo(() => {
@@ -127,7 +167,13 @@ export default function Characters() {
                         <Toolbar items={toolbarItems} />
                         <section className={`chars-grid${colorActive ? " chars-grid--palette" : ""}`}>
                             {filteredChars.map((char) => (
-                                <CharacterCard key={char.id} char={char} onClick={() => setActiveChar(char)} />
+                                <CharacterCard
+                                    key={char.id}
+                                    char={char}
+                                    onClick={() => { setTouchHighlighted(null); setActiveChar(char); }}
+                                    isTouchHighlighted={touchHighlighted === char.id}
+                                    onTouchHighlight={() => setTouchHighlighted(char.id)}
+                                />
                             ))}
                         </section>
                     </motion.div>

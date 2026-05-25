@@ -21,32 +21,18 @@ const MAIN_DELAY_S = 0.1;      // burst 结束后额外等待时长（秒），�
 
 // ─── Store ────────────────────────────────────────────────────────────────────
 
-type Theme = "dark" | "light";
-
 interface AppState {
   phase: "cover" | "main";
   activeTab: Tab;
-  theme: Theme;
   setPhase: (p: "cover" | "main") => void;
   setTab: (t: Tab) => void;
-  toggleTheme: () => void;
 }
-
-const savedTheme = (localStorage.getItem("theme") as Theme | null) ?? "dark";
 
 const useAppStore = create<AppState>((set) => ({
   phase: "cover",
   activeTab: "roles",
-  theme: savedTheme,
   setPhase: (phase) => set({ phase }),
   setTab: (activeTab) => set({ activeTab }),
-  toggleTheme: () =>
-    set((s) => {
-      const next: Theme = s.theme === "dark" ? "light" : "dark";
-      localStorage.setItem("theme", next);
-      document.documentElement.dataset.theme = next;
-      return { theme: next };
-    }),
 }));
 
 // ─── Content map ──────────────────────────────────────────────────────────────
@@ -114,7 +100,7 @@ const BTN_H = 62;
 
 // 调色参数
 const CRYSTAL_BASE_COLOR: [number, number, number] = [255, 120, 170]; // 主色 RGB
-const CRYSTAL_OPACITY = 2;                                            // 整体透明度系数 (0–1)
+const CRYSTAL_OPACITY = 1.3;                                            // 整体透明度系数 (0–1)
 
 function makeCrystal() {
   const cx = BTN_W / 2, cy = BTN_H / 2;
@@ -268,24 +254,22 @@ function ScrollToTop() {
 export default function AppV2() {
   const phase = useAppStore((s) => s.phase);
   const setPhase = useAppStore((s) => s.setPhase);
-  const theme = useAppStore((s) => s.theme);
   const { setBackground } = useBackground();
   const setBurstFrom = useGrayscaleSpotlight((s) => s.setBurstFrom);
   const crystalRef = useRef<HTMLDivElement>(null);
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [crystalGone, setCrystalGone] = useState(false);
 
   useEffect(() => () => { if (leaveTimer.current) clearTimeout(leaveTimer.current); }, []);
 
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme;
-    setBackground(`/bg.jpg`);
-  }, [theme]);
+  useEffect(() => { setBackground(`/bg.jpg`); }, []);
 
   const handleCrystalClick = () => {
     if (crystalRef.current) {
       const rect = crystalRef.current.getBoundingClientRect();
       setBurstFrom({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
     }
+    setCrystalGone(true);
     leaveTimer.current = setTimeout(
       () => setPhase("main"),
       (BURST_DURATION_S + MAIN_DELAY_S) * 1000,
@@ -297,14 +281,18 @@ export default function AppV2() {
       <Background />
       <GrayscaleSpotlight />
       <AnimatePresence>
-        {phase === "cover" && (
+        {phase === "cover" && !crystalGone && (
           <motion.div
             className="cover__hint"
             ref={crystalRef}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ delay: 1.1, duration: 0.8 }}
+            variants={{
+              hidden:  { opacity: 0 },
+              visible: { opacity: 1, transition: { delay: 0.4, duration: 0.8 } },
+              exit:    { opacity: 0, transition: { duration: BURST_DURATION_S, ease: "easeOut" } },
+            }}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
           >
             <ScrollCrystal onClick={handleCrystalClick} />
           </motion.div>

@@ -40,9 +40,6 @@
     background: linear-gradient(111deg, rgb(var(--white-rgb) / 0.2), rgb(var(--white-rgb) / 0.1) 23%, rgb(var(--white-rgb) / 0.05) 100%);
 }
 
-.script-item:not(:hover) {
-    
-}
 .script-row {
     position: relative;
     gap: 12px;
@@ -67,6 +64,7 @@
 }
 
 .script-item:hover .script-hover-bg--1,
+.script-item--touch-hover .script-hover-bg--1,
 .scripts-list--palette .script-item .script-hover-bg--1 {
     opacity: .6;
 }
@@ -77,6 +75,7 @@
 }
 
 .script-item:hover .script-hover-bg--2,
+.script-item--touch-hover .script-hover-bg--2,
 .scripts-list--palette .script-item .script-hover-bg--2 {
     opacity: 1;
 }
@@ -122,11 +121,13 @@
 }
 
 .script-item:hover .txt-c,
+.script-item--touch-hover .txt-c,
 .scripts-list--palette .script-item .txt-c {
     opacity: 0;
 }
 
 .script-item:hover .txt-d,
+.script-item--touch-hover .txt-d,
 .scripts-list--palette .script-item .txt-d {
     opacity: 1;
     color: rgba(245, 243, 238, 0.9);
@@ -201,6 +202,7 @@
     color: rgb(var(--white-rgb) / 0.55);
     font-size: 13px;
     letter-spacing: 0.04em;
+    flex-wrap: wrap;
 }
 
 .script-viewer-breadcrumb span:last-child {
