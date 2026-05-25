@@ -98,6 +98,7 @@
 
 .char-card-flash--name {
     opacity: 0;
+    /* border-bottom: 3px solid transparent; */
 }
 
 .char-card:hover .char-card-flash--id,
@@ -139,11 +140,15 @@
 
 .char-card[data-rarity="UR"] .char-card-hover-bg {
     background: linear-gradient(123deg,
-            rgba(255, 126, 126, 0.3),
-            rgba(255, 255, 128, 0.3),
-            rgba(129, 255, 255, 0.3),
-            rgba(255, 119, 255, 0.3));
-    border-bottom: var(--card-bottom-ur);
+            rgba(255, 126, 126, 0.15),
+            rgba(255, 255, 128, 0.15),
+            rgba(129, 255, 255, 0.15),
+            rgba(255, 119, 255, 0.15));
+    border-bottom: 3px solid;
+        border-image: linear-gradient(to left,rgba(255, 126, 126, 0.9),
+            rgba(255, 255, 128, 0.9),
+            rgba(129, 255, 255, 0.9),
+            rgba(255, 119, 255, 0.9)) 1;
 }
 
 .char-card[data-rarity="SSR"] .char-card-flash--name {

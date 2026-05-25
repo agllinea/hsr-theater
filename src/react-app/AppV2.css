@@ -1,4 +1,9 @@
 /* ─── Layout & motion tokens ─────────────────────────────────────────────── */
+@font-face {
+    font-family: "Amphoreus";
+    src: url("/fonts/Amphoreus.ttf") format("truetype");
+    font-display: swap;
+}
 
 :root {
   --header-h: 66px;
@@ -162,33 +167,31 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  z-index: 15;
+  z-index: 9999;
   pointer-events: none;
 }
 
 .cover__hint-crystal {
+  position: relative;
+  width: 224px;
+  height: 62px;
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: auto;
 }
 
-.cover__hint-glass {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 .cover__hint-text {
   position: relative;
   z-index: 1;
   font-family: var(--font-body);
-  font-size: 12px;
+  font-size: 16px;
   letter-spacing: 0.20em;
   color: rgba(255, 255, 255, 0.88);
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+  /* text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8); */
   white-space: nowrap;
-  user-select: none;
+  user-select: none;font-family: "Amphoreus", serif;
 }
 
 /* ─── Scroll to top ─────────────────────────────────────────────────────── */

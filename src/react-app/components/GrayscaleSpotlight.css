@@ -4,5 +4,5 @@
   backdrop-filter: grayscale(1);
   -webkit-backdrop-filter: grayscale(1);
   pointer-events: none;
-  z-index: 9999;
+  z-index: 999;
 }

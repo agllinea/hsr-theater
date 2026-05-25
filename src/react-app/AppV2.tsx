@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import clsx from "clsx";
 import { create } from "zustand";
 import "./AppV2.css";
 import HeaderNav, { type Tab } from "./components/HeaderNav";
@@ -10,11 +9,15 @@ import { songs } from "./assets/songs";
 import Characters from "./pages/Characters";
 import Clips from "./pages/Clips";
 import Scripts from "./pages/Scripts";
-import Cover from "./pages/Cover";
 import { Background } from "./components/Background";
 import { useBackground } from "./hooks/useBackground";
 import { GrayscaleSpotlight } from "./components/GrayscaleSpotlight";
 import { useGrayscaleSpotlight } from "./hooks/useGrayscaleSpotlight";
+
+// ─── Transition timing ────────────────────────────────────────────────────────
+
+const BURST_DURATION_S = 0.9;  // burst 动画持续时长（秒）
+const MAIN_DELAY_S = 0.1;      // burst 结束后额外等待时长（秒），之后切换到 main
 
 // ─── Store ────────────────────────────────────────────────────────────────────
 
@@ -109,6 +112,10 @@ function MainContent() {
 const BTN_W = 224;
 const BTN_H = 62;
 
+// 调色参数
+const CRYSTAL_BASE_COLOR: [number, number, number] = [255, 120, 170]; // 主色 RGB
+const CRYSTAL_OPACITY = 2;                                            // 整体透明度系数 (0–1)
+
 function makeCrystal() {
   const cx = BTN_W / 2, cy = BTN_H / 2;
   const n = 6 + Math.floor(Math.random() * 2);
@@ -127,40 +134,54 @@ function makeCrystal() {
   };
 }
 
-function ScrollCrystal() {
+function ScrollCrystal({ onClick }: { onClick?: () => void }) {
   const shape = useRef(makeCrystal());
-  const { svgPoints, clipPath } = shape.current;
+  const { svgPoints } = shape.current;
+
+  const [r, g, b] = CRYSTAL_BASE_COLOR;
+  const o = CRYSTAL_OPACITY;
+  // 高光色：主色与白色按 4:6 混合
+  const lr = Math.round(r * 0.4 + 255 * 0.6);
+  const lg = Math.round(g * 0.4 + 255 * 0.6);
+  const lb = Math.round(b * 0.4 + 255 * 0.6);
+  const col  = (a: number) => `rgba(${r},${g},${b},${+(a * o).toFixed(2)})`;
+  const colL = (a: number) => `rgba(${lr},${lg},${lb},${+(a * o).toFixed(2)})`;
+
   return (
     <motion.div
       className="cover__hint-crystal"
-      style={{ filter: "drop-shadow(0 6px 24px rgba(255,255,255,0.10)) drop-shadow(0 2px 8px rgba(0,0,0,0.28))" }}
+      onClick={onClick}
+      style={{ cursor: onClick ? "pointer" : "default" }}
+      animate={{
+        scale: [1, 1.045, 1],
+        filter: [
+          `drop-shadow(0 2px 12px ${col(0.22)})`,
+          `drop-shadow(0 4px 28px ${col(0.60)}) drop-shadow(0 0 14px ${colL(0.30)})`,
+          `drop-shadow(0 2px 12px ${col(0.22)})`,
+        ],
+      }}
+      transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
     >
-      <div
-        className="cover__hint-glass"
-        style={{
-          width: BTN_W, height: BTN_H, clipPath,
-          backdropFilter: "blur(22px) saturate(1.8) brightness(1.06)",
-          WebkitBackdropFilter: "blur(22px) saturate(1.8) brightness(1.06)",
-        }}
+      <svg
+        viewBox={`0 0 ${BTN_W} ${BTN_H}`}
+        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }}
       >
-        <svg viewBox={`0 0 ${BTN_W} ${BTN_H}`} style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
-          <defs>
-            <linearGradient id="lg-tint" x1="20%" y1="0%" x2="80%" y2="100%">
-              <stop offset="0%" stopColor="rgba(200,200,200,0.22)" />
-              <stop offset="100%" stopColor="rgba(200,200,200,0.05)" />
-            </linearGradient>
-            <linearGradient id="lg-sheen" x1="0%" y1="0%" x2="42%" y2="58%">
-              <stop offset="0%" stopColor="rgba(200,200,200,0.40)" />
-              <stop offset="100%" stopColor="rgba(200,200,200,0.00)" />
-            </linearGradient>
-          </defs>
-          <polygon points={svgPoints} fill="url(#lg-tint)" />
-          <polygon points={svgPoints} fill="url(#lg-sheen)" />
-          <polygon points={svgPoints} fill="none" stroke="rgba(255,255,255,0.50)" strokeWidth={1} />
-          <polygon points={svgPoints} fill="none" stroke="rgba(255,255,255,0.80)" strokeWidth={0.5} style={{ filter: "blur(0.3px)" }} />
-        </svg>
-        <span className="cover__hint-text">下划以继续</span>
-      </div>
+        <defs>
+          <linearGradient id="lg-crystal-body" x1="20%" y1="0%" x2="80%" y2="100%">
+            <stop offset="0%" stopColor={colL(0.24)} />
+            <stop offset="100%" stopColor={col(0.10)} />
+          </linearGradient>
+          <linearGradient id="lg-crystal-sheen" x1="0%" y1="0%" x2="42%" y2="58%">
+            <stop offset="0%" stopColor={colL(0.52)} />
+            <stop offset="100%" stopColor={colL(0)} />
+          </linearGradient>
+        </defs>
+        <polygon points={svgPoints} fill="url(#lg-crystal-body)" />
+        <polygon points={svgPoints} fill="url(#lg-crystal-sheen)" />
+        <polygon points={svgPoints} fill="none" stroke={colL(0.55)} strokeWidth={1} />
+        <polygon points={svgPoints} fill="none" stroke={colL(0.88)} strokeWidth={0.5} />
+      </svg>
+      <span className="cover__hint-text">See You Tomorrow</span>
     </motion.div>
   );
 }
@@ -248,10 +269,8 @@ export default function AppV2() {
   const phase = useAppStore((s) => s.phase);
   const setPhase = useAppStore((s) => s.setPhase);
   const theme = useAppStore((s) => s.theme);
-  const toggleTheme = useAppStore((s) => s.toggleTheme);
   const { setBackground } = useBackground();
   const setBurstFrom = useGrayscaleSpotlight((s) => s.setBurstFrom);
-  const setSpotlightEnabled = useGrayscaleSpotlight((s) => s.setEnabled);
   const crystalRef = useRef<HTMLDivElement>(null);
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -262,14 +281,15 @@ export default function AppV2() {
     setBackground(`/bg.jpg`);
   }, [theme]);
 
-  const handleLeave = () => {
+  const handleCrystalClick = () => {
     if (crystalRef.current) {
       const rect = crystalRef.current.getBoundingClientRect();
       setBurstFrom({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
-    } else {
-      setSpotlightEnabled(false);
     }
-    leaveTimer.current = setTimeout(() => setPhase("main"), 900);
+    leaveTimer.current = setTimeout(
+      () => setPhase("main"),
+      (BURST_DURATION_S + MAIN_DELAY_S) * 1000,
+    );
   };
 
   return (
@@ -286,16 +306,13 @@ export default function AppV2() {
             exit={{ opacity: 0 }}
             transition={{ delay: 1.1, duration: 0.8 }}
           >
-            <ScrollCrystal />
+            <ScrollCrystal onClick={handleCrystalClick} />
           </motion.div>
         )}
       </AnimatePresence>
-      <div className={clsx("app", phase === "cover" && "app--cover-mode")}>
-
+      <div className="app">
         <AnimatePresence mode="wait">
-          {phase === "cover" ? (
-            <Cover key="cover" onLeave={handleLeave} theme={theme} onToggleTheme={toggleTheme} />
-          ) : (
+          {phase === "main" && (
             <motion.div
               key="main"
               initial={{ opacity: 0 }}
