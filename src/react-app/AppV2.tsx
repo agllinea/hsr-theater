@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
+import { ChevronUp } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { create } from "zustand";
 import "./AppV2.css";
@@ -13,6 +14,7 @@ import { Background } from "./components/Background";
 import { useBackground } from "./hooks/useBackground";
 import { GrayscaleSpotlight } from "./components/GrayscaleSpotlight";
 import { useGrayscaleSpotlight } from "./hooks/useGrayscaleSpotlight";
+import { ScrollCrystal } from "./components/ScrollCrystal";
 
 // ─── Transition timing ────────────────────────────────────────────────────────
 
@@ -51,9 +53,9 @@ function Header() {
   return (
     <motion.header
       className="header"
-      initial={{ opacity: 0, y: -20 }}
+      initial={{ opacity: 0, y: 0 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
     >
       <SongPlayer song={songs[1]} autoPlay />
       <HeaderNav activeTab={activeTab} setTab={setTab} />
@@ -70,14 +72,14 @@ function MainContent() {
     <div className="main">
       <Header />
       <div className="main__stage">
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="popLayout">
           <motion.div
             key={activeTab}
             className="content-panel"
-            initial={{ opacity: 0, y: 14 }}
+            initial={{ opacity: 0, y: 0 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -14 }}
-            transition={{ duration: 0.38, ease: [0.4, 0, 0.2, 1] }}
+            exit={{ opacity: 0, y: 0 }}
+            transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
           >
             {CONTENT[activeTab]}
             <footer className="site-footer">
@@ -93,114 +95,11 @@ function MainContent() {
   );
 }
 
-// ─── Cover crystal hint ───────────────────────────────────────────────────────
-
-const BTN_W = 224;
-const BTN_H = 62;
-
-// 调色参数
-const CRYSTAL_BASE_COLOR: [number, number, number] = [255, 120, 170]; // 主色 RGB
-const CRYSTAL_OPACITY = 1.3;                                            // 整体透明度系数 (0–1)
-
-function makeCrystal() {
-  const cx = BTN_W / 2, cy = BTN_H / 2;
-  const n = 6 + Math.floor(Math.random() * 2);
-  const pts: { x: number; y: number }[] = [];
-  for (let i = 0; i < n; i++) {
-    const base = (i / n) * Math.PI * 2 - Math.PI / 2;
-    const a = base + (Math.random() - 0.5) * (Math.PI / n) * 0.55;
-    const rx = cx * (0.88 + Math.random() * 0.12);
-    const ry = cy * (0.82 + Math.random() * 0.14);
-    pts.push({ x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry });
-  }
-  const fmt = (p: { x: number; y: number }) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
-  return {
-    svgPoints: pts.map(fmt).join(" "),
-    clipPath: `polygon(${pts.map(p => `${p.x.toFixed(1)}px ${p.y.toFixed(1)}px`).join(", ")})`,
-  };
-}
-
-function ScrollCrystal({ onClick }: { onClick?: () => void }) {
-  const shape = useRef(makeCrystal());
-  const { svgPoints } = shape.current;
-
-  const [r, g, b] = CRYSTAL_BASE_COLOR;
-  const o = CRYSTAL_OPACITY;
-  // 高光色：主色与白色按 4:6 混合
-  const lr = Math.round(r * 0.4 + 255 * 0.6);
-  const lg = Math.round(g * 0.4 + 255 * 0.6);
-  const lb = Math.round(b * 0.4 + 255 * 0.6);
-  const col  = (a: number) => `rgba(${r},${g},${b},${+(a * o).toFixed(2)})`;
-  const colL = (a: number) => `rgba(${lr},${lg},${lb},${+(a * o).toFixed(2)})`;
-
-  return (
-    <motion.div
-      className="cover__hint-crystal"
-      onClick={onClick}
-      style={{ cursor: onClick ? "pointer" : "default" }}
-      animate={{
-        scale: [1, 1.045, 1],
-        filter: [
-          `drop-shadow(0 2px 12px ${col(0.22)})`,
-          `drop-shadow(0 4px 28px ${col(0.60)}) drop-shadow(0 0 14px ${colL(0.30)})`,
-          `drop-shadow(0 2px 12px ${col(0.22)})`,
-        ],
-      }}
-      transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-    >
-      <svg
-        viewBox={`0 0 ${BTN_W} ${BTN_H}`}
-        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", overflow: "visible" }}
-      >
-        <defs>
-          <linearGradient id="lg-crystal-body" x1="20%" y1="0%" x2="80%" y2="100%">
-            <stop offset="0%" stopColor={colL(0.24)} />
-            <stop offset="100%" stopColor={col(0.10)} />
-          </linearGradient>
-          <linearGradient id="lg-crystal-sheen" x1="0%" y1="0%" x2="42%" y2="58%">
-            <stop offset="0%" stopColor={colL(0.52)} />
-            <stop offset="100%" stopColor={colL(0)} />
-          </linearGradient>
-        </defs>
-        <polygon points={svgPoints} fill="url(#lg-crystal-body)" />
-        <polygon points={svgPoints} fill="url(#lg-crystal-sheen)" />
-        <polygon points={svgPoints} fill="none" stroke={colL(0.55)} strokeWidth={1} />
-        <polygon points={svgPoints} fill="none" stroke={colL(0.88)} strokeWidth={0.5} />
-      </svg>
-      <span className="cover__hint-text">See You Tomorrow</span>
-    </motion.div>
-  );
-}
 
 // ─── Scroll to top ────────────────────────────────────────────────────────────
 
-// Slim upward arrow-crystal: narrow shoulders, elongated body, shallow V-notch
-const CRYSTAL_BASE = [
-  [50, 2],  // top apex
-  [78, 44],  // right shoulder (waist)
-  [72, 94],  // right base
-  [50, 82],  // bottom notch (shallow)
-  [28, 94],  // left base
-  [22, 44],  // left shoulder (waist)
-] as const;
-
-function generateCrystalPoints(): string {
-  const j = (range: number) => (Math.random() - 0.5) * range * 2;
-  return CRYSTAL_BASE
-    .map(([x, y], i) => {
-      const isWaist = i === 1 || i === 5;
-      return `${(x + j(4)).toFixed(1)},${(y + j(isWaist ? 12 : 4)).toFixed(1)}`;
-    })
-    .join(" ");
-}
-
 function ScrollToTop() {
   const [visible, setVisible] = useState(false);
-  const [points, setPoints] = useState(generateCrystalPoints);
-
-  useEffect(() => {
-    if (visible) setPoints(generateCrystalPoints());
-  }, [visible]);
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 300);
@@ -220,29 +119,7 @@ function ScrollToTop() {
           transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
           aria-label="Scroll to top"
         >
-          {/* crystal shell */}
-          <div className="scroll-to-top__crystal">
-            <motion.div
-              style={{ width: "100%", height: "100%" }}
-              animate={{
-                filter: [
-                  "drop-shadow(0 0 1.5px rgba(255,255,255,0.2))",
-                  "drop-shadow(0 0 7px rgba(255,255,255,0.75)) drop-shadow(0 0 14px rgba(255,255,255,0.2))",
-                  "drop-shadow(0 0 1.5px rgba(255,255,255,0.2))",
-                ],
-              }}
-              transition={{ filter: { repeat: Infinity, duration: 2.8, ease: "easeInOut" } }}
-            >
-              <svg viewBox="0 0 100 100" width="100%" height="100%" style={{ overflow: "visible" }}>
-                <polygon
-                  points={points}
-                  fill="rgba(255,255,255,0.06)"
-                  stroke="rgba(255,255,255,0.88)"
-                  strokeWidth={0.8}
-                />
-              </svg>
-            </motion.div>
-          </div>
+          <ChevronUp size={18} />
         </motion.button>
       )}
     </AnimatePresence>
@@ -262,7 +139,7 @@ export default function AppV2() {
 
   useEffect(() => () => { if (leaveTimer.current) clearTimeout(leaveTimer.current); }, []);
 
-  useEffect(() => { setBackground(`/bg.jpg`); }, []);
+  useEffect(() => { setBackground(`/bg2.jpg`); }, []);
 
   const handleCrystalClick = () => {
     if (crystalRef.current) {
@@ -286,9 +163,9 @@ export default function AppV2() {
             className="cover__hint"
             ref={crystalRef}
             variants={{
-              hidden:  { opacity: 0 },
+              hidden: { opacity: 0 },
               visible: { opacity: 1, transition: { delay: 0.4, duration: 0.8 } },
-              exit:    { opacity: 0, transition: { duration: BURST_DURATION_S, ease: "easeOut" } },
+              exit: { opacity: 0, transition: { duration: BURST_DURATION_S, ease: "easeOut" } },
             }}
             initial="hidden"
             animate="visible"

@@ -63,10 +63,15 @@
     /* filter: blur(4px); */
 }
 
-.script-item:hover .script-hover-bg--1,
-.script-item--touch-hover .script-hover-bg--1,
+.script-item--active .script-hover-bg--1,
 .scripts-list--palette .script-item .script-hover-bg--1 {
     opacity: .6;
+}
+
+@media (hover: hover) {
+    .script-item:hover .script-hover-bg--1 {
+        opacity: .6;
+    }
 }
 
 .script-hover-bg--2 {
@@ -74,10 +79,15 @@
     /* backdrop-filter: blur(4px); */
 }
 
-.script-item:hover .script-hover-bg--2,
-.script-item--touch-hover .script-hover-bg--2,
+.script-item--active .script-hover-bg--2,
 .scripts-list--palette .script-item .script-hover-bg--2 {
     opacity: 1;
+}
+
+@media (hover: hover) {
+    .script-item:hover .script-hover-bg--2 {
+        opacity: 1;
+    }
 }
 
 /* txt c/d swap */
@@ -120,17 +130,26 @@
     font-size: 11px;
 }
 
-.script-item:hover .txt-c,
-.script-item--touch-hover .txt-c,
+.script-item--active .txt-c,
 .scripts-list--palette .script-item .txt-c {
     opacity: 0;
 }
 
-.script-item:hover .txt-d,
-.script-item--touch-hover .txt-d,
+.script-item--active .txt-d,
 .scripts-list--palette .script-item .txt-d {
     opacity: 1;
     color: rgba(245, 243, 238, 0.9);
+}
+
+@media (hover: hover) {
+    .script-item:hover .txt-c {
+        opacity: 0;
+    }
+
+    .script-item:hover .txt-d {
+        opacity: 1;
+        color: rgba(245, 243, 238, 0.9);
+    }
 }
 
 .script-cell--title .txt-c {
@@ -225,7 +244,6 @@
 }
 
 .script-viewer-body {
-    padding: 0px 24px;
     color: rgb(var(--white-rgb) / 0.85);
     font-size: 14px;
     line-height: 1.8;
@@ -250,9 +268,9 @@
 .script-viewer-body blockquote:not(:has(> blockquote)) {
     margin: 0.6em 0;
     padding: 6px 16px;
-    border-left: 2px solid rgba(180, 130, 45, 0.5);
-    background: linear-gradient(to right, rgba(160, 115, 35, 0.18), transparent 70%);
-    color: rgba(245, 235, 200, 0.8);
+    border-left: 2px solid rgba(180, 130, 45, 0.7);
+    background: linear-gradient(to right, rgba(160, 115, 35, 0.5), rgba(160, 115, 35, 0.3) 70%,transparent 100%);
+    color: white;
 }
 
 /* outer blockquote that starts with > > — default bw styling */
@@ -266,11 +284,13 @@
 
 /* the > > xxx first line — highlighted stage direction label */
 .script-viewer-body blockquote > blockquote {
-    margin: 0 0 0.5em;
-    padding: 4px 12px;
+    margin: 0;
+    padding: 0;
     border: none;
     background: none;
-    color: rgba(245, 215, 120, 0.9);
+    color: rgb(var(--white-rgb) / 0.8);
+    color: rgba(129, 99, 0, 0.9);
+    /* font-weight: bold; */
     font-style: italic;
     letter-spacing: 0.06em;
 }

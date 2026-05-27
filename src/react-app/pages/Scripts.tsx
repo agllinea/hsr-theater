@@ -9,6 +9,7 @@ import "./Scripts.css";
 import { fetchScript, Script } from "../types/script";
 import { Character, fetchCharacters } from "../types/character";
 import { Toolbar } from "../components/Toolbar";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.25 } };
 
@@ -55,37 +56,58 @@ function ScriptViewer({ item, onClose }: { item: Script; onClose: () => void }) 
     );
 }
 
-function ScriptRow({ item, chars_map, onClick, isTouchHighlighted, onTouchHighlight }: {
+function ScriptRow({ item, chars_map, isMobile, isActive, onActivate, onOpen }: {
     item: Script;
     chars_map: Record<string, Character>;
-    onClick: () => void;
-    isTouchHighlighted: boolean;
-    onTouchHighlight: () => void;
+    isMobile: boolean;
+    isActive: boolean;
+    onActivate: () => void;
+    onOpen: () => void;
 }) {
     const elRef = useRef<HTMLDivElement>(null);
-    const latest = useRef({ isTouchHighlighted, onClick, onTouchHighlight });
-    latest.current = { isTouchHighlighted, onClick, onTouchHighlight };
+    const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+    const latestRef = useRef({ isActive, onActivate, onOpen });
+    latestRef.current = { isActive, onActivate, onOpen };
 
     useEffect(() => {
+        if (!isMobile) return;
         const el = elRef.current;
         if (!el) return;
+
+        const onTouchStart = (e: TouchEvent) => {
+            const t = e.touches[0];
+            touchStartRef.current = { x: t.clientX, y: t.clientY };
+        };
+
         const onTouchEnd = (e: TouchEvent) => {
-            e.preventDefault();
-            if (latest.current.isTouchHighlighted) {
-                latest.current.onClick();
+            const start = touchStartRef.current;
+            touchStartRef.current = null;
+            if (!start) return;
+            const t = e.changedTouches[0];
+            const dx = Math.abs(t.clientX - start.x);
+            const dy = Math.abs(t.clientY - start.y);
+            if (dx > 8 || dy > 8) return;
+
+            if (latestRef.current.isActive) {
+                latestRef.current.onOpen();
             } else {
-                latest.current.onTouchHighlight();
+                latestRef.current.onActivate();
             }
         };
-        el.addEventListener("touchend", onTouchEnd, { passive: false });
-        return () => el.removeEventListener("touchend", onTouchEnd);
-    }, []);
+
+        el.addEventListener("touchstart", onTouchStart, { passive: true });
+        el.addEventListener("touchend", onTouchEnd, { passive: true });
+        return () => {
+            el.removeEventListener("touchstart", onTouchStart);
+            el.removeEventListener("touchend", onTouchEnd);
+        };
+    }, [isMobile]);
 
     return (
         <div
             ref={elRef}
-            className={`script-item${isTouchHighlighted ? " script-item--touch-hover" : ""}`}
-            onClick={onClick}
+            className={`script-item${isActive ? " script-item--active" : ""}`}
+            onClick={isMobile ? undefined : onOpen}
         >
             <div className="script-row">
                 <div className="script-hover-bg script-hover-bg--1" style={{ backgroundImage: `url("/scripts/cover/${item.cover}")` }}></div>
@@ -144,13 +166,14 @@ function TagFilter({ tags, selected, onToggle }: { tags: string[]; selected: str
 }
 
 export default function Scripts() {
+    const isMobile = useIsMobile();
     const [index, setIndex] = useState<Script[]>([]);
     const [chars_map, setCharsMap] = useState<Record<string, Character>>({});
     const [colorActive, setColorActive] = useState(false);
     const [filterActive, setFilterActive] = useState(false);
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
     const [activeScript, setActiveScript] = useState<Script | null>(null);
-    const [touchHighlighted, setTouchHighlighted] = useState<string | null>(null);
+    const [activeRow, setActiveRow] = useState<string | null>(null);
 
     useEffect(() => {
         fetchScript().then(setIndex);
@@ -160,14 +183,13 @@ export default function Scripts() {
     }, []);
 
     useEffect(() => {
+        if (!isMobile) { setActiveRow(null); return; }
         const onTouchEnd = (e: TouchEvent) => {
-            if (!(e.target as Element).closest(".script-item")) {
-                setTouchHighlighted(null);
-            }
+            if (!(e.target as Element).closest(".script-item")) setActiveRow(null);
         };
-        document.addEventListener("touchend", onTouchEnd);
+        document.addEventListener("touchend", onTouchEnd, { passive: true });
         return () => document.removeEventListener("touchend", onTouchEnd);
-    }, []);
+    }, [isMobile]);
 
     const allTags = useMemo(() => {
         const seen = new Set<string>();
@@ -211,9 +233,10 @@ export default function Scripts() {
                                     key={i}
                                     item={item}
                                     chars_map={chars_map}
-                                    onClick={() => { setTouchHighlighted(null); setActiveScript(item); }}
-                                    isTouchHighlighted={touchHighlighted === item.id}
-                                    onTouchHighlight={() => setTouchHighlighted(item.id)}
+                                    isMobile={isMobile}
+                                    isActive={isMobile && (activeRow === item.id || colorActive)}
+                                    onActivate={() => setActiveRow(item.id)}
+                                    onOpen={() => { setActiveRow(null); setActiveScript(item); }}
                                 />
                             ))}
                         </div>

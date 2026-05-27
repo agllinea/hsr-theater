@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import "./Clips.css";
 import { fetchClip, Clip } from "../types/clip";
 import { Toolbar } from "../components/Toolbar";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.25 } };
 
@@ -32,37 +33,58 @@ function ClipViewer({ clip, onClose }: { clip: Clip; onClose: () => void }) {
     );
 }
 
-function ClipCard({ clip, onClick, isTouchHighlighted, onTouchHighlight }: {
+function ClipCard({ clip, isMobile, isActive, onActivate, onOpen }: {
     clip: Clip;
-    onClick: () => void;
-    isTouchHighlighted: boolean;
-    onTouchHighlight: () => void;
+    isMobile: boolean;
+    isActive: boolean;
+    onActivate: () => void;
+    onOpen: () => void;
 }) {
     const elRef = useRef<HTMLElement>(null);
-    const latest = useRef({ isTouchHighlighted, onClick, onTouchHighlight });
-    latest.current = { isTouchHighlighted, onClick, onTouchHighlight };
+    const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+    const latestRef = useRef({ isActive, onActivate, onOpen });
+    latestRef.current = { isActive, onActivate, onOpen };
 
     useEffect(() => {
+        if (!isMobile) return;
         const el = elRef.current;
         if (!el) return;
+
+        const onTouchStart = (e: TouchEvent) => {
+            const t = e.touches[0];
+            touchStartRef.current = { x: t.clientX, y: t.clientY };
+        };
+
         const onTouchEnd = (e: TouchEvent) => {
-            e.preventDefault();
-            if (latest.current.isTouchHighlighted) {
-                latest.current.onClick();
+            const start = touchStartRef.current;
+            touchStartRef.current = null;
+            if (!start) return;
+            const t = e.changedTouches[0];
+            const dx = Math.abs(t.clientX - start.x);
+            const dy = Math.abs(t.clientY - start.y);
+            if (dx > 8 || dy > 8) return;
+
+            if (latestRef.current.isActive) {
+                latestRef.current.onOpen();
             } else {
-                latest.current.onTouchHighlight();
+                latestRef.current.onActivate();
             }
         };
-        el.addEventListener("touchend", onTouchEnd, { passive: false });
-        return () => el.removeEventListener("touchend", onTouchEnd);
-    }, []);
+
+        el.addEventListener("touchstart", onTouchStart, { passive: true });
+        el.addEventListener("touchend", onTouchEnd, { passive: true });
+        return () => {
+            el.removeEventListener("touchstart", onTouchStart);
+            el.removeEventListener("touchend", onTouchEnd);
+        };
+    }, [isMobile]);
 
     const cover = clip.img?.cover ?? "";
     return (
         <article
             ref={elRef}
-            className={`clip-card${isTouchHighlighted ? " clip-card--touch-hover" : ""}`}
-            onClick={onClick}
+            className={`clip-card${isActive ? " clip-card--active" : ""}`}
+            onClick={isMobile ? undefined : onOpen}
         >
             <div className="clip-card-image clip-card-image--bw" style={{ backgroundImage: `url("${cover}")` }} />
             <div className="clip-card-image clip-card-image--color" style={{ backgroundImage: `url("${cover}")` }} />
@@ -97,26 +119,26 @@ function TagFilter({ tags, selected, onToggle }: { tags: string[]; selected: str
 }
 
 export default function Clips() {
+    const isMobile = useIsMobile();
     const [clips, setClips] = useState<Clip[]>([]);
     const [colorActive, setColorActive] = useState(false);
     const [filterActive, setFilterActive] = useState(false);
     const [selectedTag, setSelectedTag] = useState<string | null>(null);
     const [activeClip, setActiveClip] = useState<Clip | null>(null);
-    const [touchHighlighted, setTouchHighlighted] = useState<string | null>(null);
+    const [activeCard, setActiveCard] = useState<string | null>(null);
 
     useEffect(() => {
         fetchClip().then(setClips);
     }, []);
 
     useEffect(() => {
+        if (!isMobile) { setActiveCard(null); return; }
         const onTouchEnd = (e: TouchEvent) => {
-            if (!(e.target as Element).closest(".clip-card")) {
-                setTouchHighlighted(null);
-            }
+            if (!(e.target as Element).closest(".clip-card")) setActiveCard(null);
         };
-        document.addEventListener("touchend", onTouchEnd);
+        document.addEventListener("touchend", onTouchEnd, { passive: true });
         return () => document.removeEventListener("touchend", onTouchEnd);
-    }, []);
+    }, [isMobile]);
 
     const allTags = useMemo(() => {
         const seen = new Set<string>();
@@ -159,9 +181,10 @@ export default function Clips() {
                                 <ClipCard
                                     key={clip.id}
                                     clip={clip}
-                                    onClick={() => { setTouchHighlighted(null); setActiveClip(clip); }}
-                                    isTouchHighlighted={touchHighlighted === clip.id}
-                                    onTouchHighlight={() => setTouchHighlighted(clip.id)}
+                                    isMobile={isMobile}
+                                    isActive={isMobile && (activeCard === clip.id || colorActive)}
+                                    onActivate={() => setActiveCard(clip.id)}
+                                    onOpen={() => { setActiveCard(null); setActiveClip(clip); }}
                                 />
                             ))}
                         </section>

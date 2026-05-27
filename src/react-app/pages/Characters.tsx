@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Character, fetchCharacters } from "../types/character";
 import { Toolbar } from "../components/Toolbar";
 import { fractions } from "../assets/fractions";
+import { useIsMobile } from "../hooks/useIsMobile";
 
 import "./Characters.css";
 
@@ -55,38 +56,59 @@ function FactionFilter({
     );
 }
 
-function CharacterCard({ char, onClick, isTouchHighlighted, onTouchHighlight }: {
+function CharacterCard({ char, isMobile, isActive, onActivate, onOpen }: {
     char: Character;
-    onClick: () => void;
-    isTouchHighlighted: boolean;
-    onTouchHighlight: () => void;
+    isMobile: boolean;
+    isActive: boolean;
+    onActivate: () => void;
+    onOpen: () => void;
 }) {
     const elRef = useRef<HTMLSpanElement>(null);
-    const latest = useRef({ isTouchHighlighted, onClick, onTouchHighlight });
-    latest.current = { isTouchHighlighted, onClick, onTouchHighlight };
+    const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+    const latestRef = useRef({ isActive, onActivate, onOpen });
+    latestRef.current = { isActive, onActivate, onOpen };
 
     useEffect(() => {
+        if (!isMobile) return;
         const el = elRef.current;
         if (!el) return;
+
+        const onTouchStart = (e: TouchEvent) => {
+            const t = e.touches[0];
+            touchStartRef.current = { x: t.clientX, y: t.clientY };
+        };
+
         const onTouchEnd = (e: TouchEvent) => {
-            e.preventDefault();
-            if (latest.current.isTouchHighlighted) {
-                latest.current.onClick();
+            const start = touchStartRef.current;
+            touchStartRef.current = null;
+            if (!start) return;
+            const t = e.changedTouches[0];
+            const dx = Math.abs(t.clientX - start.x);
+            const dy = Math.abs(t.clientY - start.y);
+            if (dx > 8 || dy > 8) return; // scroll, not a tap
+
+            if (latestRef.current.isActive) {
+                latestRef.current.onOpen();
             } else {
-                latest.current.onTouchHighlight();
+                latestRef.current.onActivate();
             }
         };
-        el.addEventListener("touchend", onTouchEnd, { passive: false });
-        return () => el.removeEventListener("touchend", onTouchEnd);
-    }, []);
+
+        el.addEventListener("touchstart", onTouchStart, { passive: true });
+        el.addEventListener("touchend", onTouchEnd, { passive: true });
+        return () => {
+            el.removeEventListener("touchstart", onTouchStart);
+            el.removeEventListener("touchend", onTouchEnd);
+        };
+    }, [isMobile]);
 
     const card = char.img?.card ?? "";
     return (
         <span
             ref={elRef}
-            className={`char-card${isTouchHighlighted ? " char-card--touch-hover" : ""}`}
+            className={`char-card${isActive ? " char-card--active" : ""}`}
             data-rarity={char.rarity}
-            onClick={onClick}
+            onClick={isMobile ? undefined : onOpen}
         >
             <div className="char-card-image char-card-image--color" style={{ backgroundImage: `url("${card}")` }} />
             <div className="char-card-image char-card-image--bw" style={{ backgroundImage: `url("${card}")` }} />
@@ -102,26 +124,27 @@ function CharacterCard({ char, onClick, isTouchHighlighted, onTouchHighlight }: 
 }
 
 export default function Characters() {
+    const isMobile = useIsMobile();
     const [chars, setChars] = useState<Character[]>([]);
     const [colorActive, setColorActive] = useState(false);
     const [filterActive, setFilterActive] = useState(false);
     const [selectedFaction, setSelectedFaction] = useState<string | null>(null);
     const [activeChar, setActiveChar] = useState<Character | null>(null);
-    const [touchHighlighted, setTouchHighlighted] = useState<string | null>(null);
+    const [activeCard, setActiveCard] = useState<string | null>(null);
 
     useEffect(() => {
         fetchCharacters().then(setChars);
     }, []);
 
+    // Clear active card when switching to desktop or tapping outside a card
     useEffect(() => {
+        if (!isMobile) { setActiveCard(null); return; }
         const onTouchEnd = (e: TouchEvent) => {
-            if (!(e.target as Element).closest(".char-card")) {
-                setTouchHighlighted(null);
-            }
+            if (!(e.target as Element).closest(".char-card")) setActiveCard(null);
         };
-        document.addEventListener("touchend", onTouchEnd);
+        document.addEventListener("touchend", onTouchEnd, { passive: true });
         return () => document.removeEventListener("touchend", onTouchEnd);
-    }, []);
+    }, [isMobile]);
 
     const allFactions = useMemo(() => {
         const seen = new Set<string>();
@@ -170,9 +193,10 @@ export default function Characters() {
                                 <CharacterCard
                                     key={char.id}
                                     char={char}
-                                    onClick={() => { setTouchHighlighted(null); setActiveChar(char); }}
-                                    isTouchHighlighted={touchHighlighted === char.id}
-                                    onTouchHighlight={() => setTouchHighlighted(char.id)}
+                                    isMobile={isMobile}
+                                    isActive={isMobile && (activeCard === char.id || colorActive)}
+                                    onActivate={() => setActiveCard(char.id)}
+                                    onOpen={() => { setActiveCard(null); setActiveChar(char); }}
                                 />
                             ))}
                         </section>

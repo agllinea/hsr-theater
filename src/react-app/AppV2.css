@@ -1,8 +1,8 @@
 /* ─── Layout & motion tokens ─────────────────────────────────────────────── */
 @font-face {
-    font-family: "Amphoreus";
-    src: url("/fonts/Amphoreus.ttf") format("truetype");
-    font-display: swap;
+  font-family: "Amphoreus";
+  src: url("/fonts/Amphoreus.ttf") format("truetype");
+  font-display: swap;
 }
 
 :root {
@@ -103,6 +103,8 @@ body {
 }
 
 .main__stage {
+  position: relative;
+  overflow: hidden;
   padding-top: var(--header-h);
   min-height: 100vh;
   display: flex;
@@ -156,43 +158,6 @@ body {
   user-select: none;
 }
 
-/* ─── Cover crystal hint ────────────────────────────────────────────────── */
-
-.cover__hint {
-  position: fixed;
-  bottom: 48px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  z-index: 9999;
-  pointer-events: none;
-}
-
-.cover__hint-crystal {
-  position: relative;
-  width: 224px;
-  height: 62px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: auto;
-}
-
-
-.cover__hint-text {
-  position: relative;
-  z-index: 1;
-  font-family: var(--font-body);
-  font-size: 16px;
-  letter-spacing: 0.20em;
-  color: rgba(255, 255, 255, 0.88);
-  /* text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8); */
-  white-space: nowrap;
-  user-select: none;font-family: "Amphoreus", serif;
-}
 
 /* ─── Scroll to top ─────────────────────────────────────────────────────── */
 
@@ -201,28 +166,31 @@ body {
   bottom: 36px;
   right: 36px;
   z-index: 200;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  background: none;
+  border: 1px solid rgb(var(--white-rgb) / 0.15);
+  border-radius: 8px;
+  background: rgb(var(--black-rgb) / 0.6);
+  backdrop-filter: blur(8px);
+  color: rgb(var(--white-rgb) / 0.5);
   cursor: pointer;
-  outline: none;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
 .scroll-to-top:focus-visible {
-  box-shadow: 0 0 0 2px rgba(200, 185, 154, 0.55);
-  border-radius: 50%;
+  outline: 2px solid rgba(200, 185, 154, 0.55);
+  outline-offset: 2px;
 }
 
-.scroll-to-top__crystal {
-  position: absolute;
-  inset: -8px;
-  pointer-events: none;
-  z-index: 0;
-  overflow: visible;
+@media (hover: hover) {
+  .scroll-to-top:hover {
+    background: rgb(var(--white-rgb) / 0.1);
+    color: rgb(var(--white-rgb) / 0.9);
+    border-color: rgb(var(--white-rgb) / 0.3);
+  }
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────────────── */

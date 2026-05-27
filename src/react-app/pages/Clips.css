@@ -40,10 +40,15 @@
     z-index: 1;
 }
 
-.clip-card:hover .clip-card-image--color,
-.clip-card--touch-hover .clip-card-image--color,
+.clip-card--active .clip-card-image--color,
 .clips-grid--palette .clip-card .clip-card-image--color {
     opacity: .9;
+}
+
+@media (hover: hover) {
+    .clip-card:hover .clip-card-image--color {
+        opacity: .9;
+    }
 }
 
 .clip-card-hover-bg {
@@ -74,16 +79,24 @@
     gap: 4px;
 }
 
-.clip-card:hover .clip-card-flash--default,
-.clip-card--touch-hover .clip-card-flash--default,
+.clip-card--active .clip-card-flash--default,
 .clips-grid--palette .clip-card .clip-card-flash--default {
     opacity: 0;
 }
 
-.clip-card:hover .clip-card-flash--hover,
-.clip-card--touch-hover .clip-card-flash--hover,
+.clip-card--active .clip-card-flash--hover,
 .clips-grid--palette .clip-card .clip-card-flash--hover {
     opacity: 1;
+}
+
+@media (hover: hover) {
+    .clip-card:hover .clip-card-flash--default {
+        opacity: 0;
+    }
+
+    .clip-card:hover .clip-card-flash--hover {
+        opacity: 1;
+    }
 }
 
 /* labels */
