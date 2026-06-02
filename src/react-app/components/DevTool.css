@@ -1,0 +1,134 @@
+/* ─── Dev Tool ───────────────────────────────────────────────────────────── */
+
+.dev-trigger {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  z-index: 9999;
+  cursor: default;
+}
+
+.dev-fab {
+  position: fixed;
+  bottom: 36px;
+  left: 36px;
+  z-index: 200;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgb(var(--white-rgb) / 0.15);
+  border-radius: 8px;
+  background: rgb(var(--black-rgb) / 0.6);
+  backdrop-filter: blur(8px);
+  color: rgb(var(--white-rgb) / 0.5);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.dev-fab:focus-visible {
+  outline: 2px solid rgba(200, 185, 154, 0.55);
+  outline-offset: 2px;
+}
+
+@media (hover: hover) {
+  .dev-fab:hover {
+    background: rgb(var(--white-rgb) / 0.1);
+    color: rgb(var(--white-rgb) / 0.9);
+    border-color: rgb(var(--white-rgb) / 0.3);
+  }
+}
+
+.dev-popup {
+  user-select: none;
+  position: fixed;
+  bottom: 80px;
+  left: 36px;
+  z-index: 300;
+  background: rgb(var(--black-rgb) / 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgb(var(--white-rgb) / 0.12);
+  border-radius: 10px;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  min-width: 148px;
+}
+
+.dev-popup__section {
+  padding: 8px 10px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dev-popup__song-title {
+  font-size: 11px;
+  color: rgb(var(--white-rgb) / 0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dev-popup__music-controls {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+.dev-popup__icon-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid rgb(var(--white-rgb) / 0.1);
+  background: transparent;
+  color: rgb(var(--white-rgb) / 0.6);
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+
+@media (hover: hover) {
+  .dev-popup__icon-btn:hover {
+    background: rgb(var(--white-rgb) / 0.08);
+    color: rgb(var(--white-rgb) / 0.95);
+    border-color: rgb(var(--white-rgb) / 0.25);
+  }
+}
+
+.dev-popup__seek {
+  width: 100%;
+  accent-color: rgb(var(--white-rgb) / 0.5);
+  cursor: pointer;
+  height: 3px;
+}
+
+.dev-popup__divider {
+  height: 1px;
+  background: rgb(var(--white-rgb) / 0.08);
+  margin: 2px 0;
+}
+
+.dev-popup__btn {
+  padding: 7px 12px;
+  border-radius: 6px;
+  background: transparent;
+  border: none;
+  color: rgb(var(--white-rgb) / 0.7);
+  cursor: pointer;
+  font-size: 13px;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+}
+
+@media (hover: hover) {
+  .dev-popup__btn:hover {
+    background: rgb(var(--white-rgb) / 0.08);
+    color: rgb(var(--white-rgb) / 0.95);
+  }
+}

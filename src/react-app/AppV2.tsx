@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
-import { ChevronUp, Wrench, SkipBack, SkipForward, Play, Pause } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { create } from "zustand";
 import "./AppV2.css";
@@ -14,8 +13,9 @@ import { Background } from "./components/Background";
 import { useBackground } from "./hooks/useBackground";
 import { GrayscaleSpotlight } from "./components/GrayscaleSpotlight";
 import { useGrayscaleSpotlight } from "./hooks/useGrayscaleSpotlight";
-import { ScrollCrystal } from "./components/ScrollCrystal";
-import { useSongPlayer } from "./hooks/useSongPlayer";
+import { WelcomeButton } from "./components/WelcomeButton";
+import { DevTool } from "./components/DevTool";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 // ─── Transition timing ────────────────────────────────────────────────────────
 
@@ -34,7 +34,7 @@ interface AppState {
   reloadCover: () => void;
 }
 
-const useAppStore = create<AppState>((set) => ({
+export const useAppStore = create<AppState>((set) => ({
   phase: "cover",
   activeTab: "roles",
   crystalGone: false,
@@ -57,6 +57,11 @@ const CONTENT: Record<Tab, ReactNode> = {
 function Header() {
   const { activeTab, setTab } = useAppStore();
 
+  const handleSetTab = (tab: Tab) => {
+    setTab(tab);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <motion.header
       className="header"
@@ -65,7 +70,7 @@ function Header() {
       transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
     >
       <SongPlayer songs={songs} autoPlay />
-      <HeaderNav activeTab={activeTab} setTab={setTab} />
+      <HeaderNav activeTab={activeTab} setTab={handleSetTab} />
     </motion.header>
   );
 }
@@ -79,13 +84,13 @@ function MainContent() {
     <div className="main">
       <Header />
       <div className="main__stage">
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence>
           <motion.div
             key={activeTab}
             className="content-panel"
-            initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 1.5, ease: [0.4, 0, 0.2, 1] }}
           >
             {CONTENT[activeTab]}
@@ -102,134 +107,6 @@ function MainContent() {
   );
 }
 
-
-// ─── Dev Tool ─────────────────────────────────────────────────────────────────
-
-const DEV_CLICK_TARGET = 6;
-const DEV_CLICK_RESET_MS = 1500;
-
-function DevTool() {
-  const reloadCover = useAppStore((s) => s.reloadCover);
-  const isPlaying = useSongPlayer((s) => s.isPlaying);
-  const progress = useSongPlayer((s) => s.progress);
-  const songTitle = useSongPlayer((s) => s.songTitle);
-  const play = useSongPlayer((s) => s.play);
-  const pause = useSongPlayer((s) => s.pause);
-  const skipNext = useSongPlayer((s) => s.skipNext);
-  const skipPrev = useSongPlayer((s) => s.skipPrev);
-  const seekTo = useSongPlayer((s) => s.seekTo);
-
-  const [devOpen, setDevOpen] = useState(false);
-  const [popupOpen, setPopupOpen] = useState(false);
-  const clickCountRef = useRef(0);
-  const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  const handleHiddenClick = () => {
-    if (resetTimerRef.current) clearTimeout(resetTimerRef.current);
-    clickCountRef.current++;
-    if (clickCountRef.current >= DEV_CLICK_TARGET) {
-      clickCountRef.current = 0;
-      setDevOpen(true);
-    } else {
-      resetTimerRef.current = setTimeout(() => { clickCountRef.current = 0; }, DEV_CLICK_RESET_MS);
-    }
-  };
-
-  return (
-    <>
-      <div className="dev-trigger" onClick={handleHiddenClick} />
-
-      <AnimatePresence>
-        {devOpen && (
-          <motion.button
-            className="dev-fab"
-            onClick={() => setPopupOpen((v) => !v)}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
-            aria-label="Dev tools"
-          >
-            <Wrench size={16} />
-          </motion.button>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {devOpen && popupOpen && (
-          <motion.div
-            className="dev-popup"
-            initial={{ opacity: 0, y: 8, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.95 }}
-            transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <div className="dev-popup__section">
-              <div className="dev-popup__song-title">{songTitle || "—"}</div>
-              <div className="dev-popup__music-controls">
-                <button className="dev-popup__icon-btn" onClick={skipPrev} aria-label="上一首">
-                  <SkipBack size={14} />
-                </button>
-                <button className="dev-popup__icon-btn" onClick={isPlaying ? pause : play} aria-label={isPlaying ? "暂停" : "播放"}>
-                  {isPlaying ? <Pause size={14} /> : <Play size={14} />}
-                </button>
-                <button className="dev-popup__icon-btn" onClick={skipNext} aria-label="下一首">
-                  <SkipForward size={14} />
-                </button>
-              </div>
-              <input
-                className="dev-popup__seek"
-                type="range"
-                min={0}
-                max={100}
-                step={0.1}
-                value={progress}
-                onChange={(e) => seekTo(Number(e.target.value))}
-              />
-            </div>
-            <div className="dev-popup__divider" />
-            <button
-              className="dev-popup__btn"
-              onClick={() => { reloadCover(); setPopupOpen(false); }}
-            >
-              重新加载 Cover
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
-  );
-}
-
-// ─── Scroll to top ────────────────────────────────────────────────────────────
-
-function ScrollToTop() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > 300);
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    <AnimatePresence>
-      {visible && (
-        <motion.button
-          className="scroll-to-top"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.8 }}
-          transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
-          aria-label="Scroll to top"
-        >
-          <ChevronUp size={18} />
-        </motion.button>
-      )}
-    </AnimatePresence>
-  );
-}
 
 // ─── Root ─────────────────────────────────────────────────────────────────────
 
@@ -267,7 +144,7 @@ export default function AppV2() {
       <AnimatePresence>
         {phase === "cover" && !crystalGone && (
           <motion.div
-            className="cover__hint"
+            className="welcome-button__hint"
             ref={crystalRef}
             variants={{
               hidden: { opacity: 0 },
@@ -278,7 +155,7 @@ export default function AppV2() {
             animate="visible"
             exit="exit"
           >
-            <ScrollCrystal onClick={handleCrystalClick} />
+            <WelcomeButton onClick={handleCrystalClick} />
           </motion.div>
         )}
       </AnimatePresence>

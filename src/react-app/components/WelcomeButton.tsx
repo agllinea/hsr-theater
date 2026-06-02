@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import "./ScrollCrystal.css";
+import "./WelcomeButton.css";
 
 const BTN_W = 224;
 const BTN_H = 62;
@@ -26,7 +26,7 @@ function makeCrystal() {
     };
 }
 
-export function ScrollCrystal({ onClick }: { onClick?: () => void }) {
+export function WelcomeButton({ onClick }: { onClick?: () => void }) {
     const shape = useRef(makeCrystal());
     const { svgPoints } = shape.current;
 
@@ -40,12 +40,12 @@ export function ScrollCrystal({ onClick }: { onClick?: () => void }) {
 
     return (
         <div
-            className="cover__hint-crystal-wrap"
+            className="welcome-button__hint-crystal-wrap"
             onClick={onClick}
             style={{ cursor: onClick ? "pointer" : "default" }}
         >
             <motion.div
-                className="cover__hint-crystal"
+                className="welcome-button__hint-crystal"
                 animate={{
                     scale: [1, 1.045, 1],
                     filter: [
@@ -76,7 +76,7 @@ export function ScrollCrystal({ onClick }: { onClick?: () => void }) {
                     <polygon points={svgPoints} fill="none" stroke={colL(0.88)} strokeWidth={0.5} />
                 </svg>
             </motion.div>
-            <span className="cover__hint-text">See You Tomorrow</span>
+            <span className="welcome-button__hint-text">See You Tomorrow</span>
         </div>
     );
 }

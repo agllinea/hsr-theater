@@ -1,4 +1,4 @@
-.cover__hint {
+.welcome-button__hint {
     position: fixed;
     bottom: 48px;
     left: 50%;
@@ -11,19 +11,19 @@
     pointer-events: none;
 }
 
-.cover__hint-crystal-wrap {
+.welcome-button__hint-crystal-wrap {
     position: relative;
     width: 224px;
     height: 62px;
     pointer-events: auto;
 }
 
-.cover__hint-crystal {
+.welcome-button__hint-crystal {
     position: absolute;
     inset: 0;
 }
 
-.cover__hint-text {
+.welcome-button__hint-text {
     position: absolute;
     inset: 0;
     display: flex;

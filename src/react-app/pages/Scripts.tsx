@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { PaletteIcon, FilterIcon, X, ChevronRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import ReactMarkdown from "react-markdown";
@@ -10,8 +10,8 @@ import { fetchScript, Script } from "../types/script";
 import { Character, fetchCharacters } from "../types/character";
 import { Toolbar } from "../components/Toolbar";
 import { useIsMobile } from "../hooks/useIsMobile";
-
-const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.25 } };
+import { useTouchTap } from "../hooks/useTouchTap";
+import { fade } from "../utils/animation";
 
 function ScriptViewer({ item, onClose }: { item: Script; onClose: () => void }) {
     const [content, setContent] = useState<string | null>(null);
@@ -64,44 +64,7 @@ function ScriptRow({ item, chars_map, isMobile, isActive, onActivate, onOpen }: 
     onActivate: () => void;
     onOpen: () => void;
 }) {
-    const elRef = useRef<HTMLDivElement>(null);
-    const touchStartRef = useRef<{ x: number; y: number } | null>(null);
-    const latestRef = useRef({ isActive, onActivate, onOpen });
-    latestRef.current = { isActive, onActivate, onOpen };
-
-    useEffect(() => {
-        if (!isMobile) return;
-        const el = elRef.current;
-        if (!el) return;
-
-        const onTouchStart = (e: TouchEvent) => {
-            const t = e.touches[0];
-            touchStartRef.current = { x: t.clientX, y: t.clientY };
-        };
-
-        const onTouchEnd = (e: TouchEvent) => {
-            const start = touchStartRef.current;
-            touchStartRef.current = null;
-            if (!start) return;
-            const t = e.changedTouches[0];
-            const dx = Math.abs(t.clientX - start.x);
-            const dy = Math.abs(t.clientY - start.y);
-            if (dx > 8 || dy > 8) return;
-
-            if (latestRef.current.isActive) {
-                latestRef.current.onOpen();
-            } else {
-                latestRef.current.onActivate();
-            }
-        };
-
-        el.addEventListener("touchstart", onTouchStart, { passive: true });
-        el.addEventListener("touchend", onTouchEnd, { passive: true });
-        return () => {
-            el.removeEventListener("touchstart", onTouchStart);
-            el.removeEventListener("touchend", onTouchEnd);
-        };
-    }, [isMobile]);
+    const elRef = useTouchTap<HTMLDivElement>({ isMobile, isActive, onActivate, onOpen });
 
     return (
         <div

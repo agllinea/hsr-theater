@@ -1,14 +1,14 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { PaletteIcon, FilterIcon, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Character, fetchCharacters } from "../types/character";
 import { Toolbar } from "../components/Toolbar";
 import { fractions } from "../assets/fractions";
 import { useIsMobile } from "../hooks/useIsMobile";
+import { useTouchTap } from "../hooks/useTouchTap";
+import { fade } from "../utils/animation";
 
 import "./Characters.css";
-
-const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.25 } };
 
 function CharacterViewer({ char, onClose }: { char: Character; onClose: () => void }) {
     useEffect(() => {
@@ -63,44 +63,7 @@ function CharacterCard({ char, isMobile, isActive, onActivate, onOpen }: {
     onActivate: () => void;
     onOpen: () => void;
 }) {
-    const elRef = useRef<HTMLSpanElement>(null);
-    const touchStartRef = useRef<{ x: number; y: number } | null>(null);
-    const latestRef = useRef({ isActive, onActivate, onOpen });
-    latestRef.current = { isActive, onActivate, onOpen };
-
-    useEffect(() => {
-        if (!isMobile) return;
-        const el = elRef.current;
-        if (!el) return;
-
-        const onTouchStart = (e: TouchEvent) => {
-            const t = e.touches[0];
-            touchStartRef.current = { x: t.clientX, y: t.clientY };
-        };
-
-        const onTouchEnd = (e: TouchEvent) => {
-            const start = touchStartRef.current;
-            touchStartRef.current = null;
-            if (!start) return;
-            const t = e.changedTouches[0];
-            const dx = Math.abs(t.clientX - start.x);
-            const dy = Math.abs(t.clientY - start.y);
-            if (dx > 8 || dy > 8) return; // scroll, not a tap
-
-            if (latestRef.current.isActive) {
-                latestRef.current.onOpen();
-            } else {
-                latestRef.current.onActivate();
-            }
-        };
-
-        el.addEventListener("touchstart", onTouchStart, { passive: true });
-        el.addEventListener("touchend", onTouchEnd, { passive: true });
-        return () => {
-            el.removeEventListener("touchstart", onTouchStart);
-            el.removeEventListener("touchend", onTouchEnd);
-        };
-    }, [isMobile]);
+    const elRef = useTouchTap<HTMLSpanElement>({ isMobile, isActive, onActivate, onOpen });
 
     const card = char.img?.card ?? "";
     return (

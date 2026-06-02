@@ -1,12 +1,12 @@
-import { useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { PaletteIcon, FilterIcon, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import "./Clips.css";
 import { fetchClip, Clip } from "../types/clip";
 import { Toolbar } from "../components/Toolbar";
 import { useIsMobile } from "../hooks/useIsMobile";
-
-const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.25 } };
+import { useTouchTap } from "../hooks/useTouchTap";
+import { fade } from "../utils/animation";
 
 function ClipViewer({ clip, onClose }: { clip: Clip; onClose: () => void }) {
     useEffect(() => {
@@ -40,44 +40,7 @@ function ClipCard({ clip, isMobile, isActive, onActivate, onOpen }: {
     onActivate: () => void;
     onOpen: () => void;
 }) {
-    const elRef = useRef<HTMLElement>(null);
-    const touchStartRef = useRef<{ x: number; y: number } | null>(null);
-    const latestRef = useRef({ isActive, onActivate, onOpen });
-    latestRef.current = { isActive, onActivate, onOpen };
-
-    useEffect(() => {
-        if (!isMobile) return;
-        const el = elRef.current;
-        if (!el) return;
-
-        const onTouchStart = (e: TouchEvent) => {
-            const t = e.touches[0];
-            touchStartRef.current = { x: t.clientX, y: t.clientY };
-        };
-
-        const onTouchEnd = (e: TouchEvent) => {
-            const start = touchStartRef.current;
-            touchStartRef.current = null;
-            if (!start) return;
-            const t = e.changedTouches[0];
-            const dx = Math.abs(t.clientX - start.x);
-            const dy = Math.abs(t.clientY - start.y);
-            if (dx > 8 || dy > 8) return;
-
-            if (latestRef.current.isActive) {
-                latestRef.current.onOpen();
-            } else {
-                latestRef.current.onActivate();
-            }
-        };
-
-        el.addEventListener("touchstart", onTouchStart, { passive: true });
-        el.addEventListener("touchend", onTouchEnd, { passive: true });
-        return () => {
-            el.removeEventListener("touchstart", onTouchStart);
-            el.removeEventListener("touchend", onTouchEnd);
-        };
-    }, [isMobile]);
+    const elRef = useTouchTap<HTMLElement>({ isMobile, isActive, onActivate, onOpen });
 
     const cover = clip.img?.cover ?? "";
     return (

@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef, useLayoutEffect, forwardRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import clsx from "clsx";
 import "./HeaderNav.css";
@@ -71,16 +71,7 @@ function CrystalBg({ points }: { points: string }) {
 
 type NavButtonSize = "sm" | "md" | "lg";
 
-function NavButton({
-  navKey,
-  label,
-  isActive,
-  hoveredKey,
-  size = "md",
-  onClick,
-  onHoverStart,
-  onHoverEnd,
-}: {
+const NavButton = forwardRef<HTMLButtonElement, {
   navKey: Tab;
   label: string;
   isActive: boolean;
@@ -89,7 +80,10 @@ function NavButton({
   onClick: () => void;
   onHoverStart: (key: Tab) => void;
   onHoverEnd: () => void;
-}) {
+}>(function NavButton(
+  { navKey, label, isActive, hoveredKey, size = "md", onClick, onHoverStart, onHoverEnd },
+  ref,
+) {
   const hovered = hoveredKey === navKey;
   const [crystalPoints, setCrystalPoints] = useState(generateCrystalPoints);
 
@@ -101,10 +95,10 @@ function NavButton({
   const handleMouseLeave = useCallback(() => onHoverEnd(), [onHoverEnd]);
 
   const showCrystal = hovered || (isActive && hoveredKey === null);
-  const crystalKey = crystalPoints;
 
   return (
     <button
+      ref={ref}
       className={clsx("nav-btn", `nav-btn--${size}`, isActive && "nav-btn--active")}
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
@@ -113,22 +107,13 @@ function NavButton({
     >
       <AnimatePresence>
         {showCrystal && (
-          <CrystalBg key={crystalKey} points={crystalPoints} />
+          <CrystalBg key={crystalPoints} points={crystalPoints} />
         )}
       </AnimatePresence>
-
       <span className="nav-btn__label">{label}</span>
-
-      {isActive && (
-        <motion.span
-          className="nav-btn__highlight"
-          layoutId="nav-highlight"
-          transition={{ type: "spring", stiffness: 420, damping: 34 }}
-        />
-      )}
     </button>
   );
-}
+});
 
 // ─── HeaderNav ────────────────────────────────────────────────────────────────
 
@@ -139,12 +124,39 @@ interface HeaderNavProps {
 
 export default function HeaderNav({ activeTab, setTab }: HeaderNavProps) {
   const [hoveredKey, setHoveredKey] = useState<Tab | null>(null);
+  const navRef = useRef<HTMLElement>(null);
+  const btnRefs = useRef<Partial<Record<Tab, HTMLButtonElement>>>({});
+  const [highlight, setHighlight] = useState<{ left: number; width: number } | null>(null);
+
+  useLayoutEffect(() => {
+    const btn = btnRefs.current[activeTab];
+    const nav = navRef.current;
+    if (!btn || !nav) return;
+    const btnRect = btn.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+    setHighlight({
+      left: btnRect.left - navRect.left + 10,
+      width: btnRect.width - 20,
+    });
+  }, [activeTab]);
 
   return (
-    <nav className="header__nav" role="navigation" aria-label="主导航">
+    <nav ref={navRef} className="header__nav" role="navigation" aria-label="主导航">
+      {highlight !== null && (
+        <motion.span
+          className="nav-btn__highlight"
+          initial={false}
+          animate={{ left: highlight.left, width: highlight.width }}
+          transition={{ type: "spring", stiffness: 420, damping: 34 }}
+        />
+      )}
       {TABS.map(({ key, label }) => (
         <NavButton
           key={key}
+          ref={(el: HTMLButtonElement | null) => {
+            if (el) btnRefs.current[key] = el;
+            else delete btnRefs.current[key];
+          }}
           navKey={key}
           label={label}
           isActive={activeTab === key}
