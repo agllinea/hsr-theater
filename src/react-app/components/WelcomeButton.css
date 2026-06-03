@@ -1,6 +1,6 @@
 .welcome-button__hint {
     position: fixed;
-    bottom: 48px;
+    bottom: 35%;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
