@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { SparkleIcon, FunnelIcon } from "@phosphor-icons/react";
 import clsx from "clsx";
 import { FeaturedBanner } from "./FeaturedBanner";
+import { Footer } from "./Footer";
 import { ToolbarV2 } from "./ToolbarV2";
 import { RolesTab } from "./RolesTab";
 import { ScriptsTab } from "./ScriptsTab";
@@ -188,6 +189,7 @@ export function ContentPanel({ activeTab }: { activeTab: Tab }) {
                         </motion.p>
                     )}
                 </AnimatePresence>
+                <Footer />
             </div>
         </motion.div>
     );
