@@ -1,0 +1,42 @@
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 10;
+    background: rgba(var(--surface-rgb), 0.88);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    border-bottom: 1px solid rgba(var(--ink-rgb), 0.08);
+}
+
+.app-header__title {
+    font-family: "Amphoreus", serif;
+    font-size: 18px;
+    letter-spacing: 0.18em;
+    color: rgba(var(--accent-rgb), 0.55);
+    user-select: none;
+}
+
+/* ── Override HeaderNav colours for light header ── */
+
+.app-header .nav-btn {
+    color: rgba(var(--ink-rgb), 0.45);
+}
+
+.app-header .nav-btn:hover {
+    color: rgba(var(--ink-rgb), 0.88);
+}
+
+.app-header .nav-btn--active {
+    color: rgba(var(--ink-rgb), 0.88);
+}
+
+.app-header .nav-btn__highlight {
+    background: rgba(248, 210, 72, 0.23);
+}

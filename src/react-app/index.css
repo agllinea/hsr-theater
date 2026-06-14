@@ -20,11 +20,11 @@
   --accent-rgb: 138 103 48;
 
   /* ─── Character rarity ─────────────────────── */
-  --card-color-ur: 111 111 111;
-  --card-color-ssr: 170 140 75;
-  --card-color-sr: 125 95 155;
-  --card-color-r: 75 110 155;
-  --card-color-n: 75 135 100;
+  --card-color-ur: 255 255 255;
+  --card-color-ssr: 254 225 150;
+  --card-color-sr: 239 150 254;
+  --card-color-r: 150 237 254;
+  --card-color-n: 179 254 150;
 
   --card-bw-filter: grayscale(1) invert(0.5) opacity(0.2);
 

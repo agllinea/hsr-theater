@@ -20,7 +20,6 @@ export function Background() {
                     />
                 )}
             </AnimatePresence>
-            <div className="background__backdrop" />
         </div>
     );
 }

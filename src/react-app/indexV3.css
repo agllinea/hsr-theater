@@ -1,0 +1,54 @@
+@font-face {
+    font-family: "Amphoreus";
+    src: url("/fonts/Amphoreus.ttf") format("truetype");
+    font-display: swap;
+}
+
+:root {
+    --surface-rgb: 248, 247, 252;
+    --surface: rgba(var(--surface-rgb), 0.8);
+
+    --ink-rgb: 26, 25, 23;
+
+    --white: rgb(255, 255, 255);
+    --white-rgb: 255, 255, 255;
+
+    --accent-rgb: 162, 90, 240;
+
+    --font-body: "DM Sans", "Helvetica Neue", sans-serif;
+
+    --header-h: 56px;
+    --reveal-duration: 0.25s;
+    --card-reveal-duration: 1s;
+
+    /* ── Character card rarity ── */
+    --card-color-ur:  130 130 130;
+    --card-color-ssr: 220 172 48;
+    --card-color-sr:  148 88 215;
+    --card-color-r:   58 128 220;
+    --card-color-n:   58 165 90;
+
+    --card-bw-filter: grayscale(1) invert(0.5) opacity(0.2);
+
+    --card-bottom-ssr: 3px solid rgb(var(--card-color-ssr) / 0.9);
+    --card-bottom-sr:  3px solid rgb(var(--card-color-sr) / 0.9);
+    --card-bottom-r:   3px solid rgb(var(--card-color-r) / 0.9);
+    --card-bottom-n:   3px solid rgb(var(--card-color-n) / 0.9);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+}

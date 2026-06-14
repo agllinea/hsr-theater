@@ -1,0 +1,128 @@
+.clip-card {
+    aspect-ratio: 16 / 9;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.clip-card-image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: opacity var(--card-reveal-duration, 1s) ease;
+}
+
+.clip-card-image--bw {
+    filter: grayscale(1) invert(0.6) opacity(0.3);
+    z-index: 0;
+}
+
+.clip-card-image--color {
+     /* filter: opacity(0.7); */
+    opacity: 0;
+    z-index: 1;
+}
+
+.clip-card--active .clip-card-image--color,
+.clips-grid--palette .clip-card .clip-card-image--color {
+    opacity: 0.9;
+}
+
+@media (hover: hover) {
+    .clip-card:hover .clip-card-image--color {
+        opacity: 0.9;
+    }
+}
+
+/* Text layer — replaces the two flash divs */
+
+.clip-card-text {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.1) 50%, rgba(66, 66, 66, 0.3) 100%);
+}
+
+.clip-card-text .txt-swap {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px 12px;
+}
+
+.clip-card-text .txt-c {
+    font-size: 15px;
+    letter-spacing: 0.06em;
+    color: rgba(245, 243, 238, 0.92);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* hover layer — darker gradient + title + desc */
+.clip-card-text .txt-d {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px 12px;
+    gap: 4px;
+    background: linear-gradient(to bottom, transparent 20%, rgba(66, 66, 66, 0.5) 70%, rgba(66, 66, 66, 0.9) 100%);
+}
+
+.clip-card-title {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: rgba(245, 243, 238, 0.92);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.clip-card-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 10px;
+    color: rgba(245, 243, 238, 0.65);
+    letter-spacing: 0.01em;
+    line-height: 1.3;
+}
+
+@media (max-width: 600px) {
+    .clip-card {
+        aspect-ratio: 1/1;
+    }
+
+    .clip-card-text .txt-swap {
+        padding: 6px 8px;
+    }
+
+    .clip-card-desc {
+        display: none;
+    }
+}
+
+/* TxtSwap activation */
+
+.clip-card--active .txt-c,
+.clips-grid--palette .clip-card .txt-c {
+    opacity: 0;
+}
+
+.clip-card--active .txt-d,
+.clips-grid--palette .clip-card .txt-d {
+    opacity: 1;
+}
+
+@media (hover: hover) {
+    .clip-card:hover .txt-c { opacity: 0; }
+    .clip-card:hover .txt-d { opacity: 1; }
+}

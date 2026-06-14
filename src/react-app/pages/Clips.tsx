@@ -4,8 +4,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import "./Clips.css";
 import { fetchClip, Clip } from "../types/clip";
 import { Toolbar } from "../components/Toolbar";
+import { ClipCard } from "../components/ClipCard";
 import { useIsMobile } from "../hooks/useIsMobile";
-import { useTouchTap } from "../hooks/useTouchTap";
 import { fade } from "../utils/animation";
 
 function ClipViewer({ clip, onClose }: { clip: Clip; onClose: () => void }) {
@@ -33,37 +33,6 @@ function ClipViewer({ clip, onClose }: { clip: Clip; onClose: () => void }) {
     );
 }
 
-function ClipCard({ clip, isMobile, isActive, onActivate, onOpen }: {
-    clip: Clip;
-    isMobile: boolean;
-    isActive: boolean;
-    onActivate: () => void;
-    onOpen: () => void;
-}) {
-    const elRef = useTouchTap<HTMLElement>({ isMobile, isActive, onActivate, onOpen });
-
-    const cover = clip.img?.cover ?? "";
-    return (
-        <article
-            ref={elRef}
-            className={`clip-card${isActive ? " clip-card--active" : ""}`}
-            onClick={isMobile ? undefined : onOpen}
-        >
-            <div className="clip-card-image clip-card-image--bw" style={{ backgroundImage: `url("${cover}")` }} />
-            <div className="clip-card-image clip-card-image--color" style={{ backgroundImage: `url("${cover}")` }} />
-            <div className="clip-card-hover-bg" />
-            <div className="clip-card-flash clip-card-flash--default">
-                <span className="clip-card-label clip-card-label--title">{clip.id}</span>
-            </div>
-            <div className="clip-card-flash clip-card-flash--hover">
-                <span className="clip-card-label clip-card-label--title">{clip.title}</span>
-                {clip.description && (
-                    <span className="clip-card-label clip-card-label--desc">{clip.description}</span>
-                )}
-            </div>
-        </article>
-    );
-}
 
 function TagFilter({ tags, selected, onToggle }: { tags: string[]; selected: string | null; onToggle: (t: string) => void }) {
     return (

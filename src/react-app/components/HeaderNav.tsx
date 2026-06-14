@@ -33,7 +33,7 @@ function generateCrystalPoints(): string {
 // ─── Crystal background ───────────────────────────────────────────────────────
 
 function CrystalBg({ points }: { points: string }) {
-  const c = "26,25,23";
+  const c = "162, 90, 240";
 
   return (
     <motion.div
@@ -57,7 +57,7 @@ function CrystalBg({ points }: { points: string }) {
         <svg viewBox="0 0 100 40" width="100%" height="100%" style={{ overflow: "visible" }}>
           <polygon
             points={points}
-            fill={`rgba(${c},0.05)`}
+            fill={`rgba(${c},0.03)`}
             stroke={`rgba(${c},0.88)`}
             strokeWidth={0.75}
           />

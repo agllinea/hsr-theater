@@ -12,9 +12,3 @@
     background-size: cover;
     background-position: center;
 }
-
-.background__backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgb(var(--black-rgb) / 0.2);
-}

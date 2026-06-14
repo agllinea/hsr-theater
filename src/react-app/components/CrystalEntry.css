@@ -1,0 +1,39 @@
+.crystal-entry {
+    position: relative;
+    width: 224px;
+    height: 62px;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.crystal-entry__crystal {
+    position: absolute;
+    inset: 0;
+}
+
+.crystal-entry__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.crystal-entry__label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    font-family: "Amphoreus", serif;
+    font-size: 16px;
+    letter-spacing: 0.2em;
+    color: rgba(255, 255, 255, 0.88);
+    white-space: nowrap;
+    user-select: none;
+    pointer-events: none;
+    text-shadow:
+        0 0 10px rgb(155, 0, 194),
+        3px 3px 20px rgb(0, 0, 0);
+}

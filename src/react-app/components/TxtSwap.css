@@ -1,0 +1,24 @@
+.txt-swap {
+    position: relative;
+    display: block;
+}
+
+.txt-c,
+.txt-d {
+    display: block;
+    transition: opacity var(--card-reveal-duration, 1s) ease;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.txt-c {
+    font-family: "Amphoreus", serif;
+    letter-spacing: 0.05em;
+    opacity: 1;
+}
+
+.txt-d {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}

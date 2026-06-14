@@ -3,9 +3,9 @@ import { PaletteIcon, FilterIcon, X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Character, fetchCharacters } from "../types/character";
 import { Toolbar } from "../components/Toolbar";
+import { CharacterCard } from "../components/CharacterCard";
 import { fractions } from "../assets/fractions";
 import { useIsMobile } from "../hooks/useIsMobile";
-import { useTouchTap } from "../hooks/useTouchTap";
 import { fade } from "../utils/animation";
 
 import "./Characters.css";
@@ -56,35 +56,6 @@ function FactionFilter({
     );
 }
 
-function CharacterCard({ char, isMobile, isActive, onActivate, onOpen }: {
-    char: Character;
-    isMobile: boolean;
-    isActive: boolean;
-    onActivate: () => void;
-    onOpen: () => void;
-}) {
-    const elRef = useTouchTap<HTMLSpanElement>({ isMobile, isActive, onActivate, onOpen });
-
-    const card = char.img?.card ?? "";
-    return (
-        <span
-            ref={elRef}
-            className={`char-card${isActive ? " char-card--active" : ""}`}
-            data-rarity={char.rarity}
-            onClick={isMobile ? undefined : onOpen}
-        >
-            <div className="char-card-image char-card-image--color" style={{ backgroundImage: `url("${card}")` }} />
-            <div className="char-card-image char-card-image--bw" style={{ backgroundImage: `url("${card}")` }} />
-            <div className="char-card-hover-bg" />
-            <div className="char-card-flash char-card-flash--id">
-                <span className="char-card-label">{char.id}</span>
-            </div>
-            <div className="char-card-flash char-card-flash--name">
-                <span className="char-card-label">{char.name}</span>
-            </div>
-        </span>
-    );
-}
 
 export default function Characters() {
     const isMobile = useIsMobile();
