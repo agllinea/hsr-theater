@@ -9,9 +9,10 @@ interface ShortsTabProps {
     palette: boolean;
     selectedTag: string | null;
     onTagsLoaded: (tags: string[]) => void;
+    onOpen: (clip: Clip) => void;
 }
 
-export function ShortsTab({ palette, selectedTag, onTagsLoaded }: ShortsTabProps) {
+export function ShortsTab({ palette, selectedTag, onTagsLoaded, onOpen }: ShortsTabProps) {
     const isMobile = useIsMobile();
     const [clips, setClips] = useState<Clip[]>([]);
     const [activeCard, setActiveCard] = useState<string | null>(null);
@@ -47,7 +48,7 @@ export function ShortsTab({ palette, selectedTag, onTagsLoaded }: ShortsTabProps
                     isMobile={isMobile}
                     isActive={isMobile && (activeCard === clip.id || palette)}
                     onActivate={() => setActiveCard(clip.id)}
-                    onOpen={() => setActiveCard(null)}
+                    onOpen={() => { setActiveCard(null); onOpen(clip); }}
                 />
             ))}
         </div>

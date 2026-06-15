@@ -1,4 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Wiki } from "./Wiki";
+import type { WikiItem } from "./Wiki";
+import type { Script } from "../types/script";
+import type { Character } from "../types/character";
+import type { Clip } from "../types/clip";
 import { motion, AnimatePresence } from "framer-motion";
 import { SparkleIcon, FunnelIcon } from "@phosphor-icons/react";
 import clsx from "clsx";
@@ -65,6 +70,13 @@ function TagFilter({ options, selected, onSelect, getLabel }: {
 export function ContentPanel({ activeTab }: { activeTab: Tab }) {
     const scrollRef = useRef<HTMLDivElement>(null);
     const [tabState, setTabState] = useState<AllTabsState>(initialState);
+    const [wikiItem, setWikiItem] = useState<WikiItem | null>(null);
+    const openWikiWithScript = useCallback((script: Script) =>
+        setWikiItem({ title: script.title.d, contentUrl: `/scripts/content/${script.id}.md` }), []);
+    const openWikiWithChar = useCallback((char: Character) =>
+        setWikiItem({ title: char.name }), []);
+    const openWikiWithClip = useCallback((clip: Clip) =>
+        setWikiItem({ title: clip.title }), []);
     const [dynamicTagOptions, setDynamicTagOptions] = useState<Partial<Record<Tab, string[]>>>({});
 
     const { palette, filter, selectedTag } = tabState[activeTab];
@@ -92,6 +104,7 @@ export function ContentPanel({ activeTab }: { activeTab: Tab }) {
 
     useEffect(() => {
         scrollRef.current?.scrollTo({ top: 0, behavior: "instant" });
+        setWikiItem(null);
     }, [activeTab]);
 
     const filterOptions = dynamicTagOptions[activeTab] ?? [];
@@ -123,6 +136,7 @@ export function ContentPanel({ activeTab }: { activeTab: Tab }) {
     ];
 
     return (
+        <>
         <motion.div
             className="content-panel"
             ref={scrollRef}
@@ -146,6 +160,7 @@ export function ContentPanel({ activeTab }: { activeTab: Tab }) {
                                 palette={palette}
                                 selectedTag={selectedTag}
                                 onFactionTagsLoaded={onRoleTagsLoaded}
+                                onOpen={openWikiWithChar}
                             />
                         </motion.div>
                     ) : activeTab === "scripts" ? (
@@ -160,6 +175,7 @@ export function ContentPanel({ activeTab }: { activeTab: Tab }) {
                                 palette={palette}
                                 selectedTag={selectedTag}
                                 onTagsLoaded={onScriptTagsLoaded}
+                                onOpen={openWikiWithScript}
                             />
                         </motion.div>
                     ) : activeTab === "shorts" ? (
@@ -174,6 +190,7 @@ export function ContentPanel({ activeTab }: { activeTab: Tab }) {
                                 palette={palette}
                                 selectedTag={selectedTag}
                                 onTagsLoaded={onShortsTagsLoaded}
+                                onOpen={openWikiWithClip}
                             />
                         </motion.div>
                     ) : (
@@ -192,5 +209,7 @@ export function ContentPanel({ activeTab }: { activeTab: Tab }) {
                 <Footer />
             </div>
         </motion.div>
+        <Wiki item={wikiItem} onClose={() => setWikiItem(null)} />
+        </>
     );
 }

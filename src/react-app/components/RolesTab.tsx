@@ -9,9 +9,10 @@ interface RolesTabProps {
     palette: boolean;
     selectedTag: string | null;
     onFactionTagsLoaded: (factions: string[]) => void;
+    onOpen: (char: Character) => void;
 }
 
-export function RolesTab({ palette, selectedTag, onFactionTagsLoaded }: RolesTabProps) {
+export function RolesTab({ palette, selectedTag, onFactionTagsLoaded, onOpen }: RolesTabProps) {
     const isMobile = useIsMobile();
     const [chars, setChars] = useState<Character[]>([]);
     const [activeCard, setActiveCard] = useState<string | null>(null);
@@ -47,7 +48,7 @@ export function RolesTab({ palette, selectedTag, onFactionTagsLoaded }: RolesTab
                     isMobile={isMobile}
                     isActive={isMobile && (activeCard === char.id || palette)}
                     onActivate={() => setActiveCard(char.id)}
-                    onOpen={() => setActiveCard(null)}
+                    onOpen={() => { setActiveCard(null); onOpen(char); }}
                 />
             ))}
         </div>

@@ -11,9 +11,10 @@ interface ScriptsTabProps {
     palette: boolean;
     selectedTag: string | null;
     onTagsLoaded: (tags: string[]) => void;
+    onOpen: (item: Script) => void;
 }
 
-export function ScriptsTab({ palette, selectedTag, onTagsLoaded }: ScriptsTabProps) {
+export function ScriptsTab({ palette, selectedTag, onTagsLoaded, onOpen }: ScriptsTabProps) {
     const isMobile = useIsMobile();
     const [index, setIndex] = useState<Script[]>([]);
     const [charsMap, setCharsMap] = useState<Record<string, Character>>({});
@@ -57,7 +58,7 @@ export function ScriptsTab({ palette, selectedTag, onTagsLoaded }: ScriptsTabPro
                     isMobile={isMobile}
                     isActive={isMobile && (activeRow === item.id || palette)}
                     onActivate={() => setActiveRow(item.id)}
-                    onOpen={() => setActiveRow(null)}
+                    onOpen={() => { setActiveRow(null); onOpen(item); }}
                 />
             ))}
         </div>
